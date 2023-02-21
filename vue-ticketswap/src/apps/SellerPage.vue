@@ -36,3 +36,29 @@
         </form>
     </body>
 </template>
+
+<style>
+    #button{
+    background-color: lightblue; 
+    color: black; 
+    border: 2px solid rgb(12, 61, 175);
+    border-radius: 8px;
+}
+    #button:hover {
+    background-color: #4c6daf;
+    color: white;
+    border-radius: 8px;
+}
+    body {
+    color: rgb(12, 61, 175);
+    text-align: center;
+    margin: auto;
+    width: 50%;
+    }
+    #seller_form{
+    background-color: lightblue;
+    text-align: center;
+    margin: auto;
+    width: 50%;
+    }
+</style>
