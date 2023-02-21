@@ -78,8 +78,12 @@ WSGI_APPLICATION = "ticketswap.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "djongo",
+        "NAME": 'ticketswap',
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': 'mongodb+srv://calebliu11:KLiQbjRKMU02mIL9@ticketswap.dwetsab.mongodb.net/?retryWrites=true&w=majority'
+        }  
     }
 }
 
@@ -128,3 +132,5 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_REDIRECT_URL = "/"
