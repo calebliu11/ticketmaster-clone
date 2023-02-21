@@ -30,7 +30,7 @@
         </div>
       </div>
       
-      <router-link to="/about" class="navbar-item">Sell</router-link>
+      <router-link to="/seller" class="navbar-item">Sell</router-link>
 
       <router-link to="/about" class="navbar-item">About</router-link>
 
