@@ -3,6 +3,8 @@ import { createWebHistory, createRouter } from "vue-router";
 import BuyerPage from "./apps/BuyerPage.vue"
 import SellerPage from "./apps/SellerPage.vue"
 import AboutPage from "./apps/aboutPage.vue"
+import AccountPage from "./apps/accountPage.vue"
+
 
 
 const routes = [
@@ -18,7 +20,12 @@ const routes = [
         path: '/about',
         component: AboutPage
     
-      },
+    },
+    {
+        path: '/account',
+        component: AccountPage
+    
+    },
 ];
 
 const router = createRouter({

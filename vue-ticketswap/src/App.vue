@@ -12,49 +12,26 @@
     <div class="navbar-start">
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link  is-active" href="/documentation/overview/start/">
-          Docs
+          My Tickets
         </a>
         <div class="navbar-dropdown ">
           <a class="navbar-item " href="/documentation/overview/start/">
-            Overview
+            Upcoming Events
           </a>
           <a class="navbar-item " href="http://bulma.io/documentation/modifiers/syntax/">
-            Modifiers
+            Past Events
           </a>
-          <a class="navbar-item " href="http://bulma.io/documentation/columns/basics/">
-            Columns
-          </a>
-          <a class="navbar-item " href="http://bulma.io/documentation/layout/container/">
-            Layout
-          </a>
-          <a class="navbar-item " href="http://bulma.io/documentation/form/general/">
-            Form
-          </a>
-          <a class="navbar-item " href="http://bulma.io/documentation/elements/box/">
-            Elements
-          </a>
+          
 
           <a class="navbar-item is-active" href="http://bulma.io/documentation/components/breadcrumb/">
-            Components
+            Tickets Sold
           </a>
-
-          <hr class="navbar-divider">
-          <div class="navbar-item">
-            <div>
-              <p class="is-size-6-desktop">
-                <strong class="has-text-info">0.5.1</strong>
-              </p>
-
-              <small>
-                <a class="bd-view-all-versions" href="/versions">View all versions</a>
-              </small>
-
-            </div>
-          </div>
+  
         </div>
       </div>
       
-     
+      <router-link to="/about" class="navbar-item">Sell</router-link>
+
       <router-link to="/about" class="navbar-item">About</router-link>
 
     </div>
@@ -65,9 +42,12 @@
         <div class="field is-grouped">
           <p class="control">
             <a class="bd-tw-button button">
-              
+              <span class="icon">
+
+                <i class="fa-regular fa-user"></i>
+              </span>
               <span>
-                My Account
+                <router-link to="/account">My Account</router-link>
               </span>
             </a>
 
