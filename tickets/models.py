@@ -1,13 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
-class User(models.Model):
-    id = models.IntegerField(primary_key=True)
-    email = models.TextField()
-    first_name = models.TextField()
-    last_name = models.TextField()
-    password = models.TextField()
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=150)
 
 class Listing(models.Model):
 
