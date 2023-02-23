@@ -22,9 +22,9 @@ class Listing(models.Model):
     ]
 
     id = models.IntegerField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    event = models.TextField() 
-    description = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.CharField(max_length=100) 
+    description = models.TextField(max_length=300)
     price = models.IntegerField(default=0)
     status = models.TextField(choices=STATUS_CHOICES, default=ACTIVE)
     date = models.DateTimeField()
