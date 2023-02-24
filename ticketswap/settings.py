@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     "corsheaders",
 
     #Local Apps
-    "tickets.apps.TicketsConfig"
+    "tickets"
 ]
 
 CORS_ALLOWED_ORIGINS = [

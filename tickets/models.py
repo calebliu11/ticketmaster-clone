@@ -8,7 +8,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(max_length=150)
-
+    
 class Listing(models.Model):
 
     ACTIVE = "ACTIVE"
@@ -28,3 +28,7 @@ class Listing(models.Model):
     price = models.IntegerField(default=0)
     status = models.TextField(choices=STATUS_CHOICES, default=ACTIVE)
     date = models.DateTimeField()
+
+    @property
+    def user_email(self):
+        return self.user.email
