@@ -5,8 +5,14 @@ import SellerPage from "./apps/SellerPage.vue"
 import AboutPage from "./apps/aboutPage.vue"
 import AccountPage from "./apps/accountPage.vue"
 import SignupPage from "./apps/SignupPage.vue"
+import HomePage from './apps/HomePage.vue'
+
 
 const routes = [
+    {
+        path: '/',
+        component: HomePage
+    },
     {
         path: '/buyer',
         component: BuyerPage
