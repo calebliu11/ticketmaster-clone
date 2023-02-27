@@ -1,7 +1,6 @@
 <template>
   <div id="wrapper">
    
-
     <nav class="navbar ">
   <div class="navbar-brand">
      <router-link to="/" class="navbar-item"><strong>TicketSwap</strong></router-link>
@@ -57,7 +56,10 @@
               <span class="icon">
                 <i class="fa-solid fa-right-to-bracket"></i>             
               </span>
-              <span>Sign Up</span>
+              <span>
+                <router-link to="/signup">Sign Up</router-link>
+              </span>
+              
             </a>
           </p>
         </div>

@@ -4,8 +4,7 @@ import BuyerPage from "./apps/BuyerPage.vue"
 import SellerPage from "./apps/SellerPage.vue"
 import AboutPage from "./apps/aboutPage.vue"
 import AccountPage from "./apps/accountPage.vue"
-
-
+import SignupPage from "./apps/SignupPage.vue"
 
 const routes = [
     {
@@ -24,7 +23,10 @@ const routes = [
     {
         path: '/account',
         component: AccountPage
-    
+    },
+    {
+        path: '/signup',
+        component: SignupPage
     },
 ];
 
