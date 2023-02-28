@@ -1,20 +1,24 @@
 
 <template>
   <div class="home">
-    
-
-    <div class="columns is-multiline">
-      <div class="column is-12">
-          <h2 class="is-size-2 has-text-centered">Upcoming Events</h2>
-      </div>
+        <section class="hero is-small is-primary">
+          <div class="hero-body">
+            <p class="title">
+             Top Upcoming Events
+            </p>
+            <p class="subtitle">
+              Near WashU
+            </p>
+          </div>
+        </section>
+     
       <div> 
       <listingBox 
         v-for="listing in recentListings"
         v-bind:key="listing.id"
         v-bind:listing="listing" />
-
       </div>
-    </div>
+    
   </div>
 </template>
 
@@ -22,7 +26,6 @@
   import axios from 'axios'
   import listingBox from '@/components/listingBox'
 
- 
   export default {
     name: 'HomePage',
     data() {
@@ -36,7 +39,6 @@
     },
     mounted() {
       this.RecentListingsList()
-      document.title = 'Home | Djackets'
     },
     methods: {
       async RecentListingsList() {

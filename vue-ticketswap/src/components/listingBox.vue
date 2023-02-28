@@ -1,13 +1,17 @@
 <template>
-    <div class="column is-15">
-        <div class="box">
-         
-
-            <h3 class="is-size-4">{{ listing.event }}</h3>
+    <div class="column is-size-4 is-centered ">
+        <div class="box ">
+        
+        
+            <h3 class="is-size-4 has-text-weight-semibold">{{ listing.event }}</h3>
             <p class="is-size-6">{{ listing.description }}</p>
 
-            <p class="is-size-6 has-text-grey">${{ listing.price }}</p>
+            <p class="is-size-6 has-text-success">${{ listing.price }}</p>
+                   
+                    
 
+               
+           
         </div>
     </div>
 </template>
