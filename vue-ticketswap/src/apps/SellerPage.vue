@@ -1,38 +1,127 @@
 <template>
-    <body>
-        <h1>Ticket Posting Form</h1>
-        <form action="{% url 'post_ticket' %}" method="post">
-        <label for="contact_info">Contact Info:</label><br>
-        <textarea id="contact_info" name="contact_info" required placeholder="First Name, Last Name"> </textarea> <br><br>
-        <label for="event_name">Event Name:</label> <br>
-        <input type="text" id="event_name" name="event_name" required><br><br>
-        <label for="venue">Venue Locations:</label><br>
-        
-        <select id="venue_locations">
-            <option value="PBR">PBR</option>
-            <option value="handlebar">Handle Bar</option>
-            <option value="molly">Molly's</option>
-            <option value="tinroof">Tin Roof</option>
-            <option value="bpv">Ballpark Village</option>
-            <option value="paddy">Paddy O's</option>
-        </select><br><br>
-        
-        <label for="date">Date:</label><br>
-        <input type="date" id="date" name="date" required><br><br>
-        <label for="ticket_types">Ticket Type:</label><br>
-        <!-- Might add more ticket types -->
-        <select id="ticket_types">
-            <option value="general">General Admission</option>
-            <option value="vip">VIP</option>
-            <option value="bus">Party Bus</option>
-            <option value="other">Other</option>
-        </select><br><br>
+    <div class="seller-page">
+        <div class="columns">
+            <h2 class="title">Sell Ticket</h2>
 
-        <label for="quantity">Quantity:</label><br>
-        <input type="number" id="quantity" name="quantity" required><br><br>
-        <label for="price">Price:</label><br>
-        <input type="number" id="price" name="price" required><br><br>
-        <input type="submit" value="Submit">
-        </form>
-    </body>
+            <form @submit.prevent="enterForm">
+                <div class="field">
+                    <label>id</label>
+                    <div class="control">
+                        <input type="number" class="input" v-model="id">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Event</label>
+                    <div class="control">
+                        <input type="text" class="input" v-model="event">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Description</label>
+                    <div class="control">
+                        <input type="text" class="input" v-model="description">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Price</label>
+                    <div class="control">
+                        <input type="number" class="input" v-model="price">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Date</label>
+                    <div class="control">
+                        <input type="date" class="input" v-model="date">
+                    </div>
+                </div>
+
+                <div class="error-notification" v-if="errors.length">
+                    <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <button>Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </template>
+
+<script>
+import axios from 'axios'
+import { toast } from 'bulma-toast'
+
+export default {
+    name: 'PostListing',
+    data() {
+        return {
+            id: '',
+            event: '',
+            description: '',
+            price: '',
+            date: '',
+            errors: []
+        }
+    },
+    methods: {
+        enterForm(){
+            this.errors = []
+
+                if (this.id === '') {
+                    this.errors.push('The id field is required.')
+                }
+
+                if (this.event === '') {
+                    this.errors.push('The event field is required.')
+                }
+
+                if(this.price < 0) {
+                    this.errors.push('Price cannot be negative.')
+                }
+
+                if (!this.errors.length) {
+                    const formData = {
+                        id: this.id,
+                        event: this.event,
+                        description: this.description,
+                        price: this.price,
+                        date: this. date,
+                    }
+
+                    axios
+                        .post("/api/v1/post-listing/", formData)
+                        .then(() => {
+                            toast({
+                                message: 'Your listing was created!',
+                                type: 'is-success',
+                                dismissible: true,
+                                pauseOnHover: true,
+                                duration: 1000,
+                                position: 'bottom-left',
+                            })
+                            this.$router.push('/log-in')
+                        })
+                        .catch(error => {
+                            if (error.response) {
+                                for (const property in error.response.data) {
+                                    this.errors.push(`${property}: ${error.response.data[property]}`)
+                                }
+                                console.log(JSON.stringify(error.response.data))
+
+                            }
+                            else if (error.message) {
+                                this.errors.push('Something went wrong. Please try again!')
+                                console.log(JSON.stringify(error))
+                            }
+                        })
+                }
+        }
+    }
+}
+</script>
