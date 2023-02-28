@@ -29,7 +29,7 @@ def post_listing(request):
 
 class RecentListingsList(APIView):
     def get(self, request, format=None):
-        listings = Listing.objects.all()[0:5]
+        listings = Listing.objects.all()[0:12]
         serializer = ListingSerializer(listings, many=True)
         return Response(serializer.data)
 

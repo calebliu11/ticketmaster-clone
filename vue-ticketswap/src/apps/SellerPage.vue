@@ -1,8 +1,8 @@
 <template>
     <div class="seller-page">
-        <div class="columns">
+       
             <h2 class="title">Sell Ticket</h2>
-
+            <h4 class="is-size-6">Instructions: For now, in the description add your venmo and email that a buyer should contact you for ticket.</h4>
             <form @submit.prevent="enterForm">
                 <div class="field">
                     <label>id</label>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </form>
-        </div>
+        
     </div>
 </template>
 
