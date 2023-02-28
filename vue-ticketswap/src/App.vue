@@ -10,19 +10,19 @@
   <div id="navMenubd-example" class="navbar-menu">
     <div class="navbar-start">
       <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link  is-active" href="/documentation/overview/start/">
+        <a class="navbar-link  is-active" href="/">
           My Tickets
         </a>
         <div class="navbar-dropdown ">
-          <a class="navbar-item " href="/documentation/overview/start/">
+          <a class="navbar-item " href="/">
             Upcoming Events
           </a>
-          <a class="navbar-item " href="http://bulma.io/documentation/modifiers/syntax/">
+          <a class="navbar-item ">
             Past Events
           </a>
           
 
-          <a class="navbar-item is-active" href="http://bulma.io/documentation/components/breadcrumb/">
+          <a class="navbar-item is-active">
             Tickets Sold
           </a>
   
