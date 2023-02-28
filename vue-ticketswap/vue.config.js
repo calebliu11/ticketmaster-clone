@@ -7,6 +7,7 @@ module.exports = defineConfig({
 
   configureWebpack: {
     devServer: {
+      historyApiFallback: true,
       devMiddleware: {
         writeToDisk: true
       }

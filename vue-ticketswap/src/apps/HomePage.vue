@@ -46,12 +46,14 @@
           .get('/api/v1/recent-listings/')
           .then(response => {
             this.recentListings = response.data
+           
+
           })
           .catch(error => {
             console.log(error)
           })
       }
+      
     }
   }
-
 </script>
