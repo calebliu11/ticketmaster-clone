@@ -1,13 +1,12 @@
 {
     "builds": [{
-        "src": "ticketswap/wsgi.py",
-        "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb" }
+        "src": "vercel_apps/wsgi.py",
+        "use": "@vercel/python"
     }],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "ticketswap/wsgi.py"
+            "dest": "vercel_app/wsgi.py"
         }
     ]
 }
