@@ -1,6 +1,6 @@
 {
     "builds": [{
-        "src": "vercel_apps/wsgi.py",
+        "src": "vercel_app/wsgi.py",
         "use": "@vercel/python"
     }],
     "routes": [
