@@ -62,6 +62,24 @@
   </div>
 </template>
 
+<script>
+import axios from 'axios'
+
+export default {
+  beforeCreate(){
+    this.$store.commit('initializeStore')
+
+    const token = this.$store.state.token
+
+    if (token) {
+        axios.defaults.headers.common['Authorization'] = "Auth-Token: " + token
+    } else {
+        axios.defaults.headers.common['Authorization'] = ""
+    }
+  }
+}
+</script>
+
 <style lang="scss">
 @import '../node_modules/bulma';
 </style>
