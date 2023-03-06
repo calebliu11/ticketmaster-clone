@@ -6,7 +6,7 @@ import AboutPage from "./apps/aboutPage.vue"
 import AccountPage from "./apps/accountPage.vue"
 import SignupPage from "./apps/SignupPage.vue"
 import HomePage from './apps/HomePage.vue'
-
+import LoginPage from "./apps/LoginPage.vue"
 
 const routes = [
     {
@@ -34,6 +34,10 @@ const routes = [
         path: '/signup',
         component: SignupPage
     },
+    {
+        path: '/login',
+        component: LoginPage
+    }
 ];
 
 const router = createRouter({

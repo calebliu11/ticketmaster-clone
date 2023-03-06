@@ -125,7 +125,7 @@ export default {
                                 duration: 1000,
                                 position: 'bottom-left',
                             })
-                            this.$router.push('/log-in')
+                            this.$router.push('/login')
                         })
                         .catch(error => {
                             if (error.response) {
