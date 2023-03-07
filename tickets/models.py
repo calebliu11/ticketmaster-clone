@@ -1,5 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.template.defaultfilters import slugify  # new
+
+
 
 # Create your models here.
 
@@ -27,8 +31,17 @@ class Listing(models.Model):
     description = models.TextField(max_length=300)
     price = models.IntegerField(default=0)
     status = models.TextField(choices=STATUS_CHOICES, default=ACTIVE)
-    date = models.DateTimeField()
+    date = models.DateTimeField(blank=True)
+    slug = models.SlugField(null=True) 
 
     @property
     def user_email(self):
         return self.user.email
+    
+    def get_absolute_url(self):
+        return reverse("listing_detail", kwargs={"slug": self.slug}) 
+    
+    def save(self, *args, **kwargs):  # new
+        if not self.slug:
+            self.slug = slugify(self.event)
+        return super().save(*args, **kwargs)
