@@ -91,7 +91,7 @@ export default {
                         event: this.event,
                         description: this.description,
                         price: this.price,
-                        date: this. date,
+                        date: 'this. date',
                     }
 
                     axios
