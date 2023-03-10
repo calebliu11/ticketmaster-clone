@@ -7,6 +7,7 @@ import AccountPage from "./apps/accountPage.vue"
 import SignupPage from "./apps/SignupPage.vue"
 import HomePage from './apps/HomePage.vue'
 import LoginPage from "./apps/LoginPage.vue"
+import ListingPage from "./apps/listingPage.vue"
 
 const routes = [
     {
@@ -37,6 +38,10 @@ const routes = [
     {
         path: '/login',
         component: LoginPage
+    },
+    {
+        path: '/listings/:listing_slug',
+        component: ListingPage
     }
 ];
 
