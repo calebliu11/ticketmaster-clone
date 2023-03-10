@@ -1,6 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-  publicPath: 'https://ticketswap.vercel.app/',
+  publicPath: 'http://localhost:8080',
   outputDir: '../static/dist',
   indexPath: '../../templates/_base_vue.html',
   transpileDependencies: true,
