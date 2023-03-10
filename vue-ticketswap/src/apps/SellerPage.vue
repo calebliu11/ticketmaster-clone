@@ -32,12 +32,7 @@
                     </div>
                 </div>
 
-                <div class="field">
-                    <label>Date</label>
-                    <div class="control">
-                        <input type="date" class="input" v-model="date">
-                    </div>
-                </div>
+              
 
                 <div class="error-notification" v-if="errors.length">
                     <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
@@ -65,7 +60,6 @@ export default {
             event: '',
             description: '',
             price: '',
-            date: '',
             errors: []
         }
     },
@@ -91,7 +85,7 @@ export default {
                         event: this.event,
                         description: this.description,
                         price: this.price,
-                        date: 'this. date',
+                   
                     }
 
                     axios

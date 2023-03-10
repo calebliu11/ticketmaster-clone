@@ -17,8 +17,9 @@
         v-for="listing in recentListings"
         v-bind:key="listing.id"
         v-bind:listing="listing" />
+       
       </div>
-    
+       
   </div>
 </template>
 

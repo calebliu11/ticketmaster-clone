@@ -38,8 +38,10 @@ class Listing(models.Model):
     def user_email(self):
         return self.user.email
     
+    # def get_absolute_url(self):
+    #     return reverse("listing_detail", kwargs={"slug": self.slug}) 
     def get_absolute_url(self):
-        return reverse("listing_detail", kwargs={"slug": self.slug}) 
+        return f'/listings/{self.slug}/'
     
     def save(self, *args, **kwargs):  # new
         if not self.slug:

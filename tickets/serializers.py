@@ -14,5 +14,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "description",
             "price",
             "status",
-            "date"
+            "date",
+            "slug",
+            "get_absolute_url" 
         )
