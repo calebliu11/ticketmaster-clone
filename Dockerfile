@@ -7,7 +7,7 @@ RUN apk add --upgrade --no-cache build-base linux-headers && \
     pip install --upgrade pip && \
     pip install -r /requirements.txt
 
-COPY app/ /app
+COPY ticketswap/ /ticketswap
 WORKDIR /app
 
 RUN adduser --disabled-password --no-create-home django
