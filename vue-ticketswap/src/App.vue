@@ -11,7 +11,7 @@
     <div class="navbar-start">
      
       
-      <router-link to="/seller" class="navbar-item">Sell</router-link>
+      <router-link to="/seller" class="navbar-item">Add Event </router-link>
 
       <router-link to="/about" class="navbar-item">About</router-link>
 

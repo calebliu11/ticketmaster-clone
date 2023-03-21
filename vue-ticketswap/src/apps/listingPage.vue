@@ -1,6 +1,6 @@
 <template>
     <div class="page-listing">
-          <listingBox 
+          <ticketBox 
         v-for="listing in tickets"
         v-bind:key="listing.id"
         v-bind:listing="listing" />
@@ -12,7 +12,7 @@
 
 <script>
 import axios from 'axios'
-import listingBox from '@/components/listingBox'
+import ticketBox from '@/components/ticketBox'
 
 
 
@@ -26,7 +26,7 @@ export default {
 
     },
     components: {
-      listingBox
+      ticketBox
       
     },
     mounted() {

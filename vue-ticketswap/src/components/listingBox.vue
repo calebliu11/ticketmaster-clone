@@ -7,7 +7,12 @@
           
             <p class="is-size-6">{{ listing.description }}</p>
             <p class="is-size-6 has-text-success">${{ listing.price }}</p>
-            <router-link v-bind:to="listing.get_absolute_url" class="button is-dark mt-4"> View Tickets</router-link>
+         
+                    <router-link v-bind:to="listing.get_absolute_url" class="button is-dark mt-4"> View Tickets</router-link>
+
+             
+                    <router-link v-bind:to="listing.get_absolute_url" class="button is-light mt-4"> Sell your Tickets</router-link>
+             
         </div>
     </div>
 </template>

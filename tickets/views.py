@@ -30,8 +30,14 @@ def post_listing(request):
 
 class RecentListingsList(APIView):
     def get(self, request, format=None):
-        listings = Listing.objects.all()[0:12]
-        serializer = ListingSerializer(listings, many=True)
+        listings = Listing.objects.order_by('date','price').distinct()[0:12]
+        unique_listings = []
+        list = []
+        for x in listings: 
+            if x.slug not in list: 
+                unique_listings.append(x)
+                list.append(x.slug)
+        serializer = ListingSerializer(unique_listings, many=True)
         return Response(serializer.data)
 
 
