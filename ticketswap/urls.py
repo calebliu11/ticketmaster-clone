@@ -20,5 +20,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include('djoser.urls')),
     path("api/v1/", include('djoser.urls.authtoken')),
-    path("api/v1/", include('tickets.urls'))
+    path("api/v1/", include('tickets.urls')),
+    path('emailVerification/<uidb64>/<token>', views.activate, name='emailActivate')
+
 ]
