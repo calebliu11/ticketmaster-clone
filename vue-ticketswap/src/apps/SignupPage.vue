@@ -105,6 +105,11 @@ export default {
                     this.errors.push('The email field is required.')
                 }
 
+                if (!this.email.includes("@wustl.edu")) {
+                    this.errors.push('Please sign up with a WUSTL email address.')
+                }
+
+
                 if (!this.errors.length) {
                     const formData = {
                         username: this.username,
