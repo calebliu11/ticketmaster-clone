@@ -78,7 +78,7 @@ export default {
         }
     },
     methods: {
-        enterForm(){
+        async enterForm(){
             this.errors = []
 
                 if (this.username === '') {
@@ -105,6 +105,10 @@ export default {
                     this.errors.push('The email field is required.')
                 }
 
+                if (!this.email.includes('@wustl.edu')) {
+                    this.errors.push('WashU email required.')
+                }
+
                 if (!this.errors.length) {
                     const formData = {
                         username: this.username,
@@ -114,8 +118,8 @@ export default {
                         email: this.email
                     }
 
-                    axios
-                        .post("/api/v1/users/", formData)
+                    await axios
+                        .post("/api/v1/signup/", formData)
                         .then(() => {
                             toast({
                                 message: 'Your account was created, please log in!',
