@@ -55,7 +55,7 @@ export default {
 
             await $fetch("api/v1/token/login/", { method: "POST", body: loginFormData} )
                 .then(response => {
-                    const token = response.data.auth_token
+                    const token = response.auth_token
                     this.$store.commit('authenticateUser', token)
 
                     localStorage.setItem("token", token)

@@ -44,9 +44,7 @@
       async RecentListingsList() {
         await $fetch('/api/v1/recent-listings/', { method: "GET" })
           .then(response => {
-            this.recentListings = response.data
-           
-
+            this.recentListings = response
           })
           .catch(error => {
             console.log(error)
