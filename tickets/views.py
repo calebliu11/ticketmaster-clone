@@ -19,10 +19,14 @@ from datetime import datetime
 def post_listing(request):
     serializer = ListingSerializer(data=request.data)
     try:
+        print("yay")
+        print(serializer)
         serializer.is_valid(raise_exception=True)
-        data = serializer.validated_data
+        print("uh oh")
 
-        serializer.save(id=data['id'], event=data['event'], description=data['description'], price=data['price'])
+        data = serializer.validated_data
+        print(data)
+        serializer.save(event=data['event'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
     except ValidationError:
         print(serializer.errors)
 
@@ -30,7 +34,7 @@ def post_listing(request):
 
 class RecentListingsList(APIView):
     def get(self, request, format=None):
-        listings = Listing.objects.order_by('date','price').distinct()[0:12]
+        listings = Listing.objects.order_by('date','price').distinct()[0:25]
         unique_listings = []
         list = []
         for x in listings: 
