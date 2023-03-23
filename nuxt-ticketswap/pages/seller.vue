@@ -1,9 +1,9 @@
 <template>
-    <div class="seller-page">
-       
+    <div class="seller-page">  
             <h2 class="title">Sell Ticket</h2>
             <h4 class="is-size-6">Instructions: For now, in the description add your venmo and email that a buyer should contact you for ticket.</h4>
             <form @submit.prevent="enterForm">
+                <div hidden>{% csrf_token %}</div>
                 <div class="field">
                     <label>id</label>
                     <div class="control">
@@ -54,8 +54,8 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { toast } from 'bulma-toast'
+import Cookies from 'js-cookie'
 
 export default {
     name: 'PostListing',
@@ -93,8 +93,11 @@ export default {
                         price: this.price,
                         date: this. date,
                     }
+                    
+                    const csrftoken = Cookies.get('csrftoken');
+                    const headers = { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken };
 
-                    $fetch("/api/v1/post-listing/", { method: "POST", body: formData} )
+                    $fetch("/api/v1/post-listing/", { method: "POST", headers, body: formData} )
                         .then(() => {
                             toast({
                                 message: 'Your listing was created!',
@@ -108,10 +111,10 @@ export default {
                         })
                         .catch(error => {
                             if (error.response) {
-                                for (const property in error.response.data) {
-                                    this.errors.push(`${property}: ${error.response.data[property]}`)
+                                for (const property in error.response) {
+                                    this.errors.push(`${property}: ${error.response[property]}`)
                                 }
-                                console.log(JSON.stringify(error.response.data))
+                                console.log(JSON.stringify(error.response))
 
                             }
                             else if (error.message) {

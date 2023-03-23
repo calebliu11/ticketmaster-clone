@@ -4,6 +4,7 @@
             <h2 class="title">Login</h2>
 
             <form @submit.prevent="enterForm">
+                <div hidden>{% csrf_token %}</div>
                 <div class="field">
                     <label>Username</label>
                     <div class="control">
@@ -33,7 +34,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import Cookies from 'js-cookie'
 
 export default {
     name: 'LoginPage',
@@ -53,7 +54,10 @@ export default {
                 password: this.password
             }
 
-            await $fetch("api/v1/token/login/", { method: "POST", body: loginFormData} )
+            const csrftoken = Cookies.get('csrftoken');
+            const headers = { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken };
+
+            await $fetch("api/v1/token/login/", { method: "POST", headers, body: loginFormData } )
                 .then(response => {
                     const token = response.auth_token
                     this.$store.commit('authenticateUser', token)
@@ -64,10 +68,10 @@ export default {
                 })
                 .catch(error => {
                     if (error.response) {
-                        for (const property in error.response.data) {
-                            this.errors.push(`${property}: ${error.response.data[property]}`)
+                        for (const property in error.response) {
+                            this.errors.push(`${property}: ${error.response[property]}`)
                         }
-                        console.log(JSON.stringify(error.response.data))
+                        console.log(JSON.stringify(error.response))
 
                     }
                     else if (error.message) {
