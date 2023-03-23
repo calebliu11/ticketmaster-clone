@@ -4,12 +4,6 @@
             <h4 class="is-size-6">Instructions: For now, in the description add your venmo and email that a buyer should contact you for ticket.</h4>
             <form @submit.prevent="enterForm">
                 <div hidden>{% csrf_token %}</div>
-                <div class="field">
-                    <label>id</label>
-                    <div class="control">
-                        <input type="number" class="input" v-model="id">
-                    </div>
-                </div>
 
                 <div class="field">
                     <label>Event</label>
@@ -61,7 +55,6 @@ export default {
     name: 'PostListing',
     data() {
         return {
-            id: '',
             event: '',
             description: '',
             price: '',
@@ -72,10 +65,6 @@ export default {
     methods: {
         enterForm(){
             this.errors = []
-
-                if (this.id === '') {
-                    this.errors.push('The id field is required.')
-                }
 
                 if (this.event === '') {
                     this.errors.push('The event field is required.')
@@ -93,7 +82,6 @@ export default {
 
                 if (!this.errors.length) {
                     const formData = {
-                        id: this.id,
                         event: this.event,
                         description: this.description,
                         price: this.price,
