@@ -21,43 +21,46 @@
     
       <div class="navbar-item">
         <div class="field is-grouped">
-          <p class="control">
-            <a class="bd-tw-button button">
-              <span class="icon">
 
-                <i class="fa-regular fa-user"></i>
-              </span>
-              <span>
-                <router-link to="/account">My Account</router-link>
-              </span>
-            </a>
+          <template v-if="$store.state.isAuthenticated">
+            <p class="control">
+              <a class="bd-tw-button button">
+                <span class="icon">
 
-          </p>
-          <p class="control">
-            <a class="button is-primary">
-              <span class="icon">
-                <i class="fa-solid fa-right-to-bracket"></i>             
-              </span>
-              <span>
-                <router-link to="/signup">Sign Up</router-link>
-              </span>
-              
-            </a>
-          </p>
+                  <i class="fa-regular fa-user"></i>
+                </span>
+                <span>
+                  <router-link to="/account">My Account</router-link>
+                </span>
+              </a>
+            </p>
+          </template>
 
-          <p class="control">
-            <a class="button is-primary">
-              <span class="icon">
-                <i class="fa-solid fa-right-to-bracket"></i>             
-              </span>
-              <span>
-                <router-link to="/login">Login</router-link>
-              </span>
-              
-            </a>
-          </p>
+          <template v-else>
+            <p class="control">
+              <a class="button is-primary">
+                <span class="icon">
+                  <i class="fa-solid fa-right-to-bracket"></i>             
+                </span>
+                <span>
+                  <router-link to="/signup">Sign Up</router-link>
+                </span>
+                
+              </a>
+            </p>
 
-
+            <p class="control">
+              <a class="button is-primary">
+                <span class="icon">
+                  <i class="fa-solid fa-right-to-bracket"></i>             
+                </span>
+                <span>
+                  <router-link to="/login">Login</router-link>
+                </span>
+                
+              </a>
+            </p>
+          </template>
         </div>
       </div>
     </div>
