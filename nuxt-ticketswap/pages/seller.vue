@@ -84,6 +84,12 @@ export default {
                 if(this.price < 0) {
                     this.errors.push('Price cannot be negative.')
                 }
+                
+                const token = this.$store.state.token
+                console.log(token)
+                if(token === '') {
+                    this.errors.push('User is not logged in!')
+                }
 
                 if (!this.errors.length) {
                     const formData = {

@@ -44,6 +44,20 @@
               
             </a>
           </p>
+
+          <p class="control">
+            <a class="button is-primary">
+              <span class="icon">
+                <i class="fa-solid fa-right-to-bracket"></i>             
+              </span>
+              <span>
+                <router-link to="/login">Login</router-link>
+              </span>
+              
+            </a>
+          </p>
+
+
         </div>
       </div>
     </div>
