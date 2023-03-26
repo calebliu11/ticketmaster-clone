@@ -1,41 +1,48 @@
 <template>
     <div class="seller-page">  
             <h2 class="title">Sell Ticket</h2>
-            <h4 class="is-size-6">Instructions: For now, in the description add your venmo and email that a buyer should contact you for ticket.</h4>
-            <form @submit.prevent="enterForm">
-                <div hidden>{% csrf_token %}</div>
+            <template v-if="$store.state.isAuthenticated">
+                <h4 class="is-size-6">Instructions: For now, in the description add your venmo and email that a buyer should contact you for ticket.</h4>
 
-                <div class="field">
-                    <label>Event</label>
-                    <div class="control">
-                        <input type="text" class="input" v-model="event">
+                <form @submit.prevent="enterForm">
+                    <div hidden>{% csrf_token %}</div>
+
+                    <div class="field">
+                        <label>Event</label>
+                        <div class="control">
+                            <input type="text" class="input" v-model="event">
+                        </div>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label>Description</label>
-                    <div class="control">
-                        <input type="text" class="input" v-model="description">
+                    <div class="field">
+                        <label>Description</label>
+                        <div class="control">
+                            <input type="text" class="input" v-model="description">
+                        </div>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label>Price</label>
-                    <div class="control">
-                        <input type="number" class="input" v-model="price">
+                    <div class="field">
+                        <label>Price</label>
+                        <div class="control">
+                            <input type="number" class="input" v-model="price">
+                        </div>
                     </div>
-                </div>
 
-                <div class="error-notification" v-if="errors.length">
-                    <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
-                </div>
-
-                <div class="field">
-                    <div class="control">
-                        <button>Submit</button>
+                    <div class="error-notification" v-if="errors.length">
+                        <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
                     </div>
-                </div>
-            </form>
+
+                    <div class="field">
+                        <div class="control">
+                            <button>Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </template>
+
+            <template v-else>
+                <h3 class="is-size-4 has-text-weight-semibold">You must be logged in to sell a ticket!</h3>
+            </template>
         
     </div>
 </template>

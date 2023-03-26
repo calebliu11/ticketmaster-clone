@@ -1,11 +1,21 @@
 <template>
     <div class="page-listing">
-      <listingBox 
-        v-for="listing in tickets"
-        v-bind:key="listing.id"
-        v-bind:listing="listing" />
-    </div>
+        <ul v-for="listing in tickets">
+          <div class="column is-size-4 is-centered ">
+            <div class="box">
+             
+            <h3 class="is-size-4 has-text-weight-semibold">{{ listing.event }}</h3>
 
+            <p class="is-size-6">{{ listing.description }}</p>
+
+            <p class="is-size-6 has-text-success">${{ listing.price }}</p>
+                   
+            <a class="button is-dark">Claim Ticket</a>
+           
+            </div>
+          </div>
+        </ul>
+    </div>
 </template>
 
 <script>

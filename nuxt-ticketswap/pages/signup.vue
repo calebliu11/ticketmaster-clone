@@ -13,20 +13,6 @@
                 </div>
 
                 <div class="field">
-                    <label>First Name</label>
-                    <div class="control">
-                        <input type="text" class="input" v-model="first_name">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label>Last Name</label>
-                    <div class="control">
-                        <input type="text" class="input" v-model="last_name">
-                    </div>
-                </div>
-
-                <div class="field">
                     <label>Email</label>
                     <div class="control">
                         <input type="text" class="input" v-model="email">
@@ -94,14 +80,6 @@ export default {
                     this.errors.push('Your passwords must match.')
                 }
 
-                if (this.first_name === '') {
-                    this.errors.push('The first name field is required.')
-                }
-
-                if (this.last_name === '') {
-                    this.errors.push('The last name field is required.')
-                }
-
                 if (this.email === '') {
                     this.errors.push('The email field is required.')
                 }
@@ -110,8 +88,6 @@ export default {
                     const formData = {
                         username: this.username,
                         password: this.password,
-                        first_name: this.first_name,
-                        last_name: this.last_name,
                         email: this.email
                     }
 
