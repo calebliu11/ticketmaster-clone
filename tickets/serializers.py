@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Profile, Listing
+from .models import Listing
 
 class ListingSerializer(serializers.ModelSerializer):
     user_email = serializers.ReadOnlyField()
@@ -14,5 +14,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "description",
             "price",
             "status",
-            "date"
+            "date",
+            "slug",
+            "get_absolute_url"
         )

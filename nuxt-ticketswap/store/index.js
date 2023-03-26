@@ -24,8 +24,7 @@ export default createStore({
         deauthenticateUser(state){
             state.isAuthenticated = false
             state.token = ''
-        }
-
+        },
     },
     actions: {
     },

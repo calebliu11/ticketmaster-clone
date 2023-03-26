@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Profile, Listing
+from .models import Listing
 # Register your models here.
-admin.site.register(Profile)
-admin.site.register(Listing)
+
+class ListingAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("event",)}  
+
+admin.site.register(Listing, ListingAdmin)

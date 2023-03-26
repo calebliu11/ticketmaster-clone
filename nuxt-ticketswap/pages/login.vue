@@ -4,6 +4,7 @@
             <h2 class="title">Login</h2>
 
             <form @submit.prevent="enterForm">
+                <div hidden>{% csrf_token %}</div>
                 <div class="field">
                     <label>Username</label>
                     <div class="control">
@@ -33,7 +34,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import Cookies from 'js-cookie'
 
 export default {
     name: 'LoginPage',
@@ -46,7 +47,6 @@ export default {
     },
     methods: {
         async enterForm() {
-            axios.defaults.headers.common["Authorization"] = ""
             localStorage.removeItem("token")
 
             const loginFormData = { 
@@ -54,23 +54,24 @@ export default {
                 password: this.password
             }
 
-            await axios
-                .post("api/v1/token/login/", loginFormData)
+            const csrftoken = Cookies.get('csrftoken');
+            const headers = { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken };
+
+            await $fetch("api/v1/token/login/", { method: "POST", headers, body: loginFormData } )
                 .then(response => {
-                    const token = response.data.auth_token
+                    const token = response.auth_token
                     this.$store.commit('authenticateUser', token)
 
-                    axios.defaults.headers.common["Authorization"] = "Auth-Token: " + token
                     localStorage.setItem("token", token)
                 
                     this.$router.push('/')
                 })
                 .catch(error => {
                     if (error.response) {
-                        for (const property in error.response.data) {
-                            this.errors.push(`${property}: ${error.response.data[property]}`)
+                        for (const property in error.response) {
+                            this.errors.push(`${property}: ${error.response[property]}`)
                         }
-                        console.log(JSON.stringify(error.response.data))
+                        console.log(JSON.stringify(error.response))
 
                     }
                     else if (error.message) {

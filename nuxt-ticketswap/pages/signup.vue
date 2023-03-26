@@ -4,24 +4,11 @@
             <h2 class="title">Sign Up</h2>
 
             <form @submit.prevent="enterForm">
+                <div hidden>{% csrf_token %}</div>
                 <div class="field">
                     <label>Username</label>
                     <div class="control">
                         <input type="text" class="input" v-model="username">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label>First Name</label>
-                    <div class="control">
-                        <input type="text" class="input" v-model="first_name">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label>Last Name</label>
-                    <div class="control">
-                        <input type="text" class="input" v-model="last_name">
                     </div>
                 </div>
 
@@ -61,8 +48,8 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { toast } from 'bulma-toast'
+import Cookies from 'js-cookie'
 
 export default {
     name: 'SignupPage',
@@ -93,14 +80,6 @@ export default {
                     this.errors.push('Your passwords must match.')
                 }
 
-                if (this.first_name === '') {
-                    this.errors.push('The first name field is required.')
-                }
-
-                if (this.last_name === '') {
-                    this.errors.push('The last name field is required.')
-                }
-
                 if (this.email === '') {
                     this.errors.push('The email field is required.')
                 }
@@ -109,13 +88,13 @@ export default {
                     const formData = {
                         username: this.username,
                         password: this.password,
-                        first_name: this.first_name,
-                        last_name: this.last_name,
                         email: this.email
                     }
 
-                    axios
-                        .post("/api/v1/users/", formData)
+                    const csrftoken = Cookies.get('csrftoken');
+                    const headers = { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken };
+
+                    $fetch("/api/v1/users/", {method: "POST", headers, body: formData})
                         .then(() => {
                             toast({
                                 message: 'Your account was created, please log in!',
@@ -129,10 +108,10 @@ export default {
                         })
                         .catch(error => {
                             if (error.response) {
-                                for (const property in error.response.data) {
-                                    this.errors.push(`${property}: ${error.response.data[property]}`)
+                                for (const property in error.response) {
+                                    this.errors.push(`${property}: ${error.response[property]}`)
                                 }
-                                console.log(JSON.stringify(error.response.data))
+                                console.log(JSON.stringify(error.response))
 
                             }
                             else if (error.message) {
