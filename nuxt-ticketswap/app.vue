@@ -42,7 +42,7 @@
                   <i class="fa-solid fa-right-to-bracket"></i>
                 </span>
                 <span>
-                  <router-link to="/cart">Cart ({{  this.cart.items.length }})</router-link>
+                  <router-link to="/cart">Cart</router-link>
                 </span>
               </a>
             </p>
@@ -101,11 +101,11 @@ export default {
       }
     }
   },
-  mounted() {
-    this.cart = this.$store.state.cart
-  },
   beforeCreate() {
     this.$store.commit('initializeStore')
+  },
+  mounted() {
+    this.cart = this.$store.state.cart
   }
 }
 </script>
