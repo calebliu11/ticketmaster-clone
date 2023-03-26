@@ -9,8 +9,8 @@
             <p class="is-size-6">{{ listing.description }}</p>
 
             <p class="is-size-6 has-text-success">${{ listing.price }}</p>
-                   
-            <a class="button is-dark">Claim Ticket</a>
+            
+            <a class="button is-dark" @click="addToCart">Claim Ticket</a>
            
             </div>
           </div>
@@ -19,11 +19,12 @@
 </template>
 
 <script>
+import { toast } from 'bulma-toast'
 import listingBox from '@/components/listingBox'
 export default {
   data() {
     return{
-      tickets: []    
+      tickets: []   
     }
   },
   components: {
@@ -40,6 +41,34 @@ export default {
           this.tickets = response
         })
         .catch((error) => console.error(error))
+    },
+    addToCart() {
+      const item = {
+        listing: this.tickets[0]
+      }
+
+      const existsInCart = this.$store.state.cart.items.filter(i => i.listing.id === item.listing.id)
+      if (!existsInCart.length) {
+        this.$store.commit('addToCart', item)
+        toast({
+          message: 'Ticket was added to your cart!',
+          type: 'is-success',
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 1000,
+          position: 'bottom-left',
+        })
+      }
+      else {
+        toast({
+          message: 'Ticket already exists in your cart!',
+          type: 'is-success',
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 1000,
+          position: 'bottom-left',
+        })
+      }
     }
   } 
 }

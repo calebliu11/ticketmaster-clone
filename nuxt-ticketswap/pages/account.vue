@@ -16,6 +16,7 @@
             localStorage.removeItem("token")
             this.$store.commit('deauthenticateUser')
             this.$router.push('/')
+            this.$store.commit('emptyCart')
         },
     }
   }

@@ -34,6 +34,19 @@
                 </span>
               </a>
             </p>
+
+            <p class="control">
+              <a class="button is-primary">
+                <span class="icon">
+
+                  <i class="fa-solid fa-right-to-bracket"></i>
+                </span>
+                <span>
+                  <router-link to="/cart">Cart</router-link>
+                </span>
+              </a>
+            </p>
+
           </template>
 
           <template v-else>
@@ -57,7 +70,6 @@
                 <span>
                   <router-link to="/login">Login</router-link>
                 </span>
-                
               </a>
             </p>
           </template>
@@ -80,19 +92,20 @@
 </template>
 
 <script>
-import axios from 'axios'
 
 export default {
-  beforeCreate(){
-    this.$store.commit('initializeStore')
-
-    const token = this.$store.state.token
-
-    if (token) {
-        axios.defaults.headers.common['Authorization'] = "Auth-Token: " + token
-    } else {
-        axios.defaults.headers.common['Authorization'] = ""
+  data() {
+    return {
+      cart: {
+        items: []
+      }
     }
+  },
+  beforeCreate() {
+    this.$store.commit('initializeStore')
+  },
+  mounted() {
+    this.cart = this.$store.state.cart
   }
 }
 </script>
