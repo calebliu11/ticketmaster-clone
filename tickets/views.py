@@ -21,16 +21,22 @@ def post_listing(request):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        serializer.save(event=data['event'], description=data['description'], price=data['price'])
+        serializer.save(event=data['event'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
     except ValidationError:
         print(serializer.errors)
 
     return Response(serializer.initial_data)
 
 class RecentListingsList(APIView):
-    def get(self, request, format=None):
-        listings = Listing.objects.all()[0:25]
-        serializer = ListingSerializer(listings, many=True)
+     def get(self, request, format=None):
+        listings = Listing.objects.order_by('date','price').distinct()[0:25]
+        unique_listings = []
+        list = []
+        for x in listings: 
+            if x.slug not in list: 
+                unique_listings.append(x)
+                list.append(x.slug)
+        serializer = ListingSerializer(unique_listings, many=True)
         return Response(serializer.data)
 
 class ListingDetail(APIView):
