@@ -25,7 +25,7 @@
         <h2 v-else>Your cart is empty.</h2>
     </div>
 
-    <div class="column is-10 box">
+    <div v-if="this.cart.items.length > 0" class="column is-10 box">
         <h2 class="subtitle">Order Summary</h2>
 
         <h3 class="is-size-4 has-text-weight-semibold">${{ cartPrice }}</h3>
@@ -33,7 +33,8 @@
         <p v-if="this.cart.items.length === 1">{{ this.cart.items.length }} ticket</p>
         <p v-else>{{ this.cart.items.length }} tickets</p>
 
-        <router-link to="/cart/checkout" class="button is-dark">Checkout</router-link>
+        
+        <router-link to="/checkout" class="button is-dark">Checkout</router-link>
     </div>
 </template>
 
