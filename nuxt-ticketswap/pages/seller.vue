@@ -28,6 +28,20 @@
                         </div>
                     </div>
 
+                    <div class="field">
+                        <label>Date</label>
+                        <div class="control">
+                            <input type="date" class="input" v-model="date">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Post Ticket</label>
+                            <div class="control">
+                                <input type="file" @change="onChangeFile" name="image">
+                            </div>
+                    </div>
+
                     <div class="error-notification" v-if="errors.length">
                         <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
                     </div>
@@ -58,10 +72,19 @@ export default {
             event: '',
             description: '',
             price: '',
+            date: '',
+            image: null,
             errors: []
         }
     },
     methods: {
+        onChangeFile(event) {
+            const reader = new FileReader();
+            reader.readAsDataURL(event.target.files[0]);
+            reader.onload = () => {
+                this.image = reader.result;
+            };
+        },
         enterForm(){
             this.errors = []
 
@@ -84,6 +107,8 @@ export default {
                         event: this.event,
                         description: this.description,
                         price: this.price,
+                        date: this.date,
+                        image: this.image,
                     }
                     
                     const csrftoken = Cookies.get('csrftoken');

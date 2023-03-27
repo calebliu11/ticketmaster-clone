@@ -30,6 +30,8 @@ class Listing(models.Model):
     status = models.TextField(choices=STATUS_CHOICES, default=ACTIVE)
     date = models.DateField(blank=True)
     slug = models.SlugField(null=True) 
+    image = models.ImageField(upload_to='pics', null=True, blank=True)
+
     
     @property
     def user_email(self):
