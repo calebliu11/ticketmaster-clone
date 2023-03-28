@@ -18,7 +18,7 @@
                         <input type="text" class="input" v-model="password">
                     </div> -->
                     <div class="field has-addons">
-                        <div class="    ">
+                        <div class="control is-expanded">
                             <input v-if="showPassword" type="text" class="input" v-model="password" />
                             <input v-else type="password" class="input" v-model="password">
                         </div>
