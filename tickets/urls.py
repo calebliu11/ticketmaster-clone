@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from tickets.views import RecentListingsList, post_listing, ListingDetail, AddListingToEvent
+from tickets.views import RecentListingsList, post_listing, ListingDetail, AddListingToEvent, UserDetail
 
 app_name = 'tickets'
 
@@ -10,7 +10,7 @@ urlpatterns = [
     path('post-listing/', post_listing),
     path('listings/<slug:listing_slug>', ListingDetail.as_view()),
     path('listings/sell/<slug:listing_slug>', AddListingToEvent.as_view()),
-
+    path('users/<str:username>/id', UserDetail.as_view()),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

@@ -52,8 +52,6 @@ class Base64ImageField(serializers.ImageField):
 
         return extension
 class ListingSerializer(serializers.ModelSerializer):
-    user_email = serializers.ReadOnlyField()
-
     image = Base64ImageField(
         max_length=None, use_url=True,
     )

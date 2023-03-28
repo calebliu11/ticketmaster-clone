@@ -51,6 +51,7 @@ export default {
   data() {
       return {
           event: '',
+          user_email: '',
           description: '',
           price: '',
           date: '',
@@ -96,6 +97,7 @@ export default {
               if (!this.errors.length) {
                   const formData = {
                       event: this.ticket.event,
+                      user_email: this.$store.state.user.email,
                       description: this.ticket.description,
                       price: this.price,
                       date: this.ticket.date,

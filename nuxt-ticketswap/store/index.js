@@ -7,6 +7,7 @@ export default createStore({
         },
         isAuthenticated: false,
         token: '',
+        user: null,
     },
     mutations: {
         initializeStore(state){
@@ -19,6 +20,12 @@ export default createStore({
                 state.token = ''
             }
 
+            if(localStorage.getItem('user')) {
+                state.user = JSON.parse(localStorage.getItem('user'))
+            } else {
+                localStorage.setItem('user', JSON.stringify(state.user))
+            }
+
             if (localStorage.getItem('cart')) {
                 state.cart = JSON.parse(localStorage.getItem('cart'))
             } else {
@@ -26,6 +33,16 @@ export default createStore({
             }
         
         },
+
+        setUser(state, user) {
+            state.user = user
+            localStorage.setItem('user', JSON.stringify(state.user))
+        },
+        removeUser(state) {
+            state.user = null
+            localStorage.setItem('user', JSON.stringify(state.user))
+        },
+
         authenticateUser(state, token) {
             state.isAuthenticated = true
             state.token = token
