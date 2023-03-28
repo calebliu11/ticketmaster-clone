@@ -10,7 +10,7 @@
                     <th>Event</th>
                     <th>Description</th>
                     <th>Price</th>
-                    <!-- <th>image</th> -->
+                    <th>image</th>
                 </tr>
             </thead>
 

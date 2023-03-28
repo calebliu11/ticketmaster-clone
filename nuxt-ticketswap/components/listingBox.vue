@@ -8,7 +8,10 @@
 
             <p class="is-size-6 has-text-success">${{ listing.price }}</p>
                    
-            <nuxt-link class="button is-dark" :to="`/listings/${listing.slug}`">View Ticket</nuxt-link>
+            <nuxt-link class="button is-dark" :to="`/listings/${listing.slug}`">View Tickets</nuxt-link>
+
+            <nuxt-link class="button is-light" :to="`/listings/${listing.slug}`">Sell Ticket</nuxt-link>
+
 
         </div>
     </div>

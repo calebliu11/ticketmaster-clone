@@ -4,7 +4,7 @@
         <td>{{ item.listing.description }}</td>
         <td>${{ item.listing.price }}</td>
         
-        <!-- <td><img :src="imageSrc" alt="My Image"></td> -->
+        <td><img :src="imageSrc" alt="My Image"></td>
         
            
       
