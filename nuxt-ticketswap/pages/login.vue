@@ -14,8 +14,19 @@
 
                 <div class="field">
                     <label>Password</label>
-                    <div class="control">
+                    <!-- <div class="control">
                         <input type="text" class="input" v-model="password">
+                    </div> -->
+                    <div class="field has-addons">
+                        <div class="control is-expanded">
+                            <input v-if="showPassword" type="text" class="input" v-model="password" />
+                            <input v-else type="password" class="input" v-model="password">
+                        </div>
+                        <div class="control">
+                            <button class="button" @click="toggleShow" :style="{backgroundColor: show ? 'white' : '#00d1b2', color: show ? 'black' : 'white'}">
+                                Show
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -41,15 +52,25 @@ export default {
     data() {
         return {
             username: '',
+            showPassword: false,
             password: '',
             errors: []
         }
     },
+    computed: {
+        buttonLabel() {
+            return (this.showPassword) ? "Hide" : "Show";
+        }
+    },
     methods: {
+        toggleShow() {
+            this.showPassword = !this.showPassword;
+            this.show = !this.show;
+        },
         async enterForm() {
             localStorage.removeItem("token")
 
-            const loginFormData = { 
+            const loginFormData = {
                 username: this.username,
                 password: this.password
             }
@@ -57,13 +78,13 @@ export default {
             const csrftoken = Cookies.get('csrftoken');
             const headers = { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken };
 
-            await $fetch("api/v1/token/login/", { method: "POST", headers, body: loginFormData } )
+            await $fetch("api/v1/token/login/", { method: "POST", headers, body: loginFormData })
                 .then(response => {
                     const token = response.auth_token
                     this.$store.commit('authenticateUser', token)
 
                     localStorage.setItem("token", token)
-                
+
                     this.$router.push('/')
                 })
                 .catch(error => {
