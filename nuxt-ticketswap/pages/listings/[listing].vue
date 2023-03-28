@@ -1,18 +1,32 @@
 <template>
     <div class="page-listing">
+        <template v-if="tickets.length > 0">
+          <div class="box">  
+            <div class="content">
+                <p>
+                    <strong class="is-size-2 has-text-info has-text-weight-semibold">{{ tickets[0].event }}</strong>
+                    <br>
+                    <span class="is-size-5">Date: {{ tickets[0].date }}</span>
+                    <br>
+                    <span class="is-size-5 has-text-weight-semibold is-italic">{{ tickets[0].description }}</span>
+                    <br>
+                 
+              
+                </p>
+            </div>  
+          </div>  
+          
+        </template>
         <ul v-for="listing in tickets">
+          
           <div class="column is-size-4 is-centered ">
             <div class="box">
-             
-            <h3 class="is-size-4 has-text-weight-semibold">{{ listing.event }}</h3>
+      
 
-            <p class="is-size-6">{{ listing.description }}</p>
-
-            <p class="is-size-6 has-text-success">${{ listing.price }}</p>
-
-            <p class="is-size-6">{{ listing.date }}</p>
+            <p class="is-size-3 has-text-success">${{ listing.price }}</p>
 
             <p class="is-size-6">Sold by {{ listing.user_email }}</p>
+          
 
             <template v-if="$store.state.isAuthenticated">
               <a class="button is-dark" @click="addToCart(listing)">Claim Ticket</a>
