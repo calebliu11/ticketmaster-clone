@@ -7,12 +7,17 @@
             <p class="is-size-6">{{ listing.description }}</p>
 
             <p class="is-size-6 has-text-success">${{ listing.price }}</p>
-                   
-            <nuxt-link class="button is-dark" :to="`/listings/${listing.slug}`">View Tickets</nuxt-link>
 
-            <nuxt-link class="button is-light" :to="`/listings/${listing.slug}`">Sell Ticket</nuxt-link>
+            <p class="is-size-6">{{ listing.date }}</p>
 
+            <template v-if="$store.state.isAuthenticated">
+                <nuxt-link class="button is-dark" :to="`/listings/${listing.slug}`">View Ticket</nuxt-link>
 
+                <nuxt-link class="button is-light" :to="`/listings/${listing.slug}`">Sell Ticket</nuxt-link>
+
+            </template>
+
+            
         </div>
     </div>
 </template>

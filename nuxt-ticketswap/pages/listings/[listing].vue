@@ -9,8 +9,14 @@
             <p class="is-size-6">{{ listing.description }}</p>
 
             <p class="is-size-6 has-text-success">${{ listing.price }}</p>
-            
-            <a class="button is-dark" @click="addToCart">Claim Ticket</a>
+
+            <p class="is-size-6">{{ listing.date }}</p>
+
+            <p class="is-size-6">Sold by {{ this.$store.state.username }}</p>
+
+            <template v-if="$store.state.isAuthenticated">
+              <a class="button is-dark" @click="addToCart(listing)">Claim Ticket</a>
+            </template>
            
             </div>
           </div>
@@ -42,12 +48,12 @@ export default {
         })
         .catch((error) => console.error(error))
     },
-    addToCart() {
+    addToCart(listing) {
       const item = {
-        listing: this.tickets[0]
+        ticket: listing
       }
 
-      const existsInCart = this.$store.state.cart.items.filter(i => i.listing.id === item.listing.id)
+      const existsInCart = this.$store.state.cart.items.filter(i => i.ticket.id === item.ticket.id)
       if (!existsInCart.length) {
         this.$store.commit('addToCart', item)
         toast({
