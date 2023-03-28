@@ -23,7 +23,7 @@
                             <input v-else type="password" class="input" v-model="password">
                         </div>
                         <div class="control">
-                            <button class="button" @click="toggleShow" :style="{backgroundColor: show ? 'white' : '#00d1b2', color: show ? 'black' : 'white'}">
+                            <button class="button" type="button" @click="toggleShow" :style="{backgroundColor: show ? 'white' : '#00d1b2', color: show ? 'black' : 'white'}">
                                 Show
                             </button>
                         </div>
@@ -88,10 +88,8 @@ export default {
                     this.$router.push('/')
                 })
                 .catch(error => {
+                    this.errors.push(error.response._data.non_field_errors)
                     if (error.response) {
-                        for (const property in error.response) {
-                            this.errors.push(`${property}: ${error.response[property]}`)
-                        }
                         console.log(JSON.stringify(error.response))
 
                     }

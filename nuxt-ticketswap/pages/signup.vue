@@ -30,7 +30,7 @@
                             <input v-else type="password" class="input" v-model="password">
                         </div>
                         <div class="control">
-                            <button class="button" @click="toggleShow" :style="{backgroundColor: show ? 'white' : '#00d1b2', color: show ? 'black' : 'white'}">
+                            <button class="button" type="button" @click="toggleShow" :style="{backgroundColor: show ? 'white' : '#00d1b2', color: show ? 'black' : 'white'}">
                                 Show
                             </button>
                         </div>
@@ -48,7 +48,7 @@
                             <input v-else type="password" class="input" v-model="password2">
                         </div>
                         <div class="control">
-                            <button class="button" @click="toggleShow2" :style="{backgroundColor: show2 ? 'white' : '#00d1b2', color: show2 ? 'black' : 'white'}">
+                            <button class="button" type="button" @click="toggleShow2" :style="{backgroundColor: show2 ? 'white' : '#00d1b2', color: show2 ? 'black' : 'white'}">
                                 Show
                             </button>
                         </div>
@@ -146,11 +146,8 @@ export default {
                     })
                     .catch(error => {
                         if (error.response) {
-                            for (const property in error.response) {
-                                this.errors.push(`${property}: ${error.response[property]}`)
-                            }
+                            this.errors.push(JSON.stringify(error.response._data))
                             console.log(JSON.stringify(error.response))
-
                         }
                         else if (error.message) {
                             this.errors.push('Something went wrong. Please try again!')
