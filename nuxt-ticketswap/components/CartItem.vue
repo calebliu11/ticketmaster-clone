@@ -35,7 +35,7 @@ export default {
             this.updateCart()
         },
         async fetchImage() {
-            this.imageSrc = `/api/v1/${this.initialItem.listing.image}/`;
+            this.imageSrc = `/api/v1/${this.initialItem.ticket.image}/`;
         },
     },
 }
