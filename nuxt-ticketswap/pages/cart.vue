@@ -34,7 +34,7 @@
         <p v-if="this.cart.items.length === 1">{{ this.cart.items.length }} ticket</p>
         <p v-else>{{ this.cart.items.length }} tickets</p>
 
-        <router-link to="/cart/checkout" class="button is-dark">Checkout</router-link>
+        <router-link to="/checkout" class="button is-dark">Checkout</router-link>
     </div>
 </template>
 

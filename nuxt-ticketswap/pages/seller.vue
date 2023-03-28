@@ -96,12 +96,6 @@ export default {
                     this.errors.push('Price cannot be negative.')
                 }
                 
-                const token = this.$store.state.token
-                console.log(token)
-                if(token === '') {
-                    this.errors.push('User is not logged in!')
-                }
-
                 if (!this.errors.length) {
                     const formData = {
                         event: this.event,
@@ -129,11 +123,8 @@ export default {
                         })
                         .catch(error => {
                             if (error.response) {
-                                for (const property in error.response) {
-                                    this.errors.push(`${property}: ${error.response[property]}`)
-                                }
+                                this.errors.push(JSON.stringify(error.response._data))
                                 console.log(JSON.stringify(error.response))
-
                             }
                             else if (error.message) {
                                 this.errors.push('Something went wrong. Please try again!')
