@@ -15,7 +15,7 @@
                 <div class="field">
                     <label>Password</label>
                     <div class="control">
-                        <input type="text" class="input" v-model="password">
+                        <input type="password" class="input" v-model="password">
                     </div>
                 </div>
 
@@ -35,6 +35,7 @@
 
 <script>
 import Cookies from 'js-cookie'
+import axios from 'axios'
 
 export default {
     name: 'LoginPage',
@@ -48,6 +49,7 @@ export default {
     methods: {
         async enterForm() {
             localStorage.removeItem("token")
+            localStorage.removeItem("user")
 
             const loginFormData = { 
                 username: this.username,
@@ -57,13 +59,20 @@ export default {
             const csrftoken = Cookies.get('csrftoken');
             const headers = { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken };
 
+            const username = this.username
+
+            
+            const id = await $fetch(`/api/v1/users/${username}/id`, { credentials: 'include', method: "GET", headers })
+            const user = await $fetch(`/api/v1/users/${id.id}/`, { credentials: 'include', method: "GET", headers })
+            
             await $fetch("api/v1/token/login/", { method: "POST", headers, body: loginFormData } )
                 .then(response => {
                     const token = response.auth_token
                     this.$store.commit('authenticateUser', token)
-
+                    this.$store.commit('setUser', user)
+                    console.log(user)
                     localStorage.setItem("token", token)
-                
+
                     this.$router.push('/')
                 })
                 .catch(error => {

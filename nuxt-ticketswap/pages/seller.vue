@@ -70,6 +70,7 @@ export default {
     data() {
         return {
             event: '',
+            user_email: '',
             description: '',
             price: '',
             date: '',
@@ -95,16 +96,11 @@ export default {
                 if(this.price < 0) {
                     this.errors.push('Price cannot be negative.')
                 }
-                
-                const token = this.$store.state.token
-                console.log(token)
-                if(token === '') {
-                    this.errors.push('User is not logged in!')
-                }
 
                 if (!this.errors.length) {
                     const formData = {
                         event: this.event,
+                        user_email: this.$store.state.user.email,
                         description: this.description,
                         price: this.price,
                         date: this.date,

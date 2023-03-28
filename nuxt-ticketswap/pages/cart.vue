@@ -57,6 +57,7 @@ export default {
     },
     methods: {
         removeFromCart(item) {
+            console.log(this.$store.state.user)
             this.cart.items = this.cart.items.filter(i => i.ticket.id !== item.ticket.id)
         }
     },
