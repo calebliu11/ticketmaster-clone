@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from .models import Order, OrderTicket
 
 from .models import Listing
 
@@ -52,7 +53,7 @@ class Base64ImageField(serializers.ImageField):
         extension = "jpg" if extension == "jpeg" else extension
 
         return extension
-    
+
 class ListingSerializer(serializers.ModelSerializer):
     image = Base64ImageField(
         max_length=None, use_url=True,
@@ -73,3 +74,49 @@ class ListingSerializer(serializers.ModelSerializer):
             "image"
 
         )
+
+class MyOrderTicketSerializer(serializers.ModelSerializer):    
+    listing = ListingSerializer()
+
+    class Meta:
+        model = OrderTicket
+        fields = (
+            "price",
+            "ticket",
+        )
+
+class MyOrderSerializer(serializers.ModelSerializer):
+    tickets = MyOrderTicketSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = (
+            "id",
+        )
+
+
+class OrderTicketSerializer(serializers.ModelSerializer):    
+    class Meta:
+        model = OrderTicket
+        fields = (
+            "price",
+            "ticket",
+        )
+
+class OrderSerializer(serializers.ModelSerializer):
+    tickets = OrderTicketSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = (
+            "id",
+        )
+    
+    def create(self, validated_data):
+        tickets_data = validated_data.pop('tickets')
+        order = Order.objects.create(**validated_data)
+
+        for ticket_data in tickets_data:
+            OrderTicket.objects.create(order=order, **ticket_data)
+            
+        return order

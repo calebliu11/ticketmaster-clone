@@ -34,7 +34,7 @@
         <p v-if="this.cart.items.length === 1">{{ this.cart.items.length }} ticket</p>
         <p v-else>{{ this.cart.items.length }} tickets</p>
 
-        <router-link to="/checkout" class="button is-dark">Checkout</router-link>
+        <button @click="checkout()" class="button is-dark">Checkout</button>
     </div>
 </template>
 
@@ -59,6 +59,17 @@ export default {
     methods: {
         removeFromCart(item) {
             this.cart.items = this.cart.items.filter(i => i.ticket.id !== item.ticket.id)
+        },
+        async checkout() {
+            await $fetch('/api/v1/checkout/', { method: "POST" })
+            .then(response => {
+                this.$store.commit('clearCart')
+                this.$router.push('/account')
+            })
+            .catch(error => {
+                this.errors.push('Something went wrong. Please try again')
+                console.log(error)
+            })
         }
     },
     computed: {

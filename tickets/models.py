@@ -17,7 +17,7 @@ class Listing(models.Model):
     ]
 
     id = models.AutoField(primary_key=True, unique=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='tickets', on_delete=models.CASCADE)
     user_email = models.CharField(max_length=100)
     event = models.CharField(max_length=100, unique=False) 
     description = models.TextField(max_length=300)
@@ -34,3 +34,11 @@ class Listing(models.Model):
         if not self.slug:
              self.slug = slugify(self.event)
         return super().save(*args, **kwargs)
+    
+class Order(models.Model):
+    user = models.ForeignKey(User, related_name='orders', on_delete=models.CASCADE)
+    
+class OrderTicket(models.Model):
+    order = models.ForeignKey(Order, related_name='tickets', on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, related_name='tickets', on_delete=models.CASCADE)
+    price = models.IntegerField(default=0)
