@@ -3,11 +3,15 @@
         <td><router-link :to="item.ticket.get_absolute_url">{{ item.ticket.event }}</router-link></td>
         <td>{{ item.ticket.description }}</td>
         <td>${{ item.ticket.price }}</td>
+        <td><img :src="imageSrc" alt="My Image"></td>
+        
         <td><button class="delete" @click="removeFromCart(item)"></button></td>
     </tr>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'CartItem',
     props: {
@@ -15,8 +19,12 @@ export default {
     },
     data() {
         return {
-            item: this.initialItem
+            item: this.initialItem,
+            imageSrc: null,
         }
+    },
+     created() {
+        this.fetchImage();
     },
     methods: {
         updateCart() {
@@ -25,6 +33,9 @@ export default {
         removeFromCart(item) {
             this.$emit('removeFromCart', item)
             this.updateCart()
+        },
+        async fetchImage() {
+            this.imageSrc = `/api/v1/${this.initialItem.ticket.image}/`;
         },
     },
 }
