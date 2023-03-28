@@ -16,7 +16,7 @@
             <tbody>
                 <CartItem
                     v-for="item in cart.items"
-                    v-bind:key="item.listing.id"
+                    v-bind:key="item.ticket.id"
                     v-bind:initialItem="item"
                     v-on:removeFromCart="removeFromCart" />
             </tbody>
@@ -57,13 +57,13 @@ export default {
     },
     methods: {
         removeFromCart(item) {
-            this.cart.items = this.cart.items.filter(i => i.listing.id !== item.listing.id)
+            this.cart.items = this.cart.items.filter(i => i.ticket.id !== item.ticket.id)
         }
     },
     computed: {
         cartPrice() {
             return this.cart.items.reduce((sum, ticketPrice) => {
-                return sum += ticketPrice.listing.price
+                return sum += ticketPrice.ticket.price
             }, 0)
         },
     }
