@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 
 from .models import Listing
 
@@ -51,8 +52,8 @@ class Base64ImageField(serializers.ImageField):
         extension = "jpg" if extension == "jpeg" else extension
 
         return extension
+    
 class ListingSerializer(serializers.ModelSerializer):
-    user_email = serializers.ReadOnlyField()
 
     image = Base64ImageField(
         max_length=None, use_url=True,
@@ -62,8 +63,8 @@ class ListingSerializer(serializers.ModelSerializer):
         model = Listing
         fields = (
             "id",
-            "user_email",
             "event",
+            "user_email",
             "description",
             "price",
             "status",
@@ -73,3 +74,4 @@ class ListingSerializer(serializers.ModelSerializer):
             "image"
 
         )
+

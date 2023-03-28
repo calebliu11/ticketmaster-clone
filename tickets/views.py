@@ -11,6 +11,9 @@ from django.core.exceptions import ValidationError
 from datetime import date
 from datetime import datetime
 from django.http import Http404, HttpResponse
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+
 
 # Create your views here.
 
@@ -18,10 +21,11 @@ from django.http import Http404, HttpResponse
 def post_listing(request):
     serializer = ListingSerializer(data=request.data)
     try:
+
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        serializer.save(event=data['event'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
+        serializer.save(event=data['event'], user_email=data["user_email"], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
     except ValidationError:
         print(serializer.errors)
 
