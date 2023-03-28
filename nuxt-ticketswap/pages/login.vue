@@ -1,7 +1,8 @@
 <template>
     <div class="login-page">
-        <div class="columns">
+     
             <h2 class="title">Login</h2>
+            
 
             <form @submit.prevent="enterForm">
                 <div hidden>{% csrf_token %}</div>
@@ -41,7 +42,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    
 </template>
 
 <script>

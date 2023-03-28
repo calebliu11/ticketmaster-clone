@@ -14,15 +14,21 @@
 
                 </p>
             </div>    
-        
-       
            
+       
+            
 
             <template v-if="$store.state.isAuthenticated">
                 <div class="buttons">
                     <nuxt-link class="button is-success is-normal" :to="`/listings/${listing.slug}`">View Tickets</nuxt-link>
 
                     <nuxt-link class="button is-warning is-normal" :to="`/listings/sell/${listing.slug}`">Sell Ticket</nuxt-link>
+                </div>
+            </template>
+            <template v-else="$store.state.isAuthenticated">
+                <div class="buttons">
+                    <nuxt-link class="button is-success is-normal" :to="'/login'">Login To View Tickets</nuxt-link>
+
                 </div>
             </template>
 
