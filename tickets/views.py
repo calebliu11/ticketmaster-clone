@@ -30,6 +30,7 @@ def post_listing(request):
 class RecentListingsList(APIView):
      def get(self, request, format=None):
         listings = Listing.objects.order_by('date','price').distinct()[0:25]
+      
         unique_listings = []
         list = []
         for x in listings: 
@@ -49,6 +50,21 @@ class ListingDetail(APIView):
     def get(self, request, listing_slug, format=None):  
         listings = self.get_object(listing_slug)
         serializer = ListingSerializer(listings, many=True)
+        if isinstance(serializer.data, list):
+            return Response(serializer.data)
+        else:
+            return Response([serializer.data])
+        
+class AddListingToEvent(APIView):
+    def get_object(self, listing_slug):
+        try:
+            return Listing.objects.filter(slug=listing_slug)[0]
+        except Listing.DoesNotExist:
+            raise Http404
+
+    def get(self, request, listing_slug, format=None):  
+        listing = self.get_object(listing_slug)
+        serializer = ListingSerializer(listing)
         if isinstance(serializer.data, list):
             return Response(serializer.data)
         else:

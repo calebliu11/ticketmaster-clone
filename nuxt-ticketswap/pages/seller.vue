@@ -2,7 +2,6 @@
     <div class="seller-page">  
             <h2 class="title">Sell Ticket</h2>
             <template v-if="$store.state.isAuthenticated">
-                <h4 class="is-size-6">Instructions: For now, in the description add your venmo and email that a buyer should contact you for ticket.</h4>
 
                 <form @submit.prevent="enterForm">
                     <div hidden>{% csrf_token %}</div>

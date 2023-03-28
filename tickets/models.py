@@ -16,9 +16,9 @@ class Listing(models.Model):
         (EXPIRED, "Expired")
     ]
 
-    id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    event = models.CharField(max_length=100) 
+    event = models.CharField(max_length=100, unique=False) 
     description = models.TextField(max_length=300)
     price = models.IntegerField(default=0)
     status = models.TextField(choices=STATUS_CHOICES, default=ACTIVE)
