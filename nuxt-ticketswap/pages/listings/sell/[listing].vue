@@ -82,16 +82,9 @@ export default {
       },
       enterForm(){
           this.errors = []
-
              
               if(this.price < 0) {
                   this.errors.push('Price cannot be negative.')
-              }
-              
-              const token = this.$store.state.token
-              console.log(token)
-              if(token === '') {
-                  this.errors.push('User is not logged in!')
               }
 
               if (!this.errors.length) {
@@ -120,13 +113,10 @@ export default {
                           this.$router.push('/')
                       })
                       .catch(error => {
-                          if (error.response) {
-                              for (const property in error.response) {
-                                  this.errors.push(`${property}: ${error.response[property]}`)
-                              }
-                              console.log(JSON.stringify(error.response))
-
-                          }
+                            if (error.response) {
+                                this.errors.push(JSON.stringify(error.response._data))
+                                console.log(JSON.stringify(error.response))
+                            }
                           else if (error.message) {
                               this.errors.push('Something went wrong. Please try again!')
                               console.log(JSON.stringify(error))

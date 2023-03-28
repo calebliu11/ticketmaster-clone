@@ -21,9 +21,7 @@
 
                 <div class="field">
                     <label>Password</label>
-                    <!-- <div class="control">
-                        <input type="text" class="input" v-model="password">
-                    </div> -->
+
                     <div class="field has-addons">
                         <div class="control is-expanded">
                             <input v-if="showPassword" type="text" class="input" v-model="password" />
@@ -120,6 +118,10 @@ export default {
 
             if (this.email === '') {
                 this.errors.push('The email field is required.')
+            }
+
+            if(!this.email.includes("@wustl.edu")) {
+                this.errors.push('A WashU email is required.')
             }
 
             if (!this.errors.length) {

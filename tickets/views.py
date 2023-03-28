@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import status
 
 from .models import Listing
 from .serializers import ListingSerializer
@@ -22,12 +23,12 @@ def post_listing(request):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        serializer.save(event=data['event'], user_email=data['user_email'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
+        serializer.save(user=request.user, event=data['event'], user_email=data['user_email'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     except ValidationError:
-        print(serializer.errors)
-
-    return Response(serializer.initial_data)
-
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 class RecentListingsList(APIView):
      def get(self, request, format=None):
         listings = Listing.objects.order_by('date','price').distinct()[0:25]
