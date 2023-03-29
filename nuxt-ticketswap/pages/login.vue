@@ -69,8 +69,7 @@ export default {
         },
         async enterForm() {
             localStorage.removeItem("token")
-            localStorage.removeItem("user")
-
+                    
             const loginFormData = {
                 username: this.username,
                 password: this.password
@@ -83,7 +82,7 @@ export default {
                 .then(response => {
                     const token = response.auth_token
                     this.$store.commit('authenticateUser', token)
-
+                    
                     localStorage.setItem("token", token)
                     
                     this.$router.push('/')

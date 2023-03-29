@@ -25,9 +25,6 @@
 
             <p class="is-size-3 has-text-success">${{ listing.price }}</p>
 
-            <p class="is-size-6">Sold by {{ listing.user_email }}</p>
-          
-
             <template v-if="$store.state.isAuthenticated">
               <a class="button is-dark" @click="addToCart(listing)">Claim Ticket</a>
             </template>
