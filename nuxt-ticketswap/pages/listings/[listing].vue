@@ -62,6 +62,7 @@ export default {
         })
         .catch((error) => console.error(error))
     },
+
     addToCart(listing) {
       const item = {
         ticket: listing

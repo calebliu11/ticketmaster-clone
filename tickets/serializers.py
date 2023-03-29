@@ -62,6 +62,7 @@ class ListingSerializer(serializers.ModelSerializer):
         model = Listing
         fields = (
             "id",
+            "user",
             "event",
             "user_email",
             "description",
