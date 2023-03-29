@@ -68,6 +68,7 @@ export default {
     name: 'PostListing',
     data() {
         return {
+            user: null,
             event: '',
             user_email: '',
             description: '',
@@ -98,8 +99,9 @@ export default {
                 
                 if (!this.errors.length) {
                     const formData = {
+                        user: 8,
                         event: this.event,
-                        user_email: this.$store.state.user.email,
+                        user_email: 'seller@wustl.edu',
                         description: this.description,
                         price: this.price,
                         date: this.date,

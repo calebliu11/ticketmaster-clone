@@ -23,7 +23,8 @@ def post_listing(request):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        serializer.save(user=request.user, event=data['event'], user_email=data['user_email'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
+        email = request.user.email
+        serializer.save(user=request.user, event=data['event'], user_email=email, description=data['description'], price=data['price'], date=data['date'], image=data['image'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     except ValidationError:
@@ -72,16 +73,3 @@ class AddListingToEvent(APIView):
         else:
             return Response([serializer.data])
         
-class UserDetail(APIView):
-    def get(self, request, username, format=None):
-        user = User.objects.get(username = username)
-        if (user.id == '' or user.id == None):
-            return Response({
-                'status': False,
-                'id': 'Has not set id'
-            })
-        else:
-            return Response({
-                'status': True,
-                'id': user.id
-            })
