@@ -78,24 +78,22 @@ export default {
             const csrftoken = Cookies.get('csrftoken');
             const headers = { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken };
             
-            await $fetch("api/v1/token/login/", { method: "POST", headers, body: loginFormData })
+            await $fetch("api/v1/login/", { method: "POST" , headers, body: loginFormData })
                 .then(response => {
-                    const token = response.auth_token
+                    const token = response.token
                     this.$store.commit('authenticateUser', token)
-                    
                     localStorage.setItem("token", token)
-                    
                     this.$router.push('/')
                 })
                 .catch(error => {
-                    this.errors.push(error.response._data.non_field_errors)
                     if (error.response) {
+                        this.errors.push(error.response._data)
                         console.log(JSON.stringify(error.response))
 
                     }
                     else if (error.message) {
                         this.errors.push('Something went wrong. Please try again!')
-                        console.log(JSON.stringify(error))
+                        console.log(JSON.stringify(error.message))
                     }
                 })
         }

@@ -50,6 +50,7 @@ export default {
   name: 'PostListing',
   data() {
       return {
+          user: null,
           event: '',
           description: '',
           price: '',
@@ -88,6 +89,7 @@ export default {
 
               if (!this.errors.length) {
                   const formData = {
+                      user: 8,
                       event: this.ticket.event,
                       description: this.ticket.description,
                       price: this.price,
