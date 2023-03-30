@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework import status
 
@@ -13,6 +14,9 @@ from datetime import date
 from datetime import datetime
 from django.http import Http404, HttpResponse
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from rest_framework.authtoken.models import Token
+
 
 # Create your views here.
 
@@ -23,12 +27,31 @@ def post_listing(request):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        serializer.save(event=data['event'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
+        serializer.save(user=request.user, event=data['event'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
+    
     except ValidationError:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+class LoginView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        
+        user = authenticate(username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+
+            token, created = Token.objects.get_or_create(user=user)
+            print(token)
+            print(token.key)
+            print(created)
+            return Response({'token': token.key})
+
+        else:
+            return Response({'error': 'Invalid username or password, user not found'}, status=status.HTTP_404_NOT_FOUND)
+
 class RecentListingsList(APIView):
      def get(self, request, format=None):
         listings = Listing.objects.order_by('date','price').distinct()[0:25]
@@ -71,4 +94,5 @@ class AddListingToEvent(APIView):
             return Response(serializer.data)
         else:
             return Response([serializer.data])
-        
+
+
