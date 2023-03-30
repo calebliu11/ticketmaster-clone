@@ -4,14 +4,14 @@
         <td>{{ item.ticket.description }}</td>
         <td>${{ item.ticket.price }}</td>
         <td><img :src="imageSrc" alt="My Image" style="height: 300px;"></td>
+        <td>{{ item.ticket.user_email }}</td>
+
         
         <td><button class="delete" @click="removeFromCart(item)"></button></td>
     </tr>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
     name: 'CartItem',
     props: {

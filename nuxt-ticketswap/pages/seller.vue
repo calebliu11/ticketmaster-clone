@@ -69,6 +69,7 @@ export default {
     data() {
         return {
             user: null,
+            user_email: '',
             event: '',
             description: '',
             price: '',
@@ -99,6 +100,7 @@ export default {
                 if (!this.errors.length) {
                     const formData = {
                         user: 8,
+                        user_email: 'seller@wustl.edu',
                         event: this.event,
                         description: this.description,
                         price: this.price,

@@ -10,14 +10,9 @@
                     <span class="is-size-5">{{ listing.description }}</span>
                     <br>
                     <p class="has-text-weight-semibold is-italic has-text-primary"> Starting from ${{ listing.price }}</p>
-
-
                 </p>
             </div>    
-           
-       
             
-
             <template v-if="$store.state.isAuthenticated">
                 <div class="buttons">
                     <nuxt-link class="button is-success is-normal" :to="`/listings/${listing.slug}`">View Tickets</nuxt-link>
