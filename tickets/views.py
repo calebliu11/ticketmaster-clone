@@ -27,7 +27,8 @@ def post_listing(request):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        serializer.save(user=request.user, event=data['event'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
+        email=request.user.email
+        serializer.save(user=request.user, user_email=email, event=data['event'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     except ValidationError:
@@ -44,9 +45,6 @@ class LoginView(APIView):
             login(request, user)
 
             token, created = Token.objects.get_or_create(user=user)
-            print(token)
-            print(token.key)
-            print(created)
             return Response({'token': token.key})
 
         else:
@@ -95,4 +93,8 @@ class AddListingToEvent(APIView):
         else:
             return Response([serializer.data])
 
-
+class ListingsList(APIView):
+    def get(self, request, format=None):
+        listings = Listing.objects.filter(user=request.user)
+        serializer = ListingSerializer(listings, many=True)
+        return Response(serializer.data)

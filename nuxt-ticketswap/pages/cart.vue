@@ -11,6 +11,7 @@
                     <th>Description</th>
                     <th>Price</th>
                     <th>Image</th>
+                    <th>Seller</th>
                 </tr>
             </thead>
 
@@ -26,7 +27,7 @@
         <h2 v-else>Your cart is empty.</h2>
     </div>
 
-    <div class="column is-10 box">
+    <div v-if="this.cart.items.length > 0" class="column is-10 box">
         <h2 class="subtitle">Order Summary</h2>
 
         <h3 class="is-size-4 has-text-weight-semibold">${{ cartPrice }}</h3>
