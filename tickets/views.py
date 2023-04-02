@@ -3,11 +3,11 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import HttpResponse
-from rest_framework.decorators import api_view
-from rest_framework import status
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework import status, authentication, permissions
 
-from .models import Listing
-from .serializers import ListingSerializer
+from .models import Listing, Order
+from .serializers import ListingSerializer, OrderSerializer
 from django.core.exceptions import ValidationError
 
 from datetime import date
@@ -16,7 +16,6 @@ from django.http import Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from rest_framework.authtoken.models import Token
-
 
 # Create your views here.
 
@@ -97,4 +96,28 @@ class ListingsList(APIView):
     def get(self, request, format=None):
         listings = Listing.objects.filter(user=request.user)
         serializer = ListingSerializer(listings, many=True)
+        return Response(serializer.data)
+    
+@api_view(['POST'])
+@authentication_classes([authentication.TokenAuthentication])
+@permission_classes([permissions.IsAuthenticated])
+def checkout(request):
+    serializer = OrderSerializer(data=request.data)
+
+    try:
+        serializer.is_valid(raise_exception=True)
+        total_cost = sum(item.get('listing').price for item in serializer.validated_data['items'])
+
+        serializer.save(user=request.user, cost=total_cost)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except ValidationError:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class OrdersList(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, format=None):
+        orders = Order.objects.filter(user=request.user)
+        serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
