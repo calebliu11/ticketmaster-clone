@@ -34,3 +34,24 @@ class Listing(models.Model):
         if not self.slug:
              self.slug = slugify(self.event)
         return super().save(*args, **kwargs)
+    
+class Order(models.Model):
+    user = models.ForeignKey(User, related_name="orders", on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    created_at = models.DateField(auto_now_add=True)
+    cost = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['-id',]
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    event = models.CharField(max_length=100, unique=False) 
+    description = models.TextField(max_length=300)
+    listing = models.ForeignKey(Listing, related_name='items', on_delete=models.CASCADE)
+    price = models.IntegerField(default=0)
+    seller_email = models.CharField(max_length=100)
+    date = models.DateField(blank=True)
+    image_url = models.CharField(max_length=100)

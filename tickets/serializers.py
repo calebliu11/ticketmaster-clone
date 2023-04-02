@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from .models import Listing
+from .models import Listing, Order, OrderItem
 
 
 class Base64ImageField(serializers.ImageField):
@@ -74,3 +74,38 @@ class ListingSerializer(serializers.ModelSerializer):
             "image"
 
         )
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = (
+            "listing",
+            "event",
+            "description",
+            "price",
+            "seller_email",
+            "date",
+            "image_url"
+        )
+
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = (
+            "id",
+            "first_name",
+            "last_name",
+            "created_at",
+            "items",
+        )
+    
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        order = Order.objects.create(**validated_data)
+
+        for ticket in items_data:
+            OrderItem.objects.create(order=order, **ticket)
+
+        return order

@@ -10,7 +10,6 @@
                     <th>Event</th>
                     <th>Description</th>
                     <th>Price</th>
-                    <th>Image</th>
                     <th>Seller</th>
                 </tr>
             </thead>
@@ -59,7 +58,9 @@ export default {
     },
     methods: {
         removeFromCart(item) {
+            console.log(JSON.stringify(this.cart.items))
             this.cart.items = this.cart.items.filter(i => i.ticket.id !== item.ticket.id)
+            
         }
     },
     computed: {
