@@ -6,7 +6,7 @@
                 <p>
                     <strong class="is-size-2 has-text-info has-text-weight-semibold">{{ tickets[0].event }}</strong>
                     <br>
-                    <span class="is-size-5">Date: {{ tickets[0].date }}</span>
+                    <span class="is-size-5">Date: {{ formattedDate }}</span>
                     <br>
                     <span class="is-size-5 has-text-weight-semibold is-italic">{{ tickets[0].description }}</span>
                     <br>
@@ -90,7 +90,14 @@ export default {
         })
       }
     }
-  } 
+  },
+  computed: {
+    formattedDate() {
+      const date = new Date(this.tickets[0].date);
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    }
+  }
 }
 
 </script>

@@ -5,7 +5,7 @@
                 <p>
                     <strong class="is-size-4 has-text-weight-semibold">{{ listing.event }}</strong>
                     <br>
-                    <span class="is-size-5">{{ listing.date }}</span>
+                    <span class="is-size-5">{{ formattedDate }}</span>
                     <br>
                     <span class="is-size-5">{{ listing.description }}</span>
                     <br>
@@ -37,7 +37,15 @@ export default {
     name: 'listingBox',
     props: {
         listing: Object
+    }, 
+    computed: {
+    formattedDate() {
+      const date = new Date(this.listing.date);
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
     }
+  }
+    
 }
 </script>
 
