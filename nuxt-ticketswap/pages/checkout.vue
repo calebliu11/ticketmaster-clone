@@ -65,6 +65,8 @@
             </div>
 
             <hr>
+            
+            <div id="card-element" class="mb-5"></div>
 
             <button class="button is-dark" @click="enterForm">Pay</button>
         </div>
@@ -73,13 +75,18 @@
 </template>
 
 <script>
+import { loadStripe } from '@stripe/stripe-js'
+
 export default {
+
     name: 'Checkout',
     data() {
         return {
             cart: {
                 items: []
             },
+            stripe: {},
+            card: {}, 
             first_name: '',
             last_name: '',
             email: '',
@@ -89,8 +96,21 @@ export default {
     },
     mounted() {
         this.cart = this.$store.state.cart
+
+        this.stripeSetup()
     },
+
+   
     methods: {
+        async stripeSetup() {
+            if (this.cart.items.length > 0) {
+            this.stripe = await loadStripe('pk_test_51MsvUpB0HmvtCEdiNJEBJrxMhmg0SMS0c7vmh1H1lsSunWBt2UbbpH9jRfA3Cr3iIXoHjJzLWXxW8DPwAF7Qyrtl008leL4DWT')
+
+            const elements = this.stripe.elements();
+            this.card = elements.create('card', { hidePostalCode: true })
+            this.card.mount('#card-element')
+            }
+        },
         enterForm(){
             this.errors = []
 
@@ -107,12 +127,18 @@ export default {
             }
 
             if (!this.errors.length) {
-              
-                this.completeCheckout()
-                
+                this.stripe.createToken(this.card).then(result => {
+                    if (result.error) {
+                        this.errors.push("Stripe error. Please try again.")
+                        console.log(result.error.message)
+                    }
+                    else {
+                        this.completeCheckout(result.token)
+                    }
+                })               
             }
         },
-        async completeCheckout() {
+        async completeCheckout(token) {
             const items = []
             for (let i = 0; i < this.cart.items.length; i++) {
                 const item = this.cart.items[i]
@@ -132,6 +158,7 @@ export default {
                 'first_name': this.first_name,
                 'last_name': this.last_name,
                 'email': this.email,
+                'stripe_token': token.id,
                 'items': items,
             }
 

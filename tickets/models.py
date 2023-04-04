@@ -42,6 +42,7 @@ class Order(models.Model):
     email = models.CharField(max_length=100)
     created_at = models.DateField(auto_now_add=True)
     cost = models.IntegerField(default=0)
+    stripe_token = models.CharField(max_length=100)
 
     class Meta:
         ordering = ['-id',]
