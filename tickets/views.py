@@ -18,6 +18,7 @@ from django.contrib.auth import authenticate, login
 from rest_framework.authtoken.models import Token
 import json
 from django.http import JsonResponse
+from django.db.models import Q
 
 
 # Create your views here.
@@ -154,3 +155,12 @@ def report(request):
     
     except ValidationError:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+def search(request):
+    search_query = request.data.get('query', '')
+
+    if search_query:
+        listings = Listing.objects.filter(Q(event__icontains=search_query) | Q(description__icontains=search_query))
+        serializer = ListingSerializer(listings, many=True)
+        return Response(serializer.data)
