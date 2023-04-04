@@ -16,6 +16,9 @@ from django.http import Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from rest_framework.authtoken.models import Token
+import json
+from django.http import JsonResponse
+
 
 # Create your views here.
 
@@ -51,7 +54,7 @@ class LoginView(APIView):
 
 class RecentListingsList(APIView):
      def get(self, request, format=None):
-        listings = Listing.objects.order_by('date','price').distinct()[0:25]
+        listings = Listing.objects.order_by('date','price').distinct().filter(status="ACTIVE")[0:25]
       
         unique_listings = []
         list = []
@@ -65,7 +68,7 @@ class RecentListingsList(APIView):
 class ListingDetail(APIView):
     def get_object(self, listing_slug):
         try:
-            return Listing.objects.all().filter(slug=listing_slug)
+            return Listing.objects.all().filter(slug=listing_slug, status="ACTIVE")
         except Listing.DoesNotExist:
             raise Http404
 
@@ -120,4 +123,21 @@ class OrdersList(APIView):
     def get(self, request, format=None):
         orders = Order.objects.filter(user=request.user)
         serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+    
+@api_view(['POST'])
+def update_listings(request):
+    if request.method == 'POST':
+        listing_ids = json.loads(request.body)
+        listings = Listing.objects.none()
+        for item in listing_ids:
+            cur_listing = Listing.objects.filter(id=item['listing'])
+            listings = listings | cur_listing
+
+        serializer = ListingSerializer(listings, many=True)
+        for i in range(len(listing_ids)):
+            serializer.data[i]['status'] = "SOLD"
+            listings[i].status = serializer.data[i]['status']
+            listings[i].save()
+
         return Response(serializer.data)
