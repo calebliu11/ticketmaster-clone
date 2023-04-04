@@ -15,6 +15,8 @@
                       <br>
                       <span class="is-size-5">{{ listing.description }}</span>
                       <br>
+                      <span class="is-size-5">{{ listing.status }}</span>
+                      <br>
                       <p class="has-text-weight-semibold is-italic has-text-primary">${{ listing.price }}</p>
                   </p>
               </div>    
@@ -97,7 +99,6 @@
         await $fetch("api/v1/orders/", { method: "GET", headers })
         .then((response) => {
           this.orders = response
-          console.log(JSON.stringify(this.orders))
         })
         .catch((error) => console.error(error))
       }

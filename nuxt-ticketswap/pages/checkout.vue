@@ -114,6 +114,7 @@ export default {
         },
         async completeCheckout() {
             const items = []
+            const listingIds = []
             for (let i = 0; i < this.cart.items.length; i++) {
                 const item = this.cart.items[i]
                 const ticket = {
@@ -126,6 +127,15 @@ export default {
                     image_url: item.ticket.image,
                 }
                 items.push(ticket)
+                
+                const listingTicket = {
+                    listing: item.ticket.id,
+                    status: "SOLD",
+                }
+
+                listingIds.push(listingTicket)
+                console.log(items)
+                console.log(listingIds)
             }
             
             const checkoutData = {
@@ -136,6 +146,16 @@ export default {
             }
 
             const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token };
+
+            await $fetch('/api/v1/update-listings/', { method: "POST", headers, body: listingIds})
+                .then((response) => {
+                    console.log(response)
+                })
+                .catch(error => {
+                    this.errors.push(error.response._data)
+                    console.log(error.response._data)
+                })
+
             await $fetch('/api/v1/checkout/', { method: "POST", headers, body: checkoutData })
                 .then(() => {
                     this.$store.commit('emptyCart')
@@ -145,7 +165,7 @@ export default {
                     this.errors.push(error.response._data)
                     console.log(error.response._data)
                 })
-
+            
         },
         async fetchImage() {
             this.imageSrc = `/api/v1/${this.initialItem.ticket.image}/`;
