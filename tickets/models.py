@@ -55,3 +55,17 @@ class OrderItem(models.Model):
     seller_email = models.CharField(max_length=100)
     date = models.DateField(blank=True)
     image_url = models.CharField(max_length=100)
+
+def get_next_integer_value():
+    # Retrieve the highest integer value in the database and increment it by 1
+    highest_value = Report.objects.aggregate(models.Max('id'))['id__max']
+    return highest_value + 1 if highest_value else 1
+
+class Report(models.Model):
+    id = models.IntegerField(primary_key=True, default=get_next_integer_value)
+    user = models.ForeignKey(User, related_name='reports', on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, related_name='reports', on_delete=models.CASCADE)
+    reason = models.CharField(max_length=100)
+    description = models.TextField(max_length=300)
+    verified = models.BooleanField(default=False)
+

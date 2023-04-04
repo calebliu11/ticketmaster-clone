@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework import status, authentication, permissions
 
 from .models import Listing, Order
-from .serializers import ListingSerializer, OrderSerializer
+from .serializers import ListingSerializer, OrderSerializer, ReportSerializer
 from django.core.exceptions import ValidationError
 
 from datetime import date
@@ -141,3 +141,16 @@ def update_listings(request):
             listings[i].save()
 
         return Response(serializer.data)
+
+@api_view(['POST'])
+def report(request):
+    serializer = ReportSerializer(data=request.data)
+    try:
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        serializer.save(user=request.user,  reason=data['reason'], description=data['description'], verified=data['verified'])
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    except ValidationError:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
