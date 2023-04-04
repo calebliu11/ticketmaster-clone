@@ -9,7 +9,20 @@
 
   <div id="navMenubd-example" class="navbar-menu">
     <div class="navbar-start">
-     
+      <div class="navbar-item">
+        <form method="get" action="/search">
+          <div class="field has-addons">
+            <div class="control">
+              <input type="text" class="input" placeholder='Search' name="query">
+            </div>
+
+            <div class="control">
+              <button class="button is-success">
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
       
       <router-link to="/seller" class="navbar-item">Create New Event</router-link>
 
