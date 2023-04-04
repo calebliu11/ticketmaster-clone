@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 
-from .models import Listing, Order, OrderItem
+from .models import Listing, Order, OrderItem, Report
 
 
 class Base64ImageField(serializers.ImageField):
@@ -108,3 +107,14 @@ class OrderSerializer(serializers.ModelSerializer):
             OrderItem.objects.create(order=order, **ticket)
 
         return order
+    
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Report
+        fields = (
+            "user",
+            "listing",
+            "reason",
+            "description",
+            "verified",
+        )
