@@ -176,6 +176,8 @@ def search(request):
     search_query = request.data.get('query', '')
 
     if search_query:
-        listings = Listing.objects.filter(Q(event__icontains=search_query) | Q(description__icontains=search_query))
+        listings = Listing.objects.filter(Q(event__icontains=search_query) | Q(description__icontains=search_query), status="ACTIVE")
         serializer = ListingSerializer(listings, many=True)
         return Response(serializer.data)
+    else:
+        return Response({"Empty Listings": []})
