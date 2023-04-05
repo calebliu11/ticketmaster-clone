@@ -96,6 +96,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "created_at",
+            "stripe_token",
             "items",
         )
     

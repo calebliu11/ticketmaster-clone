@@ -1,4 +1,7 @@
+import stripe
+
 from django.shortcuts import render
+from django.conf import settings
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -108,14 +111,26 @@ class ListingsList(APIView):
 def checkout(request):
     serializer = OrderSerializer(data=request.data)
 
-    try:
-        serializer.is_valid(raise_exception=True)
+    if serializer.is_valid():
+        stripe.api_key = settings.STRIPE_SECRET_KEY
         total_cost = sum(item.get('listing').price for item in serializer.validated_data['items'])
 
-        serializer.save(user=request.user, cost=total_cost)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    except ValidationError:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        print(serializer.validated_data['stripe_token'])
+        try: 
+            charge = stripe.Charge.create(
+                amount = int(total_cost * 100),
+                currency = 'USD',
+                description = 'Purchase from TicketTrade',
+                source = serializer.validated_data['stripe_token']
+            )
+
+            serializer.save(user=request.user, cost=total_cost)
+        
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     
 class OrdersList(APIView):
     authentication_classes = [authentication.TokenAuthentication]
