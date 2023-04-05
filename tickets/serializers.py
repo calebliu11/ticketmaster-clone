@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Listing, Order, OrderItem, Report
+from .models import Listing, Order, OrderItem, Report, Account
 
 
 class Base64ImageField(serializers.ImageField):
@@ -81,6 +81,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
             "event",
             "description",
             "price",
+            "user",
             "seller_email",
             "date",
             "image_url"
@@ -118,4 +119,14 @@ class ReportSerializer(serializers.ModelSerializer):
             "reason",
             "description",
             "verified",
+        )
+
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = (
+            "user",
+            "funds",  
+            "account_number",
+            "routing_number",
         )

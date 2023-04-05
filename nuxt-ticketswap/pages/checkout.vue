@@ -148,6 +148,7 @@ export default {
                     event: item.ticket.event,
                     description: item.ticket.description,
                     price: item.ticket.price,
+                    user: item.ticket.user,
                     seller_email: item.ticket.user_email,
                     date: item.ticket.date,
                     image_url: item.ticket.image,
@@ -158,10 +159,9 @@ export default {
                     listing: item.ticket.id,
                     status: "SOLD",
                 }
+                console.log(item.ticket.user)
 
                 listingIds.push(listingTicket)
-                console.log(items)
-                console.log(listingIds)
             }
             
             const checkoutData = {
@@ -189,7 +189,7 @@ export default {
                     this.$router.push('/success')
                 })
                 .catch(error => {
-                    this.errors.push(error.response._data)
+                    this.errors.push("Error with checkout. Please try again in a moment.")
                     console.log(error.response._data)
                 })
             
