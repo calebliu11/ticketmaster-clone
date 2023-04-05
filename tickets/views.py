@@ -165,7 +165,7 @@ def report(request):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        serializer.save(user=request.user,  reason=data['reason'], description=data['description'], verified=data['verified'])
+        serializer.save(user=request.user, reason=data['reason'], description=data['description'], verified=data['verified'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     except ValidationError:
