@@ -9,8 +9,8 @@ from django.http import HttpResponse
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import status, authentication, permissions
 
-from .models import Listing, Order
-from .serializers import ListingSerializer, OrderSerializer, ReportSerializer
+from .models import Listing, Order, Account
+from .serializers import ListingSerializer, OrderSerializer, ReportSerializer, AccountSerializer
 from django.core.exceptions import ValidationError
 
 from datetime import date
@@ -21,8 +21,9 @@ from django.contrib.auth import authenticate, login
 from rest_framework.authtoken.models import Token
 import json
 from django.http import JsonResponse
-from django.db.models import Q
-
+from django.db.models import Q, F
+from bson.decimal128 import Decimal128
+from decimal import Decimal
 
 # Create your views here.
 
@@ -115,18 +116,28 @@ def checkout(request):
         stripe.api_key = settings.STRIPE_SECRET_KEY
         total_cost = sum(item.get('listing').price for item in serializer.validated_data['items'])
 
-        print(serializer.validated_data['stripe_token'])
+        for item in serializer.validated_data['items']:
+            user_account = Account.objects.filter(user=item['user']).first()
+            print(item["user"])
+            print(user_account)
+            if user_account is None:
+                user_account = Account.objects.create(user=item['user'])
+            
+            user_account.funds = Decimal(str(user_account.funds)) + Decimal(item["price"])
+            user_account.save()
+
         try: 
             charge = stripe.Charge.create(
-                amount = int(total_cost * 100),
-                currency = 'USD',
-                description = 'Purchase from TicketTrade',
-                source = serializer.validated_data['stripe_token']
-            )
-
+                    amount = int(total_cost * 100),
+                    currency = 'USD',
+                    description = 'Purchase from TicketTrade',
+                    source = serializer.validated_data['stripe_token']
+                )
+                
             serializer.save(user=request.user, cost=total_cost)
-        
+    
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
         except Exception:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -181,3 +192,18 @@ def search(request):
         return Response(serializer.data)
     else:
         return Response({"Empty Listings": []})
+    
+class AccountView(APIView):
+    def get(self, request, format=None):
+        account = Account.objects.filter(user=request.user)
+        serializer = AccountSerializer(account.first(), many=False)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        user_account = Account.objects.filter(user=request.user).first()
+        user_account.funds = Decimal(request.data['funds'])
+        user_account.account_number = request.data['account_number']
+        user_account.routing_number = request.data['routing_number']
+        user_account.save()
+        return HttpResponse("Account updated!", status=status.HTTP_200_OK)
+
