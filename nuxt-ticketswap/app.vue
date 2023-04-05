@@ -9,25 +9,25 @@
 
   <div id="navMenubd-example" class="navbar-menu">
     <div class="navbar-start">
-      <div class="navbar-item">
-        <form method="get" action="/search">
-          <div class="field has-addons">
-            <div class="control">
-              <input type="text" class="input" placeholder='Search' name="query">
-            </div>
-
-            <div class="control">
-              <button class="button is-success">
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-      
       <router-link to="/seller" class="navbar-item">Create New Event</router-link>
 
       <router-link to="/about" class="navbar-item">About</router-link>
+      <div class="navbar-item">
+        <template v-if="$store.state.isAuthenticated">
+          <form method="get" action="/search">
+            <div class="field has-addons">
+              <div class="control">
+                <input type="text" class="input" placeholder='Search' name="query">
+              </div>
 
+              <div class="control">
+                <button class="button is-success">
+                </button>
+              </div>
+            </div>
+          </form>
+        </template>
+      </div>
     </div>
 
     <div class="navbar-end">
@@ -37,53 +37,35 @@
 
           <template v-if="$store.state.isAuthenticated">
             <p class="control">
-              <a class="bd-tw-button button">
-                <span class="icon">
+              <span>
+                <button class="bd-tw-button button" @click="$router.push('/tickets')">My Tickets</button>
+              </span>
+            </p>
 
-                  <i class="fa-regular fa-user"></i>
-                </span>
-                <span>
-                  <router-link to="/account">My Account</router-link>
-                </span>
-              </a>
+
+            <p class="control">
+              <span>
+                <button class="bd-tw-button button" @click="$router.push('/account')">My Account</button>
+              </span>
             </p>
 
             <p class="control">
-              <a class="button is-primary">
-                <span class="icon">
-
-                  <i class="fa-solid fa-right-to-bracket"></i>
-                </span>
-                <span>
-                  <router-link to="/cart">Cart</router-link>
-                </span>
-              </a>
+  
+                  <button class="button is-primary " @click="$router.push('/cart')">Cart</button>
             </p>
 
           </template>
 
           <template v-else>
             <p class="control">
-              <a class="button is-primary">
-                <span class="icon">
-                  <i class="fa-solid fa-right-to-bracket"></i>             
-                </span>
-                <span>
-                  <router-link to="/signup">Sign Up</router-link>
-                </span>
+                  <button class="button is-primary" @click="$router.push('/signup')">Signup</button>
                 
-              </a>
             </p>
 
             <p class="control">
-              <a class="button is-primary">
-                <span class="icon">
-                  <i class="fa-solid fa-right-to-bracket"></i>             
-                </span>
-                <span>
-                  <router-link to="/login">Login</router-link>
-                </span>
-              </a>
+                <div>
+                  <button class="button is-primary" @click="$router.push('/login')">Login</button>
+                </div>
             </p>
           </template>
         </div>
@@ -122,3 +104,4 @@ export default {
   }
 }
 </script>
+
