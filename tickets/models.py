@@ -74,5 +74,4 @@ class Report(models.Model):
 class Account(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     funds = models.DecimalField(default=0.0, decimal_places=2, max_digits=8)
-    account_number = models.CharField(max_length=100)
-    routing_number = models.CharField(max_length=100)
+    account_id = models.CharField(max_length=100)

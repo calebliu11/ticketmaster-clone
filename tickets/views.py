@@ -118,8 +118,6 @@ def checkout(request):
 
         for item in serializer.validated_data['items']:
             user_account = Account.objects.filter(user=item['user']).first()
-            print(item["user"])
-            print(user_account)
             if user_account is None:
                 user_account = Account.objects.create(user=item['user'])
             
@@ -200,10 +198,69 @@ class AccountView(APIView):
         return Response(serializer.data)
     
     def post(self, request):
-        user_account = Account.objects.filter(user=request.user).first()
-        user_account.funds = Decimal(request.data['funds'])
-        user_account.account_number = request.data['account_number']
-        user_account.routing_number = request.data['routing_number']
-        user_account.save()
-        return HttpResponse("Account updated!", status=status.HTTP_200_OK)
+        stripe.api_key = settings.STRIPE_SECRET_KEY
 
+        user_account = Account.objects.filter(user=request.user).first()
+
+        account = stripe.Account.create(
+            country="US",
+            type="express",
+            capabilities={"card_payments": {"requested": True}, "transfers": {"requested": True}},
+        )
+
+        bank_account_object = {
+            "object": "bank_account",
+            "country": "US",
+            "currency": "usd",
+            "account_holder_name": "Test User",
+            "account_holder_type": "individual",
+            "routing_number": '110000000',
+            "account_number": '000123456789',
+        }
+
+        stripe.Account.create_external_account(
+            account.id,
+            external_account=bank_account_object,
+        )
+
+        link = stripe.AccountLink.create(
+            account=account.id,
+            refresh_url="http://localhost:3000/account",
+            return_url="http://localhost:3000/account",
+            type="account_onboarding",
+        )
+
+        user_account.account_id = account.id
+        user_account.funds = Decimal(str(user_account.funds))
+
+        user_account.save()
+        return Response(link, status=status.HTTP_201_CREATED)
+
+@api_view(['POST'])
+def cashout(request):
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+
+    cashout_amount = int(Decimal(request.data['funds']) * 100)
+
+    user_account = Account.objects.filter(user=request.user).first()
+
+    payout = stripe.Transfer.create(
+        amount=cashout_amount,
+        currency='usd',
+        destination=user_account.account_id,
+    )
+
+    user_account.funds = 0.0
+    user_account.save()
+
+    return Response(payout, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def check_transfer(request):
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    user_account = Account.objects.filter(user=request.user).first()
+    
+    stripe_account = stripe.Account.retrieve(user_account.account_id)
+    capabilities = stripe_account['capabilities']
+
+    return Response(capabilities, status=status.HTTP_200_OK)

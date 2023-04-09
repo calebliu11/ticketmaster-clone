@@ -127,6 +127,5 @@ class AccountSerializer(serializers.ModelSerializer):
         fields = (
             "user",
             "funds",  
-            "account_number",
-            "routing_number",
+            "account_id",
         )

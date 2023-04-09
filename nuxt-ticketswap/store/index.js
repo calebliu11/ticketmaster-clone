@@ -7,6 +7,7 @@ export default createStore({
         },
         isAuthenticated: false,
         token: '',
+        isActive: localStorage.getItem('isActive') === 'true' || false,
     },
     mutations: {
         initializeStore(state){
@@ -43,6 +44,11 @@ export default createStore({
             state.cart = { items: [] }
             localStorage.setItem('cart', JSON.stringify(state.cart))
         },
+        activateAccount(state, newState) {
+            state.isActive = newState
+            localStorage.setItem('isActive', newState)
+        },
+
     },
     actions: {
     },

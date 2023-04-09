@@ -13,42 +13,16 @@
 
       
       <div class="buttons is-grouped mt-4" >
-        <button @click="cashout()" class="button is-primary">Cashout</button>
+
+        <button v-if="funds > 0 && this.$store.state.isActive" @click="cashout()" class="button is-primary">Cashout</button>
+
+        <button v-if="!this.$store.state.isActive" @click="createSellerAccount()" class="button is-primary">Create Seller Account</button>
+
 
         <button @click="$router.push('/my-listings')" class="button">View My Listings</button>
       </div>
     </div>
 
-    <div class="account-form">
-      <form @submit.prevent="editAccountDetails">
-        <div hidden>{% csrf_token %}</div>
-
-        <div class="field">
-            <label>Account Number</label>
-            <div class="control">
-                <input type="number" class="input" v-model="account_number">
-            </div>
-        </div>
-
-        <div class="field">
-            <label>Routing Number</label>
-            <div class="control">
-                <input type="number" class="input" v-model="routing_number">
-            </div>
-        </div>
-
-        <div class="error-notification" v-if="errors.length">
-            <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
-        </div>
-
-        <div class="field">
-            <div class="control">
-                <button>Submit</button>
-            </div>
-        </div>
-      </form>
-
-    </div>
 
     <div class="column is-10">
       <button @click="logout()" class="button is-danger">Log out</button>
@@ -77,51 +51,100 @@ export default {
         localStorage.removeItem("token")
         this.$store.commit('deauthenticateUser')
         this.$store.commit('emptyCart')
-
+        this.$store.commit('activateAccount', false)
         this.$router.push('/')
     },
-    async getAccountDetails() {
+    getAccountDetails() {
       const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token};
-      await $fetch("api/v1/account/", { method: "GET", headers })
+
+      if(!this.$store.state.isActive) {
+        $fetch("api/v1/check-transfer/", { method: "GET", headers })
+        .then((response) => {
+          console.log(response)
+          this.$store.commit('activateAccount', response['transfers'] == 'active')
+        })
+        .catch(error => {
+          if (error.response) {
+              this.errors.push(JSON.stringify(error.response._data))
+              console.log(JSON.stringify(error.response._data))
+          }
+          else if (error.message) {
+              this.errors.push('Something went wrong. Please try again!')
+              console.log(JSON.stringify(error.message))
+          }
+        })
+      }
+      
+      $fetch("api/v1/account/", { method: "GET", headers })
       .then((response) => {
+        console.log(response)
         this.funds = response["funds"]
       })
-      .catch((error) => console.error(error))
+      .catch(error => {
+              if (error.response) {
+                  this.errors.push(JSON.stringify(error.response._data))
+                  console.log(JSON.stringify(error.response._data))
+              }
+              else if (error.message) {
+                  this.errors.push('Something went wrong. Please try again!')
+                  console.log(JSON.stringify(error.message))
+              }
+          })
     },
-    editAccountDetails(){
-      this.errors = []
-
-      if (this.account_number === '') {
-          this.errors.push('First name is required!')
-      }
-
-      if (this.routing_number === '') {
-          this.errors.push('Last name is required!')
-      }
-
-      console.log(typeof(this.funds))
-
-      if (!this.errors.length) {
-        const formData = {
+    async createSellerAccount(){
+        const data = {
           user: 8,
-          funds: parseFloat(this.funds),
-          account_number: this.account_number,
-          routing_number: this.routing_number,
+          account_id: '',
         }
 
         const csrftoken = Cookies.get('csrftoken');
         const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token, 'X-CSRFToken': csrftoken};
 
-        $fetch("api/v1/account/", { method: "POST", headers, body: formData} )
-          .then(() => {
+        $fetch("api/v1/account/", { method: "POST", headers, body: { data }} )
+          .then((response) => {
               toast({
-                  message: 'Your account details were updated!',
+                  message: 'Created seller account with Stripe!',
                   type: 'is-success',
                   dismissible: true,
                   pauseOnHover: true,
                   duration: 1000,
                   position: 'bottom-left',
               })
+              console.log(response.url)
+              window.location = response['url']
+          })
+          .catch(error => {
+              if (error.response) {
+                  this.errors.push(JSON.stringify(error.response._data))
+                  console.log(JSON.stringify(error.response._data))
+              }
+              else if (error.message) {
+                  this.errors.push('Something went wrong. Please try again!')
+                  console.log(JSON.stringify(error.message))
+              }
+          })
+    },
+    async cashout() {
+      const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token};
+      const cashoutData = {
+        user: 8,
+        funds: this.funds,
+      }
+
+      console.log(cashoutData)
+
+      $fetch("api/v1/cashout/", { method: "POST", headers, body: cashoutData} )
+          .then((response) => {
+              toast({
+                  message: 'Your cashout has been processed!',
+                  type: 'is-success',
+                  dismissible: true,
+                  pauseOnHover: true,
+                  duration: 1000,
+                  position: 'bottom-left',
+              })
+              console.log(response)
+              this.$router.push('/')
           })
           .catch(error => {
               if (error.response) {
@@ -133,8 +156,7 @@ export default {
                   console.log(JSON.stringify(error.message))
               }
           })
-      }
-    },
+    }
   }
 }
 </script>
