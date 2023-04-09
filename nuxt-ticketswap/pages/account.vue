@@ -16,8 +16,7 @@
 
         <button v-if="funds > 0 && this.$store.state.isActive" @click="cashout()" class="button is-primary">Cashout</button>
 
-        <button v-if="!this.$store.state.isActive" @click="createSellerAccount()" class="button is-primary">Create Seller Account</button>
-
+        <button v-if="!this.$store.state.isActive && this.$store.state.accountId != '' " @click="createSellerAccount()" class="button is-primary">Create Seller Account</button>
 
         <button @click="$router.push('/my-listings')" class="button">View My Listings</button>
       </div>
@@ -50,6 +49,7 @@ export default {
         this.$store.commit('deauthenticateUser')
         this.$store.commit('emptyCart')
         this.$store.commit('activateAccount', false)
+        this.$store.commit('setAccountId', '')
         this.$router.push('/')
     },
     getAccountDetails() {
@@ -58,7 +58,6 @@ export default {
       if(!this.$store.state.isActive) {
         $fetch("api/v1/check-transfer/", { method: "GET", headers })
         .then((response) => {
-          console.log(response)
           this.$store.commit('activateAccount', response['transfers'] == 'active')
         })
         .catch(error => {
@@ -77,6 +76,7 @@ export default {
       .then((response) => {
         console.log(response)
         this.funds = response["funds"]
+        this.$store.commit("setAccountId", response['account_id'])
       })
       .catch(error => {
               if (error.response) {
