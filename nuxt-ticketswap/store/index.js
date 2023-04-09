@@ -8,6 +8,7 @@ export default createStore({
         isAuthenticated: false,
         token: '',
         isActive: localStorage.getItem('isActive') === 'true' || false,
+        accountId: '',
     },
     mutations: {
         initializeStore(state){
@@ -25,7 +26,6 @@ export default createStore({
             } else {
                 localStorage.setItem('cart', JSON.stringify(state.cart))
             }
-        
         },
 
         authenticateUser(state, token) {
@@ -48,7 +48,10 @@ export default createStore({
             state.isActive = newState
             localStorage.setItem('isActive', newState)
         },
-
+        setAccountId(state, accountId) {
+            state.accountId = accountId
+            localStorage.setItem('accountId', accountId)
+        },
     },
     actions: {
     },

@@ -63,7 +63,7 @@ class LoginView(APIView):
 
 class RecentListingsList(APIView):
      def get(self, request, format=None):
-        listings = Listing.objects.order_by('date','price').distinct().filter(status="ACTIVE")[0:25]
+        listings = Listing.objects.order_by('date','price').distinct().filter(status="ACTIVE").exclude(user=request.user)[0:25]
       
         unique_listings = []
         list = []
@@ -82,7 +82,7 @@ class ListingDetail(APIView):
             raise Http404
 
     def get(self, request, listing_slug, format=None):  
-        listings = self.get_object(listing_slug)
+        listings = self.get_object(listing_slug).exclude(user=request.user)
         serializer = ListingSerializer(listings, many=True)
         if isinstance(serializer.data, list):
             return Response(serializer.data)
@@ -189,7 +189,7 @@ def search(request):
     search_query = request.data.get('query', '')
 
     if search_query:
-        listings = Listing.objects.filter(Q(event__icontains=search_query) | Q(description__icontains=search_query), status="ACTIVE")
+        listings = Listing.objects.filter(Q(event__icontains=search_query) | Q(description__icontains=search_query), status="ACTIVE").exclude(user=request.user)
         serializer = ListingSerializer(listings, many=True)
         return Response(serializer.data)
     else:
@@ -264,7 +264,10 @@ def check_transfer(request):
     stripe.api_key = settings.STRIPE_SECRET_KEY
     user_account = Account.objects.filter(user=request.user).first()
     
+    if user_account is None:
+        return Response("Account not created yet.", status=status.HTTP_200_OK)
+
     stripe_account = stripe.Account.retrieve(user_account.account_id)
     capabilities = stripe_account['capabilities']
-
     return Response(capabilities, status=status.HTTP_200_OK)
+
