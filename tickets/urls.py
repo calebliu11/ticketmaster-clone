@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from tickets.views import RecentListingsList, post_listing, ListingDetail, AddListingToEvent, LoginView, ListingsList, checkout, OrdersList, update_listings, report, search, AccountView
+from tickets.views import RecentListingsList, post_listing, ListingDetail, AddListingToEvent, LoginView, ListingsList, checkout, OrdersList, update_listings, report, search, AccountView, cashout, check_transfer
 
 app_name = 'tickets'
 
@@ -18,6 +18,8 @@ urlpatterns = [
     path('report/', report),
     path('search/', search),
     path('account/', AccountView.as_view()),
+    path('cashout/', cashout),
+    path('check-transfer/', check_transfer),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

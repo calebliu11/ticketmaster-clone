@@ -90,25 +90,22 @@ export default {
             first_name: '',
             last_name: '',
             email: '',
-            errors: []
-
+            errors: [],
         }
     },
     mounted() {
         this.cart = this.$store.state.cart
-
+        this.token = this.$store.state.token
         this.stripeSetup()
     },
-
-   
     methods: {
         async stripeSetup() {
             if (this.cart.items.length > 0) {
-            this.stripe = await loadStripe('pk_test_51MsvUpB0HmvtCEdiNJEBJrxMhmg0SMS0c7vmh1H1lsSunWBt2UbbpH9jRfA3Cr3iIXoHjJzLWXxW8DPwAF7Qyrtl008leL4DWT')
+                this.stripe = await loadStripe('pk_test_51MsvUpB0HmvtCEdiNJEBJrxMhmg0SMS0c7vmh1H1lsSunWBt2UbbpH9jRfA3Cr3iIXoHjJzLWXxW8DPwAF7Qyrtl008leL4DWT')
 
-            const elements = this.stripe.elements();
-            this.card = elements.create('card', { hidePostalCode: true })
-            this.card.mount('#card-element')
+                const elements = this.stripe.elements();
+                this.card = elements.create('card', { hidePostalCode: true })
+                this.card.mount('#card-element')
             }
         },
         enterForm(){
