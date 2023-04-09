@@ -149,6 +149,7 @@ export default {
                     seller_email: item.ticket.user_email,
                     date: item.ticket.date,
                     image_url: item.ticket.image,
+                    show_form: false,
                 }
                 items.push(ticket)
                 
@@ -156,8 +157,7 @@ export default {
                     listing: item.ticket.id,
                     status: "SOLD",
                 }
-                console.log(item.ticket.user)
-
+                
                 listingIds.push(listingTicket)
             }
             

@@ -27,8 +27,6 @@
     <div class="column is-10">
       <button @click="logout()" class="button is-danger">Log out</button>
     </div>
-    
-
 
   </div>
 </template>

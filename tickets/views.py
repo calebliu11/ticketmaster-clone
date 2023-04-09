@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import status, authentication, permissions
 
-from .models import Listing, Order, Account
+from .models import Listing, Order, Account, Report
 from .serializers import ListingSerializer, OrderSerializer, ReportSerializer, AccountSerializer
 from django.core.exceptions import ValidationError
 
@@ -31,6 +31,10 @@ from decimal import Decimal
 def post_listing(request):
     serializer = ListingSerializer(data=request.data)
     try:
+        reports = Report.objects.filter(reported_user=request.user)
+        if reports.count() >= 3:
+            return Response('User has been reported too many times and is banned from posting listings.', status=status.HTTP_403_FORBIDDEN)
+
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
@@ -174,7 +178,7 @@ def report(request):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        serializer.save(user=request.user, reason=data['reason'], description=data['description'], verified=data['verified'])
+        serializer.save(user=request.user, reported_user=data['reported_user'], reason=data['reason'], description=data['description'], verified=data['verified'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     except ValidationError:

@@ -84,7 +84,8 @@ class OrderItemSerializer(serializers.ModelSerializer):
             "user",
             "seller_email",
             "date",
-            "image_url"
+            "image_url",
+            "show_form"
         )
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -115,6 +116,7 @@ class ReportSerializer(serializers.ModelSerializer):
         model = Report
         fields = (
             "user",
+            "reported_user",
             "listing",
             "reason",
             "description",
