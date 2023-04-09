@@ -13,19 +13,19 @@
                                     <br>
                                     <span class="is-size-5">{{ item.description }}</span>
                                     <br>
+
                                     <p class="has-text-weight-semibold is-italic has-text-primary">${{ item.price }}</p>
 
                                     <img :src="`/api/v1/${item.image_url}`" alt="My Image" style="height: 300px;">
                                     <br>
-
                                     <span class="is-size-5">Sold by {{ item.seller_email }}</span>
 
                                     <div class="column is-10">
-                                    <button @click="showReportForm(); " class="button is-danger">Report Fraud</button>
+                                        <button @click="showReportForm(item); " class="button is-danger">Report Fraud</button>
                                     </div>
 
 
-                                    <div id="report-form" v-if="showForm">
+                                    <div id="report-form" v-if="item.show_form">
                                         <form @submit.prevent="enterForm(item)">
                                             <div hidden>{% csrf_token %}</div>
 
@@ -43,7 +43,9 @@
                                                 </div>
                                             </div>
 
-                                            <input type="submit" class="button" value="Submit Report">
+                                            <input type="submit" class="button is-primary" value="Submit Report">
+
+                                            <button @click="cancelReport(item); " class="button ml-3">Cancel</button>
                                         </form>
                                     </div>
                                 </div>   
@@ -60,7 +62,6 @@ import { toast } from 'bulma-toast'
 export default {
     data() {
         return {
-            showForm: false,
             formData: {
               reason: '',
               description: '',
@@ -72,14 +73,18 @@ export default {
       this.getOrders()
     },
     methods: {
-        showReportForm() {
-            this.showForm = true
+        showReportForm(item) {
+            item.show_form = true
+        },
+        cancelReport(item){
+            item.show_form = false
         },
         async enterForm(item) {
             const csrftoken = Cookies.get('csrftoken');
             const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token, 'X-CSRFToken': csrftoken};
             const formData = {
                 user: 8,
+                reported_user: item.user,
                 listing: item.listing,
                 reason: this.reason,
                 description: this.description,
@@ -90,21 +95,21 @@ export default {
             .then((response) => {
                 console.log(response)
                 toast({
-                message: 'Your report was submitted!',
-                type: 'is-success',
-                dismissible: true,
-                pauseOnHover: true,
-                duration: 1500,
-                position: 'bottom-left',
+                    message: 'Your report was submitted!',
+                    type: 'is-success',
+                    dismissible: true,
+                    pauseOnHover: true,
+                    duration: 1500,
+                    position: 'bottom-left',
                 })
-                this.showForm = false
+                item.show_form = false
             })
             .catch((error) => {
                 if (error.response) {
                     console.log(JSON.stringify(error.response._data))
                 }
                 else if (error.message) {
-                    console.log(JSON.stringify(error))
+                    console.log(JSON.stringify(error.message))
                 }
              })
         },

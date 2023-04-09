@@ -57,6 +57,7 @@ class OrderItem(models.Model):
     seller_email = models.CharField(max_length=100)
     date = models.DateField(blank=True)
     image_url = models.CharField(max_length=100)
+    show_form = models.BooleanField(default=False)
 
 def get_next_integer_value():
     # Retrieve the highest integer value in the database and increment it by 1
@@ -66,6 +67,7 @@ def get_next_integer_value():
 class Report(models.Model):
     id = models.IntegerField(primary_key=True, default=get_next_integer_value)
     user = models.ForeignKey(User, related_name='reports', on_delete=models.CASCADE)
+    reported_user = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, related_name='reports', on_delete=models.CASCADE)
     reason = models.CharField(max_length=100)
     description = models.TextField(max_length=300)
