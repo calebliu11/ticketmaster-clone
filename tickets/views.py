@@ -132,7 +132,7 @@ def checkout(request):
             charge = stripe.Charge.create(
                     amount = int(total_cost * 100),
                     currency = 'USD',
-                    description = 'Purchase from TicketTrade',
+                    description = "Order from " + str(request.user),
                     source = serializer.validated_data['stripe_token']
                 )
                 
