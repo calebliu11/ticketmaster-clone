@@ -15,11 +15,11 @@
       <div class="buttons is-grouped mt-4" >
 
 
-        <button v-if="this.$store.state.accountId != ''" class="button is-info" @click=viewSellerAccount() >View Seller Account</button>
+        <button v-if="this.$store.state.isActive && this.$store.state.accountId != ''" class="button is-info" @click=viewSellerAccount() >View Seller Account</button>
 
         <button v-if="funds > 0 && this.$store.state.isActive" @click="cashout()" class="button is-primary">Cashout</button>
 
-        <button v-if="!this.$store.state.isActive && this.$store.state.accountId == '' " @click="createSellerAccount()" class="button is-primary">Create Seller Account</button>
+        <button v-if="!this.$store.state.isActive" @click="createSellerAccount()" class="button is-primary">Create Seller Account</button>
 
         <button @click="$router.push('/my-listings')" class="button">View My Listings</button>
       </div>

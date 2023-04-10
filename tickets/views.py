@@ -204,7 +204,11 @@ class AccountView(APIView):
     def post(self, request):
         stripe.api_key = settings.STRIPE_SECRET_KEY
 
+
         user_account = Account.objects.filter(user=request.user).first()
+
+        if user_account is None:
+            user_account = Account.objects.create(user=request.user)
 
         account = stripe.Account.create(
             country="US",
