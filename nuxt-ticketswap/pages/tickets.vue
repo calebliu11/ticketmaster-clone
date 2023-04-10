@@ -1,17 +1,17 @@
 <template>
     <div class="column is-10">
-        <h2 class="title">Your Tickets</h2>
+        <h2 class="title">My Tickets</h2>
             <ul v-for="order in orders">
                 <hr>
-                <p>Order on {{ order.created_at }}</p>
+                <strong class="is-size-4 has-text-weight-semibold">Order on {{ computeFormattedDate(order.created_at) }}</strong>
                     <ul v-for="item in order.items">
-                        <div class="box">  
+                        <div class="box mt-4">  
                             <div class="content">
                                     <strong class="is-size-4 has-text-weight-semibold">{{ item.event }}</strong>
                                     <br>
-                                    <span class="is-size-5">{{ item.date }}</span>
+                                    <span class="is-size-5">{{ computeFormattedDate(item.date) }}</span>
                                     <br>
-                                    <span class="is-size-5">{{ item.description }}</span>
+                                    <span class="is-size-5 has-text-info">{{ item.description }}</span>
                                     <br>
 
                                     <p class="has-text-weight-semibold is-italic has-text-primary">${{ item.price }}</p>
@@ -24,7 +24,7 @@
                                         <button @click="showReportForm(item); " class="button is-danger">Report Fraud</button>
                                     </div>
 
-
+                                    
                                     <div id="report-form" v-if="item.show_form">
                                         <form @submit.prevent="enterForm(item)">
                                             <div hidden>{% csrf_token %}</div>
@@ -120,6 +120,11 @@ export default {
                 this.orders = response
             })
             .catch((error) => console.error(error))
+        },
+        computeFormattedDate(unformatted_date) {
+            const date = new Date(unformatted_date);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
         }
     },
 }

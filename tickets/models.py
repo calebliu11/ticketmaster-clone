@@ -35,6 +35,9 @@ class Listing(models.Model):
              self.slug = slugify(self.event)
         return super().save(*args, **kwargs)
     
+    class Meta:
+        ordering = ['status', 'date',]
+        
 class Order(models.Model):
     user = models.ForeignKey(User, related_name="orders", on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100)
