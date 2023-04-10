@@ -104,7 +104,7 @@ export default {
                 this.stripe = await loadStripe('pk_test_51MsvUpB0HmvtCEdiNJEBJrxMhmg0SMS0c7vmh1H1lsSunWBt2UbbpH9jRfA3Cr3iIXoHjJzLWXxW8DPwAF7Qyrtl008leL4DWT')
 
                 const elements = this.stripe.elements();
-                this.card = elements.create('card', { hidePostalCode: true })
+                this.card = elements.create('card', { hidePostalCode: false })
                 this.card.mount('#card-element')
             }
         },
