@@ -75,7 +75,7 @@ export default {
       $fetch("api/v1/account/", { method: "GET", headers })
       .then((response) => {
         console.log(response)
-        this.funds = response["funds"]
+        this.funds = response["funds"] 
         this.$store.commit("setAccountId", response['account_id'])
       })
       .catch(error => {
