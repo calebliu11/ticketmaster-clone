@@ -43,10 +43,10 @@
                             <input class="file-input" type="file" @change="onChangeFile" name="image">
                             <span class="file-cta">
                                 <span class="file-icon">
-                                    <font-awesome-icon icon="fa-solid fa-upload" beat />
+                                    <font-awesome-icon icon="fa-solid fa-upload"/>
                                 </span>
                                 <span class="file-label">
-                                    Upload the ticket...
+                                    Upload ticket...
                                 </span>
                             </span>
                         </label>
