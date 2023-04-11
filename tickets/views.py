@@ -17,13 +17,23 @@ from datetime import date
 from datetime import datetime
 from django.http import Http404, HttpResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from rest_framework.authtoken.models import Token
 import json
 from django.http import JsonResponse
 from django.db.models import Q, F
 from bson.decimal128 import Decimal128
 from decimal import Decimal
+from .forms import UserRegistrationForm
+from verify_email.email_handler import send_verification_email
+
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.core.mail import EmailMessage
+from .tokens import account_activation_token
+from rest_framework.renderers import JSONRenderer
 
 # Create your views here.
 
@@ -50,14 +60,16 @@ class LoginView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
         
-        user = authenticate(username=username, password=password)
-        
+        user = User.objects.get(username=username)
         if user is not None:
-            login(request, user)
+            if user.is_active:
+                user = authenticate(username=username, password=password)
+                login(request, user)
 
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key})
-
+                token, created = Token.objects.get_or_create(user=user)
+                return Response({'token': token.key})
+            else:
+                return Response({'error': 'Account not verified, please check your email'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'error': 'Invalid username or password, user not found'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -274,4 +286,50 @@ def check_transfer(request):
     stripe_account = stripe.Account.retrieve(user_account.account_id)
     capabilities = stripe_account['capabilities']
     return Response(capabilities, status=status.HTTP_200_OK)
+
+def activate(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return HttpResponse("Success: Account verified. You can close this page!")
+    else:
+        return HttpResponse("Error: Account not able to be verified. Please try again.")
+
+
+def activate_email(request, user, email):
+    mail_subject = 'Activate your user account with TicketSwap.'
+    message = render_to_string('template_activate_account.html', {
+        'user': user.username,
+        'domain': get_current_site(request).domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': account_activation_token.make_token(user),
+        'protocol': 'https' if request.is_secure() else 'http'
+    })
+    email = EmailMessage(mail_subject, message, to=[email])
+    if email.send():
+        return HttpResponse("f'{user}, please go to your email <b>{email}</b> inbox and click on the activation link to verify your \
+                account. Make sure to check your spam folder.")
+    else:
+        return HttpResponse("Error with sending verification email")
+
+def signup(request):
+    if request.method == "POST":
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active=False
+            user.save()
+
+            activate_email(request, user, form.cleaned_data.get('email'))
+            return HttpResponse("Email successfully sent!")
+        else:
+            raise ValidationError(form.errors)
+    else:
+        form = UserRegistrationForm()
 

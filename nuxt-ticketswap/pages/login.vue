@@ -3,7 +3,8 @@
      
             <h2 class="title">Login</h2>
             
-            <form @submit.prevent="enterForm">
+            <span class="has-text-weight-semibold is-size-5">Note: Your account must be verified through email before logging in.</span>
+            <form class="mt-2" @submit.prevent="enterForm">
                 <div hidden>{% csrf_token %}</div>
                 <div class="field">
                     <label>Username</label>
@@ -14,9 +15,7 @@
 
                 <div class="field">
                     <label>Password</label>
-                    <!-- <div class="control">
-                        <input type="text" class="input" v-model="password">
-                    </div> -->
+
                     <div class="field has-addons">
                         <div class="control is-expanded">
                             <input v-if="showPassword" type="text" class="input" v-model="password" />
