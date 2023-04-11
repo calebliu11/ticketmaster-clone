@@ -35,7 +35,7 @@
 
                 <div class="field">
                     <div class="control">
-                        <button>Login</button>
+                        <button class="button is-primary">Login</button>
                     </div>
                 </div>
             </form>

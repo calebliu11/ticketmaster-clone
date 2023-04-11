@@ -57,7 +57,7 @@
 
                 <div class="field">
                     <div class="control">
-                        <button type="submit">Sign up</button>
+                        <button type="submit" class="button is-primary">Sign up</button>
                     </div>
                 </div>
             </form>
