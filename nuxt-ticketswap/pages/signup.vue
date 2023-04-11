@@ -61,6 +61,7 @@
                     </div>
                 </div>
             </form>
+
         </div>
     
 </template>
@@ -138,19 +139,19 @@ export default {
                 await $fetch("/api/v1/signup/", { method: "POST", headers, body: formData })
                     .then(() => {
                         toast({
-                            message: 'Your account was created, please log in!',
+                            message: "Please go to your email inbox and click on the activation link to verify your account. Make sure to check your spam folder.!",
                             type: 'is-success',
                             dismissible: true,
                             pauseOnHover: true,
-                            duration: 1000,
+                            duration: 3500,
                             position: 'bottom-left',
                         })
                         this.$router.push('/login')
                     })
                     .catch(error => {
                         if (error.response) {
-                            this.errors.push(JSON.stringify(error.response._data))
-                            console.log(JSON.stringify(error.response))
+                            this.errors.push('Validation error with form. Please check your form data.')
+                            console.log(JSON.stringify(error.response._data))
                         }
                         else if (error.message) {
                             this.errors.push('Something went wrong. Please try again!')

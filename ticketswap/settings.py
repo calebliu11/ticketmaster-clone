@@ -171,3 +171,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'admin@washuticketswap.com'
 EMAIL_HOST_PASSWORD = 'twqwdtllieefmlou'
+
