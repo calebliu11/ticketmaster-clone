@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
-    "verify_email.apps.VerifyEmailConfig",
 
     #Local Apps
     "tickets"

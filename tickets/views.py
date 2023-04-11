@@ -27,7 +27,6 @@ from django.db.models import Q, F
 from bson.decimal128 import Decimal128
 from decimal import Decimal
 from .forms import UserRegistrationForm
-from verify_email.email_handler import send_verification_email
 
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
