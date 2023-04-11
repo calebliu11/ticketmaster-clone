@@ -83,7 +83,7 @@ export default {
             const csrftoken = Cookies.get('csrftoken');
             const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token, 'X-CSRFToken': csrftoken};
             const formData = {
-                user: 8,
+                user: 22,
                 reported_user: item.user,
                 listing: item.listing,
                 reason: this.reason,

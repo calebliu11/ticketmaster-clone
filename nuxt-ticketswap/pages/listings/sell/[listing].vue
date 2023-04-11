@@ -90,7 +90,7 @@ export default {
 
               if (!this.errors.length) {
                   const formData = {
-                      user: 8,
+                      user: 22,
                       user_email: 'seller@wustl.edu',
                       event: this.ticket.event,
                       description: this.ticket.description,
