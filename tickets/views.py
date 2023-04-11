@@ -24,6 +24,8 @@ from django.http import JsonResponse
 from django.db.models import Q, F
 from bson.decimal128 import Decimal128
 from decimal import Decimal
+from .forms import UserRegistrationForm
+from verify_email.email_handler import send_verification_email
 
 # Create your views here.
 
@@ -275,3 +277,11 @@ def check_transfer(request):
     capabilities = stripe_account['capabilities']
     return Response(capabilities, status=status.HTTP_200_OK)
 
+def signup(request):
+    if request.method == "POST":
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            inactive_user = send_verification_email(request, form)
+            return HttpResponse("User Verified!")
+        else:
+            raise ValidationError(form.errors)
