@@ -22,6 +22,7 @@
 
               <div class="control">
                 <button class="button is-success">
+                  <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
                 </button>
               </div>
             </div>
@@ -45,13 +46,15 @@
 
             <p class="control">
               <span>
-                <button class="bd-tw-button button" @click="$router.push('/account')">My Account</button>
+                <button class="bd-tw-button button" @click="$router.push('/account')"><font-awesome-icon
+                        icon="fa-solid fa-user" /></button>
               </span>
             </p>
 
             <p class="control">
   
-                  <button class="button is-primary " @click="$router.push('/cart')">Cart</button>
+                  <button class="button is-primary " @click="$router.push('/cart')"><font-awesome-icon
+                      icon="fa-solid fa-cart-shopping" /></button>
             </p>
 
           </template>

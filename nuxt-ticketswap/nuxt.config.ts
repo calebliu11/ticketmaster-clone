@@ -12,6 +12,7 @@ export default defineNuxtConfig({
         // Load a Node.js module directly (here it's a Sass file).
         'bulma',
         // CSS file in the project
+        '@fortawesome/fontawesome-svg-core/styles.css'
         // SCSS file in the project
     ],
 })
