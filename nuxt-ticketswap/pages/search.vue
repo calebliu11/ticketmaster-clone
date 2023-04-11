@@ -7,10 +7,27 @@
         </div>
 
         <template v-if="listings.length > 0">
-            <listingBox 
-            v-for="listing in listings"
-            v-bind:key="listing.id"
-            v-bind:listing="listing" />
+            <ul v-for="listing in listings">
+                <div class="box mb-4">  
+                    <div class="content">
+                        <p>
+                            <strong class="is-size-4 has-text-weight-semibold">{{ listing.event }}</strong>
+                            <br>
+                            <span class="is-size-5">{{ formattedDate(listing) }}</span>
+                            <br>
+                            <span class="is-size-5">{{ listing.description }}</span>
+                            <br>
+                            <p class="has-text-weight-semibold is-italic has-text-primary is-size-4">${{ listing.price }}</p>
+                        </p>
+                    </div>    
+            
+                    <template v-if="$store.state.isAuthenticated">
+                        <div class="buttons">
+                            <a class="button is-dark" @click="addToCart(listing)">Claim Ticket</a>
+                        </div>
+                    </template>            
+                </div>
+            </ul>
         </template>
         <template v-else>
             <h2 class="subtitle">
@@ -21,7 +38,7 @@
 </template>
 
 <script>
-import listingBox from '@/components/listingBox'
+import { toast } from 'bulma-toast'
 
 export default {
     name: 'Search',
@@ -50,9 +67,47 @@ export default {
                 this.listings = response
             })
             .catch((error) => console.error(error))
+        },
+        formattedDate(listing) {
+            const date = new Date(listing.date);
+            const currentTimeZoneOffset = date.getTimezoneOffset();
+
+            const targetTimeZoneOffset = 800; 
+            const timeDifferenceInMinutes = targetTimeZoneOffset - currentTimeZoneOffset;
+            const newDate = new Date(date.getTime() + (timeDifferenceInMinutes * 60 * 1000));
+
+
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return newDate.toLocaleDateString('en-US', options);
+        },
+        addToCart(listing) {
+            const item = {
+                ticket: listing
             }
+
+            const existsInCart = this.$store.state.cart.items.filter(i => i.ticket.id === item.ticket.id)
+            if (!existsInCart.length) {
+                this.$store.commit('addToCart', item)
+                toast({
+                    message: 'Ticket was added to your cart!',
+                    type: 'is-success',
+                    dismissible: true,
+                    pauseOnHover: true,
+                    duration: 1000,
+                    position: 'bottom-left',
+                })
+            }
+            else {
+                toast({
+                    message: 'Ticket already exists in your cart!',
+                    type: 'is-success',
+                    dismissible: true,
+                    pauseOnHover: true,
+                    duration: 1000,
+                    position: 'bottom-left',
+                })
+            }
+        }
     }
 }
-
-
 </script>

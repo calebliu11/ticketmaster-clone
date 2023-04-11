@@ -94,7 +94,7 @@ export default {
     },
     async createSellerAccount(){
         const data = {
-          user: 8,
+          user: 22,
           account_id: '',
         }
 
@@ -128,7 +128,7 @@ export default {
     async cashout() {
       const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token};
       const cashoutData = {
-        user: 8,
+        user: 22,
         funds: this.funds,
       }
       
