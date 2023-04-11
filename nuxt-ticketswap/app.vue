@@ -1,83 +1,86 @@
 <template>
   <div id="wrapper">
-   
+
     <nav class="navbar ">
-  <div class="navbar-brand">
-     <router-link to="/" class="navbar-item"><strong>TicketSwap</strong></router-link>
+      <div class="navbar-brand">
+        <router-link to="/" class="navbar-item"><strong> <font-awesome-icon icon="fa-solid fa-ticket" /> TicketSwap</strong></router-link>
 
-  </div>
-
-  <div id="navMenubd-example" class="navbar-menu">
-    <div class="navbar-start">
-      <router-link to="/seller" class="navbar-item">Create New Event</router-link>
-
-      <router-link to="/about" class="navbar-item">About</router-link>
-      <div class="navbar-item">
-        <template v-if="$store.state.isAuthenticated">
-          <form method="get" action="/search">
-            <div class="field has-addons">
-              <div class="control">
-                <input type="text" class="input" placeholder='Search' name="query">
-              </div>
-
-              <div class="control">
-                <button class="button is-success">
-                </button>
-              </div>
-            </div>
-          </form>
-        </template>
       </div>
-    </div>
 
-    <div class="navbar-end">
-    
-      <div class="navbar-item">
-        <div class="field is-grouped">
+      <div id="navMenubd-example" class="navbar-menu">
+        <div class="navbar-start">
+          <router-link to="/seller" class="navbar-item"> Create New Event</router-link>
 
-          <template v-if="$store.state.isAuthenticated">
-            <p class="control">
-              <span>
-                <button class="bd-tw-button button" @click="$router.push('/tickets')">My Tickets</button>
-              </span>
-            </p>
+          <router-link to="/about" class="navbar-item">About</router-link>
+          <div class="navbar-item">
+            <template v-if="$store.state.isAuthenticated">
+              <form method="get" action="/search">
+                <div class="field has-addons">
+                  <div class="control" >
+                    <input type="text" class="input" placeholder='Search...' name="query">
+                  </div>
+
+                  <div class="control">
+                    <button class="button is-success">
+                      <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </template>
+          </div>
+        </div>
+
+        <div class="navbar-end">
+
+          <div class="navbar-item">
+            <div class="field is-grouped">
+
+              <template v-if="$store.state.isAuthenticated">
+                <p class="control">
+                  <span>
+                    <button class="bd-tw-button button" @click="$router.push('/tickets')">My Tickets</button>
+                  </span>
+                </p>
 
 
-            <p class="control">
-              <span>
-                <button class="bd-tw-button button" @click="$router.push('/account')">My Account</button>
-              </span>
-            </p>
+                <p class="control">
+                  <span>
+                    <button class="bd-tw-button button" @click="$router.push('/account')"> <font-awesome-icon
+                        icon="fa-solid fa-user" /></button>
+                  </span>
+                </p>
 
-            <p class="control">
-  
-                  <button class="button is-primary " @click="$router.push('/cart')">Cart</button>
-            </p>
+                <p class="control">
 
-          </template>
+                  <button class="button is-primary " @click="$router.push('/cart')"> <font-awesome-icon
+                      icon="fa-solid fa-cart-shopping" /> </button>
+                </p>
 
-          <template v-else>
-            <p class="control">
+              </template>
+
+              <template v-else>
+                <p class="control">
                   <button class="button is-primary" @click="$router.push('/signup')">Signup</button>
-                
-            </p>
 
-            <p class="control">
+                </p>
+
+                <p class="control">
                 <div>
                   <button class="button is-primary" @click="$router.push('/login')">Login</button>
                 </div>
-            </p>
-          </template>
+                </p>
+              </template>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</nav>
-  
- 
+    </nav>
+
+
 
     <section class="section">
-      <router-view/>
+      <router-view />
     </section>
 
     <footer class="footer">
@@ -85,6 +88,14 @@
     </footer>
   </div>
 </template>
+
+<style>
+#searchbar {
+  margin: 0 auto;
+  text-align: center;
+}
+</style>
+
 
 <script>
 

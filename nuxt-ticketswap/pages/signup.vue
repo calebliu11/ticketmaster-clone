@@ -37,9 +37,7 @@
 
                 <div class="field">
                     <label>Verify Password</label>
-                    <!-- <div class="control">
-                        <input type="text" class="input" v-model="password2">
-                    </div> -->
+
                     <div class="field has-addons">
                         <div class="control is-expanded">
                             <input v-if="showPassword2" type="text" class="input" v-model="password2" />
