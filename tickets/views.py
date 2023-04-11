@@ -3,8 +3,10 @@ import stripe
 from django.shortcuts import render
 from django.conf import settings
 
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.contrib import messages
 from django.http import HttpResponse
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import status, authentication, permissions
@@ -297,7 +299,12 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse("Success: Account verified. You can close this page!")
+        #When you click on link it takes you page
+        # messages.success(request,"Success: Account verified. You can close this page!")
+
+      
+        return render(request, 'success.html')
+        # return HttpResponse("Success: Account verified. You can close this page!")
     else:
         return HttpResponse("Error: Account not able to be verified. Please try again.")
 
