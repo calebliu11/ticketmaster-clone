@@ -63,7 +63,7 @@ class LoginView(APIView):
 
 class RecentListingsList(APIView):
      def get(self, request, format=None):
-        listings = Listing.objects.order_by('date','price').distinct().filter(status="ACTIVE").exclude(user=request.user)[0:25]
+        listings = Listing.objects.order_by('date','price').distinct().filter(status="ACTIVE")[0:25]
       
         unique_listings = []
         list = []

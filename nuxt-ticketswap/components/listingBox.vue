@@ -40,9 +40,16 @@ export default {
     }, 
     computed: {
     formattedDate() {
-      const date = new Date(this.listing.date);
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return date.toLocaleDateString('en-US', options);
+        const date = new Date(this.listing.date);
+        const currentTimeZoneOffset = date.getTimezoneOffset();
+
+        const targetTimeZoneOffset = 800; 
+        const timeDifferenceInMinutes = targetTimeZoneOffset - currentTimeZoneOffset;
+        const newDate = new Date(date.getTime() + (timeDifferenceInMinutes * 60 * 1000));
+
+
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return newDate.toLocaleDateString('en-US', options);
     }
   }
     
