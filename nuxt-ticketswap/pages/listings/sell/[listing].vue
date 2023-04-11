@@ -4,34 +4,47 @@
           <template v-if="$store.state.isAuthenticated">
 
               <form @submit.prevent="enterForm">
-                  <div hidden>{% csrf_token %}</div>
+                <div hidden>{% csrf_token %}</div>
 
-                 
+                
 
-                  <div class="field">
-                      <label>Price</label>
-                      <div class="control">
-                          <input type="number" class="input" v-model="price">
-                      </div>
-                  </div>
+                <div class="field">
+                    <label class="label">Price</label>
+                    <div class="control has-icons-left">
+                        <input class="input" type="number" v-model="price" >
+                        <span class="icon is-small is-left">
+                            <font-awesome-icon icon="fa-solid fa-dollar-sign" beat />
+                        </span>
+                    </div>
+                </div>
 
+                <div class="field">
+                        <div class="control is-flex">
+                            <label class="file-label">
+                                <input class="file-input" type="file" @change="onChangeFile" name="image">
+                                <span class="file-cta">
+                                    <span class="file-icon">
+                                        <font-awesome-icon icon="fa-solid fa-upload" />                                    </span>
+                                    <span class="file-label" v-if="fileName">
+                                        {{ fileName }}
+                                    </span>
+                                    <span class="file-label" v-else>
+                                        Choose a file...
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                </div>
 
-                  <div class="field">
-                      <label>Post Ticket</label>
-                          <div class="control">
-                              <input type="file" @change="onChangeFile" name="image">
-                          </div>
-                  </div>
+                <div class="error-notification" v-if="errors.length">
+                    <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
+                </div>
 
-                  <div class="error-notification" v-if="errors.length">
-                      <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
-                  </div>
-
-                  <div class="field">
-                      <div class="control">
-                          <button>Submit</button>
-                      </div>
-                  </div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-primary" :disabled="isSubmitting">Submit</button>
+                    </div>
+                </div>
               </form>
           </template>
 
@@ -57,7 +70,9 @@ export default {
           price: '',
           date: '',
           image: null,
+          fileName: '',
           errors: []
+          
       }
   },
   mounted() {
@@ -77,6 +92,7 @@ export default {
       onChangeFile(event) {
           const reader = new FileReader();
           reader.readAsDataURL(event.target.files[0]);
+          this.fileName = event.target.files[0].name
           reader.onload = () => {
               this.image = reader.result;
           };
