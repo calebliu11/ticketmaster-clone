@@ -128,17 +128,14 @@ export default {
             if (!this.date) {
                 this.errors.push('The date field is required.')
             } else {
-                // console.log(`Datepicker Date: ${(this.date.split('-'))}`)
+                console.log(this.date)
                 const dateSplit = this.date.split('-');
                 const dateReformatted = new Date(dateSplit[0], dateSplit[1]-1, dateSplit[2], 0, 0, 0, 0);
-                // console.log(`Date reformat: ${dateReformatted}`)
                 const today = new Date();
-
                 const todayReformatted = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
-                // console.log(`Today Reformat: ${todayReformatted} | ${today.getMonth()}`);
-                this.date = `${dateSplit[0]}-${dateSplit[1]}-${parseInt(dateSplit[2])}`
-                finalDate = this.date
-                console.log(this.date);
+
+                finalDate = this.date;
+
                 if (dateReformatted < todayReformatted) {
                     this.errors.push('The date cannot be in the past.')
                 } else if (dateReformatted > todayReformatted) {
@@ -161,14 +158,14 @@ export default {
 
             if (!this.errors.length) {
                 console.log("DATE IN FORM")
-                console.log(finalDate);
+                console.log(finalDate); // console says correct date at this line but when you date changes by one day in form data.
                 const formData = {
                     user: 8,
                     user_email: 'seller@wustl.edu',
                     event: this.event,
                     description: this.description,
                     price: this.price,
-                    date: finalDate,
+                    date: finalDate, // api changing date here 
                     image: this.image,
                 }
 
