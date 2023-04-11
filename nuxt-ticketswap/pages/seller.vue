@@ -38,7 +38,7 @@
                         </div>
                     </div>
 
-                    <div class="file">
+                    <div class="field">
                         <label class="file-label">
                             <input class="file-input" type="file" @change="onChangeFile" name="image">
                             <span class="file-cta">

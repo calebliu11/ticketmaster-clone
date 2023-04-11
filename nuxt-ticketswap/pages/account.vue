@@ -43,13 +43,14 @@
 
         <div class="field">
             <div class="control">
-                <button>Submit</button>
+                <button class="button is-primary">Submit</button>
             </div>
         </div>
       </form>
 
     </div>
-
+    <p class="mb-5">
+    </p>
     <div class="column is-10">
       <button @click="logout()" class="button is-danger">Log out</button>
     </div>
