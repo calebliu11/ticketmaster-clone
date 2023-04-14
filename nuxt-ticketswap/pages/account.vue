@@ -51,10 +51,6 @@ export default {
   },
   methods: {
     async logout() {
-        //const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token};
-        
-        //await $fetch("api/v1/token/logout", { method: "POST", headers, body: {} })
-
         localStorage.removeItem("token")
         this.$store.commit('deauthenticateUser')
         this.$store.commit('emptyCart')
