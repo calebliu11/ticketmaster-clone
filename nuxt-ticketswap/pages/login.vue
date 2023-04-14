@@ -87,7 +87,7 @@ export default {
                 })
                 .catch(error => {
                     if (error.response) {
-                        this.errors.push(error.response._data)
+                        this.errors.push(error.response._data.errors)
                         console.log(JSON.stringify(error.response))
 
                     }
