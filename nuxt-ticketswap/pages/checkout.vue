@@ -146,7 +146,7 @@ export default {
                     description: item.ticket.description,
                     price: item.ticket.price,
                     user: item.ticket.user,
-                    seller_email: item.ticket.user_email,
+                    seller_username: item.ticket.user_username,
                     date: item.ticket.date,
                     image_url: item.ticket.image,
                     show_form: false,

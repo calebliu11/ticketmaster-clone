@@ -18,7 +18,7 @@
 
                                     <img :src="`/api/v1/${item.image_url}`" alt="My Image" style="height: 300px;">
                                     <br>
-                                    <span class="is-size-5">Sold by {{ item.seller_email }}</span>
+                                    <span class="is-size-5">Sold by {{ item.seller_username }}</span>
 
                                     <div class="column is-10">
                                         <button @click="showReportForm(item); " class="button is-danger">Report Fraud</button>

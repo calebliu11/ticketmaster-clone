@@ -49,8 +49,8 @@ def post_listing(request):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        email=request.user.email
-        serializer.save(user=request.user, user_email=email, event=data['event'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
+        username=request.user.username
+        serializer.save(user=request.user, user_username=username, event=data['event'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     except ValidationError:

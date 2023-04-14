@@ -41,7 +41,7 @@
 
           <p class="is-size-3 has-text-success">${{ listing.price }}</p>
 
-          <p class="is-size-3">Seller: {{ listing.user_email }}</p>
+          <p class="is-size-3">Seller: {{ listing.user_username }}</p>
 
           <template v-if="$store.state.isAuthenticated">
             <a class="button is-dark" @click="addToCart(listing)">Claim Ticket</a>

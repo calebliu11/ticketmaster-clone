@@ -18,7 +18,7 @@ class Listing(models.Model):
 
     id = models.AutoField(primary_key=True, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    user_email = models.CharField(max_length=100)
+    user_username = models.CharField(max_length=100)
     event = models.CharField(max_length=100, unique=False) 
     description = models.TextField(max_length=300)
     price = models.IntegerField(default=0)
@@ -57,7 +57,7 @@ class OrderItem(models.Model):
     listing = models.ForeignKey(Listing, related_name='items', on_delete=models.CASCADE)
     price = models.IntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    seller_email = models.CharField(max_length=100)
+    seller_username = models.CharField(max_length=100)
     date = models.DateField(blank=True)
     image_url = models.CharField(max_length=100)
     show_form = models.BooleanField(default=False)
