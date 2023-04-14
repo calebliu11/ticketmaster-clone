@@ -326,6 +326,11 @@ def activate_email(request, user, email):
 
 def signup(request):
     if request.method == "POST":
+        username = request.POST.get('username')
+        existing_user = User.objects.filter(username=username).first()
+        if existing_user is not None:
+            return JsonResponse({'errors': 'User already exists with this username!'}, status=status.HTTP_400_BAD_REQUEST)
+
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
@@ -335,7 +340,10 @@ def signup(request):
             activate_email(request, user, form.cleaned_data.get('email'))
             return HttpResponse("Email successfully sent!")
         else:
-            raise ValidationError(form.errors)
+            errors_dict = {}
+            for field, field_errors in form.errors.items():
+                errors_dict[field] = [str(e) for e in field_errors]
+            return JsonResponse({'errors': errors_dict}, status=status.HTTP_400_BAD_REQUEST)
     else:
         form = UserRegistrationForm()
 

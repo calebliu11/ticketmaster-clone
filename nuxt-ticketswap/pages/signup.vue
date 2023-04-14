@@ -150,8 +150,8 @@ export default {
                     })
                     .catch(error => {
                         if (error.response) {
-                            this.errors.push('Validation error with form. Please check your form data.')
-                            console.log(JSON.stringify(error.response._data))
+                            this.errors.push(error.response._data.errors)
+                            console.log(JSON.stringify(error.response._data.errors))
                         }
                         else if (error.message) {
                             this.errors.push('Something went wrong. Please try again!')
