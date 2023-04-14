@@ -3,7 +3,7 @@
         <td><router-link :to="item.ticket.get_absolute_url">{{ item.ticket.event }}</router-link></td>
         <td>{{ item.ticket.description }}</td>
         <td>${{ item.ticket.price }}</td>
-        <td>{{ item.ticket.user_email }}</td>
+        <td>{{ item.ticket.user_username }}</td>
 
         
         <td><button class="delete" @click="removeFromCart(item)"></button></td>

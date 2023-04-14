@@ -61,7 +61,7 @@ class ListingSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "user",
-            "user_email",
+            "user_username",
             "event",
             "description",
             "price",
@@ -82,7 +82,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
             "description",
             "price",
             "user",
-            "seller_email",
+            "seller_username",
             "date",
             "image_url",
             "show_form"
