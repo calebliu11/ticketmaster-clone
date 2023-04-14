@@ -60,19 +60,23 @@ class LoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-        
-        user = User.objects.get(username=username)
+
+        user = User.objects.filter(username=username).first()
+
         if user is not None:
             if user.is_active:
-                user = authenticate(username=username, password=password)
-                login(request, user)
+                authenticated_user = authenticate(username=username, password=password)
+                if authenticated_user is not None:
+                    login(request, authenticated_user)
 
-                token, created = Token.objects.get_or_create(user=user)
-                return Response({'token': token.key})
+                    token, created = Token.objects.get_or_create(user=authenticated_user)
+                    return Response({'token': token.key})
+                else: 
+                    return JsonResponse({'errors': 'Invalid username or password.'}, status=status.HTTP_404_NOT_FOUND)
             else:
-                return Response({'error': 'Account not verified, please check your email'}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse({'errors': 'Account not verified, please check your email'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'error': 'Invalid username or password, user not found'}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({'errors': 'Invalid username or password, user not found'}, status=status.HTTP_404_NOT_FOUND)
 
 class RecentListingsList(APIView):
      def get(self, request, format=None):
