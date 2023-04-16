@@ -81,7 +81,7 @@ export default {
   methods: {
     async getListings() {
       const slug = this.$route.params.listing
-      await $fetch(`/api/v1/listings/${slug}`, { method: "GET" })
+      await $fetch(`/api/v1/get-listings/${slug}`, { method: "GET" })
         .then((response) => {
           this.ticket = response[0]
           console.log(this.ticket)
