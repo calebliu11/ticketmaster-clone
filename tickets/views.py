@@ -105,7 +105,16 @@ class ListingDetail(APIView):
             return Response(serializer.data)
         else:
             return Response([serializer.data])
-        
+
+@api_view(['GET'])
+def get_listings(request, listing_slug):
+    listings = Listing.objects.filter(slug=listing_slug, status="ACTIVE")
+    serializer = ListingSerializer(listings, many=True)
+    if isinstance(serializer.data, list):
+        return Response(serializer.data)
+    else:
+        return Response([serializer.data])
+      
 class AddListingToEvent(APIView):
     def get_object(self, listing_slug):
         try:
