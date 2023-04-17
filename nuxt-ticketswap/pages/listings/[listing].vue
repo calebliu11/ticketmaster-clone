@@ -4,11 +4,11 @@
         <div class="box">  
           <div class="content">
               <p>
-                  <strong class="is-size-2 has-text-info has-text-weight-semibold">{{ tickets[0].event }}</strong>
+                  <strong class="is-size-2 has-text-info has-text-weight-semibold">{{ event.name }}</strong>
                   <br>
-                  <span class="is-size-5">Date: {{ formattedDate }}</span>
+                  <span class="is-size-5">{{ formattedDate }}</span>
                   <br>
-                  <span class="is-size-5 has-text-weight-semibold is-italic">{{ tickets[0].description }}</span>
+                  <span class="is-size-5 has-text-weight-semibold is-italic">{{ event.description }}</span>
                   <br>
               </p>
           </div>  
@@ -59,20 +59,26 @@
 
 <script>
 import { toast } from 'bulma-toast'
-import listingBox from '@/components/listingBox'
 export default {
 data() {
   return{
+    event: '',
     tickets: []    
   }
 },
-components: {
-  listingBox 
-},
 mounted() {
-    this.getListings()
+    this.getListings(),
+    this.getEvent()
 },
 methods: {
+  async getEvent() {
+    const slug = this.$route.params.listing
+    await $fetch(`/api/v1/get-event/${slug}`, { method: "GET" })
+      .then((response) => {
+        this.event = response[0]
+      })
+      .catch((error) => console.error(error))
+  },
   async getListings() {
     const slug = this.$route.params.listing
     
@@ -117,7 +123,7 @@ methods: {
 },
 computed: {
   formattedDate() {
-        const date = new Date(this.tickets[0].date);
+        const date = new Date(this.event.date);
         const currentTimeZoneOffset = date.getTimezoneOffset();
 
         const targetTimeZoneOffset = 800; 

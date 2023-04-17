@@ -4,6 +4,30 @@ from django.template.defaultfilters import slugify
 
 # Create your models here.
 
+def get_next_integer_value_event():
+    # Retrieve the highest integer value in the database and increment it by 1
+    highest_value = Event.objects.aggregate(models.Max('id'))['id__max']
+    return highest_value + 1 if highest_value else 1
+
+class Event(models.Model):
+    id = models.IntegerField(primary_key=True, default=get_next_integer_value_event)
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(max_length=300)
+    date = models.DateField(blank=True)
+    slug = models.SlugField(null=True) 
+
+    def get_absolute_url(self):
+        return f'/listings/{self.slug}/'
+
+    def save(self, *args, **kwargs):  
+        if not self.slug:
+             self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['date']
+
+
 class Listing(models.Model):
 
     ACTIVE = "ACTIVE"
@@ -19,24 +43,27 @@ class Listing(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     user_username = models.CharField(max_length=100)
-    event = models.CharField(max_length=100, unique=False) 
-    description = models.TextField(max_length=300)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE) 
+    event_name = models.CharField(max_length=100)
+    event_description = models.TextField(max_length=300)
+    event_date = models.DateField(blank=True)
     price = models.IntegerField(default=0)
     status = models.TextField(choices=STATUS_CHOICES, default=ACTIVE)
-    date = models.DateField(blank=True)
     slug = models.SlugField(null=True) 
     image = models.ImageField(upload_to='pics', null=True, blank=True)
- 
-    def get_absolute_url(self):
-        return f'/listings/{self.slug}/'
 
-    def save(self, *args, **kwargs):  # new
+    def save(self, *args, **kwargs):  
         if not self.slug:
-             self.slug = slugify(self.event)
+            self.slug = slugify(self.event.slug)
+        
+        self.event_name = self.event.name
+        self.event_description = self.event.description
+        self.event_date = self.event.date
+
         return super().save(*args, **kwargs)
-    
+
     class Meta:
-        ordering = ['status', 'date',]
+        ordering = ['status', 'event_date']
         
 class Order(models.Model):
     user = models.ForeignKey(User, related_name="orders", on_delete=models.CASCADE)

@@ -16,9 +16,9 @@
                         v-for="item in cart.items"
                         v-bind:key="item.ticket.id"
                     >
-                        <td>{{ item.ticket.event }}</td>
-                        <td>{{ item.ticket.description }}</td>
-                        <td>{{ item.ticket.user_email }}</td>
+                        <td>{{ item.ticket.event_name }}</td>
+                        <td>{{ item.ticket.event_description }}</td>
+                        <td>{{ item.ticket.user_username }}</td>
                         <td>${{ item.ticket.price.toFixed(2) }}</td>
                     </tr>
                 </tbody>
@@ -142,12 +142,12 @@ export default {
                 const item = this.cart.items[i]
                 const ticket = {
                     listing: item.ticket.id,
-                    event: item.ticket.event,
-                    description: item.ticket.description,
+                    event: item.ticket.event_name,
+                    description: item.ticket.event_description,
                     price: item.ticket.price,
                     user: item.ticket.user,
                     seller_username: item.ticket.user_username,
-                    date: item.ticket.date,
+                    date: item.ticket.event_date,
                     image_url: item.ticket.image,
                     show_form: false,
                 }
