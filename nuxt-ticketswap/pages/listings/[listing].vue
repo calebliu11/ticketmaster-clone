@@ -19,19 +19,34 @@
         <div class="box">  
           <div class="content">
               <p>
-                  <strong class="is-size-2 has-text-info has-text-weight-semibold">Tickets</strong>
+                  <strong class="is-size-2 has-text-info has-text-weight-semibold">{{ event.name }}</strong>
                   <br>
-                  <strong class="is-size-4 has-text-dark">To View Own Tickets, Go to My Listings in Account Page</strong>
+                  <span class="is-size-5">{{ formattedDate }}</span>
+                  <br>
+                  <span class="is-size-5 has-text-weight-semibold is-italic">{{ event.description }}</span>
+                  <br>
+
+              </p>
+          </div>  
+        </div>  
+
+        <div class="box">  
+          <div class="content">
+              <p>
+                  <strong class="is-size-5 has-text-weight-semibold">No tickets exist for this event!</strong>
+                  <br>
+                  <span class="is-size-5 has-text-weight-semibold is-italic"><nuxt-link :to="`/listings/sell/${event.slug}`">Post a listing here.</nuxt-link></span>
+
+                  <br>
+
+                  <span class="is-size-6 is-italic">Note: Your own listings can only be viewed from your account in your My Listings page.</span>
+
 
               </p>
           </div>  
         </div>  
         
       </div>
-
- 
-
-
 
       <ul v-for="listing in tickets">
         
@@ -52,9 +67,6 @@
       </ul>
   </div>
 
-  
-     
-      
 </template>
 
 <script>
@@ -86,10 +98,7 @@ methods: {
       .then((response) => {
         this.tickets = response
         console.log(this.tickets)
-
       })
-
-    
   },
  
   addToCart(listing) {
