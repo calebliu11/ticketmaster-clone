@@ -4,9 +4,7 @@
           <template v-if="$store.state.isAuthenticated">
 
               <form @submit.prevent="enterForm">
-                <div hidden>{% csrf_token %}</div>
-
-                
+                <div hidden>{% csrf_token %}</div>       
 
                 <div class="field">
                     <label class="label">Price</label>
@@ -66,9 +64,9 @@ export default {
           user: null,
           user_username: '',
           event: '',
-          description: '',
+          event_name: '',
+          event_description: '',
           price: '',
-          date: '',
           image: null,
           fileName: '',
           errors: []
@@ -76,18 +74,17 @@ export default {
       }
   },
   mounted() {
-      this.getListings()
+      this.getEvent()
   },
   methods: {
-    async getListings() {
+    async getEvent() {
       const slug = this.$route.params.listing
-      await $fetch(`/api/v1/get-listings/${slug}`, { method: "GET" })
+      await $fetch(`/api/v1/get-event/${slug}`, { method: "GET" })
         .then((response) => {
-          this.ticket = response[0]
-          console.log(this.ticket)
+          this.event = response[0]
         })
         .catch((error) => console.error(error))
-    }   ,
+    },
   
       onChangeFile(event) {
           const reader = new FileReader();
@@ -108,12 +105,14 @@ export default {
                   const formData = {
                       user: 22,
                       user_username: 'seller',
-                      event: this.ticket.event,
-                      description: this.ticket.description,
+                      event: this.event.id,
+                      event_name: this.event.name,
+                      event_description: this.event.description,
                       price: this.price,
-                      date: this.ticket.date,
                       image: this.image,
                   }
+
+                  console.log(JSON.stringify(formData))
                   
                   const csrftoken = Cookies.get('csrftoken');
                   const headers = { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken };

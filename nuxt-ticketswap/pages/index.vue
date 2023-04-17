@@ -13,37 +13,37 @@
         </section>
      
       <div> 
-      <listingBox 
-        v-for="listing in recentListings"
-        v-bind:key="listing.id"
-        v-bind:listing="listing" />
+      <eventBox 
+        v-for="event in recentEvents"
+        v-bind:key="event.id"
+        v-bind:event="event" />
       </div>
     
   </div>
 </template>
 
 <script>
-  import listingBox from '@/components/listingBox'
+  import eventBox from '@/components/eventBox'
 
   export default {
     name: 'HomePage',
     data() {
       return {
-        recentListings: []
+        recentEvents: []
       }
     },
     components: {
-      listingBox
-      
+      eventBox
     },
     mounted() {
       this.RecentListingsList()
     },
     methods: {
       async RecentListingsList() {
-        await $fetch('/api/v1/recent-listings/', { method: "GET" })
+        await $fetch('/api/v1/recent-events/', { method: "GET" })
           .then(response => {
-            this.recentListings = response
+            this.recentEvents = response
+            console.log(response)
           })
           .catch(error => {
             console.log(error)

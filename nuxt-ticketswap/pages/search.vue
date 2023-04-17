@@ -6,28 +6,11 @@
             </div>
         </div>
 
-        <template v-if="listings.length > 0">
-            <ul v-for="listing in listings">
-                <div class="box mb-4">  
-                    <div class="content">
-                        <p>
-                            <strong class="is-size-4 has-text-weight-semibold">{{ listing.event }}</strong>
-                            <br>
-                            <span class="is-size-5">{{ formattedDate(listing) }}</span>
-                            <br>
-                            <span class="is-size-5">{{ listing.description }}</span>
-                            <br>
-                            <p class="has-text-weight-semibold is-italic has-text-primary is-size-4">${{ listing.price }}</p>
-                        </p>
-                    </div>    
-            
-                    <template v-if="$store.state.isAuthenticated">
-                        <div class="buttons">
-                            <a class="button is-dark" @click="addToCart(listing)">Claim Ticket</a>
-                        </div>
-                    </template>            
-                </div>
-            </ul>
+        <template v-if="events.length > 0">
+            <eventBox 
+                v-for="event in events"
+                v-bind:key="event.id"
+                v-bind:event="event" />
         </template>
         <template v-else>
             <h2 class="subtitle">
@@ -38,16 +21,19 @@
 </template>
 
 <script>
-import { toast } from 'bulma-toast'
+import eventBox from '@/components/eventBox'
 
 export default {
     name: 'Search',
     
     data() {
         return {
-            listings: [],
+            events: [],
             query: '',
         }
+    },
+    components: {
+      eventBox
     },
     mounted() {
         let url = window.location.search.substring(1)
@@ -64,7 +50,8 @@ export default {
             const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token };
             await $fetch('/api/v1/search/', { method: "POST", headers, body: { 'query': this.query } })
             .then((response) => {
-                this.listings = response
+                this.events = response
+                console.log(events)
             })
             .catch((error) => console.error(error))
         },
@@ -80,34 +67,6 @@ export default {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
             return newDate.toLocaleDateString('en-US', options);
         },
-        addToCart(listing) {
-            const item = {
-                ticket: listing
-            }
-
-            const existsInCart = this.$store.state.cart.items.filter(i => i.ticket.id === item.ticket.id)
-            if (!existsInCart.length) {
-                this.$store.commit('addToCart', item)
-                toast({
-                    message: 'Ticket was added to your cart!',
-                    type: 'is-success',
-                    dismissible: true,
-                    pauseOnHover: true,
-                    duration: 1000,
-                    position: 'bottom-left',
-                })
-            }
-            else {
-                toast({
-                    message: 'Ticket already exists in your cart!',
-                    type: 'is-success',
-                    dismissible: true,
-                    pauseOnHover: true,
-                    duration: 1000,
-                    position: 'bottom-left',
-                })
-            }
-        }
     }
 }
 </script>

@@ -16,8 +16,8 @@
 
             <tbody>
                 <CartItem
-                    v-for="item in cart.items"
-                    v-bind:key="item.ticket.id"
+                    v-for="item in this.cart.items"
+                    v-bind:key="item.id"
                     v-bind:initialItem="item"
                     v-on:removeFromCart="removeFromCart" />
             </tbody>
@@ -43,9 +43,6 @@ import CartItem from '@/components/CartItem'
 
 export default {
     name: 'Cart',
-    components: {
-        CartItem
-    },
     data() {
         return {
             cart: {
@@ -55,6 +52,10 @@ export default {
     },
     mounted() {
         this.cart = this.$store.state.cart
+        console.log(JSON.stringify(this.cart.items))
+    },
+    components: {
+        CartItem
     },
     methods: {
         removeFromCart(item) {

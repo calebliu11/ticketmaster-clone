@@ -5,11 +5,11 @@
         <ul v-for="listing in listings">
           <div v-if="listing.status=='SOLD'" class="box mt-5 has-background-grey-lighter">  
             <div class="content">
-                <strong class="is-size-4 has-text-weight-semibold">{{ listing.event }}</strong>
+                <strong class="is-size-4 has-text-weight-semibold">{{ listing.event_name }}</strong>
                 <br>
                 <span class="is-size-5">{{ computeFormattedDate(listing) }}</span>
                 <br>
-                <span class="is-size-5 has-text-info">{{ listing.description }}</span>
+                <span class="is-size-5 has-text-info">{{ listing.event_description }}</span>
                 <br>
                 <span class="is-size-5 has-text-weight-bold">{{ listing.status }}</span>
                 <br>
@@ -18,11 +18,11 @@
             </div>
             <div v-else class="box mt-5">  
                 <div class="content">
-                    <strong class="is-size-4 has-text-weight-semibold">{{ listing.event }}</strong>
+                    <strong class="is-size-4 has-text-weight-semibold">{{ listing.event_name }}</strong>
                     <br>
                     <span class="is-size-5">{{ computeFormattedDate(listing) }}</span>
                     <br>
-                    <span class="is-size-5 has-text-info">{{ listing.description }}</span>
+                    <span class="is-size-5 has-text-info">{{ listing.event_description }}</span>
                     <br>
                     <span class="is-size-5 has-text-weight-bold">{{ listing.status }}</span>
                     <br>
@@ -38,6 +38,7 @@
     data() {
         return {
             listings: [],
+            events: {}
         }
     },
     mounted() {
@@ -49,11 +50,12 @@
         await $fetch("api/v1/listings/", { method: "GET", headers })
         .then((response) => {
           this.listings = response
+          console.log(JSON.stringify(this.listings))
         })
         .catch((error) => console.error(error))
       },
       computeFormattedDate(listing) {
-        const date = new Date(listing.date);
+        const date = new Date(listing.event_date);
         const currentTimeZoneOffset = date.getTimezoneOffset();
 
         const targetTimeZoneOffset = 800; 

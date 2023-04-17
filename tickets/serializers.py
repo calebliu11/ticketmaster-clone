@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Listing, Order, OrderItem, Report, Account
+from .models import Listing, Order, OrderItem, Report, Account, Event
 
 
 class Base64ImageField(serializers.ImageField):
@@ -52,6 +52,18 @@ class Base64ImageField(serializers.ImageField):
 
         return extension
     
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = (
+            "id",
+            "name",
+            "description",
+            "date",
+            "slug",
+            "get_absolute_url",
+        )
+
 class ListingSerializer(serializers.ModelSerializer):
     image = Base64ImageField(
         max_length=None, use_url=True,
@@ -63,14 +75,13 @@ class ListingSerializer(serializers.ModelSerializer):
             "user",
             "user_username",
             "event",
-            "description",
+            "event_name",
+            "event_description",
+            "event_date",
             "price",
             "status",
-            "date",
             "slug",
-            "get_absolute_url",
             "image"
-
         )
 
 class OrderItemSerializer(serializers.ModelSerializer):

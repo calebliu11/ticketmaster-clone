@@ -71,6 +71,7 @@ export default {
     },
     mounted() {
       this.getOrders()
+
     },
     methods: {
         showReportForm(item) {
@@ -118,6 +119,8 @@ export default {
             await $fetch("/api/v1/orders/", { method: "GET", headers })
             .then((response) => {
                 this.orders = response
+                console.log(JSON.stringify(this.orders))
+
             })
             .catch((error) => console.error(error))
         },

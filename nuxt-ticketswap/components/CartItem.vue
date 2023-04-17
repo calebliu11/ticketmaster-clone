@@ -1,7 +1,7 @@
 <template>
     <tr>
-        <td><router-link :to="item.ticket.get_absolute_url">{{ item.ticket.event }}</router-link></td>
-        <td>{{ item.ticket.description }}</td>
+        <td><router-link :to="`/listings/${item.ticket.slug}`">{{ item.ticket.event_name }}</router-link></td>
+        <td>{{ item.ticket.event_description }}</td>
         <td>${{ item.ticket.price }}</td>
         <td>{{ item.ticket.user_username }}</td>
 

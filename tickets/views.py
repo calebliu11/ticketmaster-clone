@@ -11,8 +11,8 @@ from django.http import HttpResponse
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import status, authentication, permissions
 
-from .models import Listing, Order, Account, Report
-from .serializers import ListingSerializer, OrderSerializer, ReportSerializer, AccountSerializer
+from .models import Listing, Order, Account, Report, Event
+from .serializers import ListingSerializer, OrderSerializer, ReportSerializer, AccountSerializer, EventSerializer
 from django.core.exceptions import ValidationError
 
 from datetime import date
@@ -39,20 +39,42 @@ from rest_framework.renderers import JSONRenderer
 # Create your views here.
 
 @api_view(['POST'])
-def post_listing(request):
-    serializer = ListingSerializer(data=request.data)
+def create_event(request):
+    serializer = EventSerializer(data=request.data)
     try:
         reports = Report.objects.filter(reported_user=request.user)
         if reports.count() >= 3:
-            return Response('User has been reported too many times and is banned from posting listings.', status=status.HTTP_403_FORBIDDEN)
+            return Response('User has been reported too many times and is banned from posting listings or creating events.', status=status.HTTP_403_FORBIDDEN)
+
+        existing_event = Event.objects.filter(name__iexact=request.data['name']).first()
+        if existing_event is not None:
+            return JsonResponse({'errors': 'Event already exists with this name!'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        username=request.user.username
-        serializer.save(user=request.user, user_username=username, event=data['event'], description=data['description'], price=data['price'], date=data['date'], image=data['image'])
+        serializer.save(name=data['name'], description=data['description'], date=data['date'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
+    except ValidationError:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def post_listing(request):
+    serializer = ListingSerializer(data=request.data)
+
+    try:
+        reports = Report.objects.filter(reported_user=request.user)
+        if reports.count() >= 3:
+            return Response('User has been reported too many times and is banned from posting listings or creating events.', status=status.HTTP_403_FORBIDDEN)
+
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        username = request.user.username
+        serializer.save(user=request.user, user_username=username, event=data['event'], price=data['price'], image=data['image'])
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     except ValidationError:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -78,24 +100,24 @@ class LoginView(APIView):
         else:
             return JsonResponse({'errors': 'Invalid username or password, user not found'}, status=status.HTTP_404_NOT_FOUND)
 
-class RecentListingsList(APIView):
+class RecentEventsList(APIView):
      def get(self, request, format=None):
-        listings = Listing.objects.order_by('date','price').distinct().filter(status="ACTIVE")[0:25]
+        events = Event.objects.order_by('date')[0:25]
       
-        unique_listings = []
+        unique_events = []
         list = []
-        for x in listings: 
+        for x in events: 
             if x.slug not in list: 
-                unique_listings.append(x)
+                unique_events.append(x)
                 list.append(x.slug)
-        serializer = ListingSerializer(unique_listings, many=True)
+        serializer = EventSerializer(unique_events, many=True)
         return Response(serializer.data)
 
 class ListingDetail(APIView):
     def get_object(self, listing_slug):
         try:
             return Listing.objects.all().filter(slug=listing_slug, status="ACTIVE")
-        except Listing.DoesNotExist:
+        except Event.DoesNotExist:
             raise Http404
 
     def get(self, request, listing_slug, format=None):  
@@ -107,9 +129,9 @@ class ListingDetail(APIView):
             return Response([serializer.data])
 
 @api_view(['GET'])
-def get_listings(request, listing_slug):
-    listings = Listing.objects.filter(slug=listing_slug, status="ACTIVE")
-    serializer = ListingSerializer(listings, many=True)
+def get_event(request, listing_slug):
+    event = Event.objects.filter(slug=listing_slug).first()
+    serializer = EventSerializer(event, many=False)
     if isinstance(serializer.data, list):
         return Response(serializer.data)
     else:
@@ -215,8 +237,8 @@ def search(request):
     search_query = request.data.get('query', '')
 
     if search_query:
-        listings = Listing.objects.filter(Q(event__icontains=search_query) | Q(description__icontains=search_query), status="ACTIVE").exclude(user=request.user)
-        serializer = ListingSerializer(listings, many=True)
+        events = Event.objects.filter(Q(name__icontains=search_query) | Q(description__icontains=search_query))
+        serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
     else:
         return Response({"Empty Listings": []})

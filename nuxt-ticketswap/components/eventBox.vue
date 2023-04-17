@@ -3,21 +3,19 @@
         <div class="box">  
             <div class="content">
                 <p>
-                    <strong class="is-size-4 has-text-weight-semibold">{{ listing.event }}</strong>
+                    <strong class="is-size-4 has-text-weight-semibold">{{ event.name }}</strong>
                     <br>
                     <span class="is-size-5">{{ formattedDate }}</span>
                     <br>
-                    <span class="is-size-5">{{ listing.description }}</span>
-                    <br>
-                    <p class="has-text-weight-semibold is-italic has-text-primary"> Starting from ${{ listing.price }}</p>
+                    <span class="is-size-5 has-text-info">{{ event.description }}</span>
                 </p>
             </div>    
             
             <template v-if="$store.state.isAuthenticated">
                 <div class="buttons">
-                    <nuxt-link class="button is-success is-normal" :to="`/listings/${listing.slug}`">View Tickets</nuxt-link>
+                    <nuxt-link class="button is-success is-normal" :to="`/listings/${event.slug}`">View Tickets</nuxt-link>
 
-                    <nuxt-link class="button is-warning is-normal" :to="`/listings/sell/${listing.slug}`">Sell Ticket</nuxt-link>
+                    <nuxt-link class="button is-warning is-normal" :to="`/listings/sell/${event.slug}`">Sell Ticket</nuxt-link>
                 </div>
             </template>
             <template v-else="$store.state.isAuthenticated">
@@ -34,13 +32,13 @@
 
 <script>
 export default {
-    name: 'listingBox',
+    name: 'eventBox',
     props: {
-        listing: Object
+        event: Object
     }, 
     computed: {
     formattedDate() {
-        const date = new Date(this.listing.date);
+        const date = new Date(this.event.date);
         const currentTimeZoneOffset = date.getTimezoneOffset();
 
         const targetTimeZoneOffset = 800; 
