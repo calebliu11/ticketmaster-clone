@@ -68,6 +68,13 @@ export default {
                     this.errors.push('The event field is required.')
                 }
                 
+                const eventDate = new Date(this.date)
+                eventDate.setHours(eventDate.getHours() + 5) 
+                if (eventDate < new Date()) {
+                    this.errors.push('Event cannot be in the past!')
+                    console.log(eventDate)
+                }
+
                 if (!this.errors.length) {
                     const formData = {
                         name: this.event,
@@ -77,7 +84,7 @@ export default {
                     
                     const csrftoken = Cookies.get('csrftoken');
                     const headers = { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken };
-
+                    
                     $fetch("/api/v1/create-event/", { method: "POST", headers, body: formData} )
                         .then(() => {
                             toast({
@@ -100,8 +107,9 @@ export default {
                                 console.log(JSON.stringify(error))
                             }
                         })
+                    
                 }
         }
-    }
+    },
 }
 </script>

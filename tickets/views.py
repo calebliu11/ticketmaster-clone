@@ -102,7 +102,8 @@ class LoginView(APIView):
 
 class RecentEventsList(APIView):
      def get(self, request, format=None):
-        events = Event.objects.order_by('date')[0:25]
+        current_date = datetime.now().date()
+        events = Event.objects.order_by('date').filter(date__gte=current_date)[0:25]
       
         unique_events = []
         list = []
@@ -237,7 +238,8 @@ def search(request):
     search_query = request.data.get('query', '')
 
     if search_query:
-        events = Event.objects.filter(Q(name__icontains=search_query) | Q(description__icontains=search_query))
+        current_date = datetime.now().date()
+        events = Event.objects.filter(Q(name__icontains=search_query) | Q(description__icontains=search_query), date__gte=current_date)
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
     else:

@@ -25,7 +25,6 @@
                   <br>
                   <span class="is-size-5 has-text-weight-semibold is-italic">{{ event.description }}</span>
                   <br>
-
               </p>
           </div>  
         </div>  

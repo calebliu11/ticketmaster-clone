@@ -51,7 +51,6 @@ export default {
             await $fetch('/api/v1/search/', { method: "POST", headers, body: { 'query': this.query } })
             .then((response) => {
                 this.events = response
-                console.log(events)
             })
             .catch((error) => console.error(error))
         },
