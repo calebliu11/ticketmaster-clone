@@ -16,6 +16,19 @@
                 <p class="has-text-weight-semibold is-italic has-text-primary">${{ listing.price }}</p>
               </div>    
             </div>
+            <div v-else-if="dateInPast(listing)" class="box mt-5 has-background-grey-lighter">
+              <div class="content">
+                <strong class="is-size-4 has-text-weight-semibold">{{ listing.event_name }}</strong>
+                <br>
+                <span class="is-size-5">{{ computeFormattedDate(listing) }}</span>
+                <br>
+                <span class="is-size-5 has-text-info">{{ listing.event_description }}</span>
+                <br>
+                <span class="is-size-5 has-text-weight-bold">EXPIRED</span>
+                <br>
+                <p class="has-text-weight-semibold is-italic has-text-primary">${{ listing.price }}</p>
+              </div>    
+            </div>
             <div v-else class="box mt-5">  
                 <div class="content">
                     <strong class="is-size-4 has-text-weight-semibold">{{ listing.event_name }}</strong>
@@ -65,6 +78,11 @@
 
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return newDate.toLocaleDateString('en-US', options);
+     },
+     dateInPast(listing){
+      const eventDate = new Date(listing.event_date)
+      eventDate.setHours(eventDate.getHours() + 5) 
+      return eventDate < new Date()
      }
   }
 }
