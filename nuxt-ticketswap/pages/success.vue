@@ -10,5 +10,8 @@
 <script>
 export default {
     name: 'Success',
+    mounted() {
+        document.title = 'Ticketswap | Success'
+    },
 }
 </script>

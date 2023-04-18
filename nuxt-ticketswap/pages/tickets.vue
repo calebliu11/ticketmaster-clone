@@ -70,8 +70,8 @@ export default {
         }
     },
     mounted() {
-      this.getOrders()
-
+        this.getOrders()
+        document.title = 'Ticketswap | My Tickets'
     },
     methods: {
         showReportForm(item) {

@@ -18,3 +18,12 @@
     </p>
   </div>
 </template>
+
+<script>
+export default {
+    name: 'About',
+    mounted() {
+        document.title = 'Ticketswap | About'
+    },
+}
+</script>

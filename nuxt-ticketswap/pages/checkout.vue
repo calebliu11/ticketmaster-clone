@@ -97,6 +97,7 @@ export default {
         this.cart = this.$store.state.cart
         this.token = this.$store.state.token
         this.stripeSetup()
+        document.title = 'Ticketswap | Checkout'
     },
     methods: {
         async stripeSetup() {

@@ -48,6 +48,7 @@ export default {
   },
   mounted() {
     this.getAccountDetails()
+    document.title = 'Ticketswap | Account'
   },
   methods: {
     async logout() {

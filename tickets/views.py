@@ -103,6 +103,7 @@ class LoginView(APIView):
 class RecentEventsList(APIView):
      def get(self, request, format=None):
         current_date = datetime.now().date()
+        print(current_date)
         events = Event.objects.order_by('date').filter(date__gte=current_date)[0:25]
       
         unique_events = []

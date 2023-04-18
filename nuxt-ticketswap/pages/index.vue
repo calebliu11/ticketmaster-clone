@@ -37,6 +37,7 @@
     },
     mounted() {
       this.RecentListingsList()
+      document.title = 'Ticketswap'
     },
     methods: {
       async RecentListingsList() {
