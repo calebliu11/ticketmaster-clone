@@ -8,11 +8,8 @@
 
                 <div class="field">
                     <label class="label">Price</label>
-                    <div class="control has-icons-left">
+                    <div class="control">
                         <input class="input" type="number" v-model="price" >
-                        <span class="icon is-small is-left">
-                            <font-awesome-icon icon="fa-solid fa-dollar-sign" beat />
-                        </span>
                     </div>
                 </div>
 
@@ -21,8 +18,6 @@
                             <label class="file-label">
                                 <input class="file-input" type="file" @change="onChangeFile" name="image">
                                 <span class="file-cta">
-                                    <span class="file-icon">
-                                        <font-awesome-icon icon="fa-solid fa-upload" />                                    </span>
                                     <span class="file-label" v-if="fileName">
                                         {{ fileName }}
                                     </span>
