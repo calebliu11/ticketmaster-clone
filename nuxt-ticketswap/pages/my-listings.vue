@@ -56,6 +56,7 @@
     },
     mounted() {
       this.getListings()
+      document.title = 'Ticketswap | Checkout'
     },
     methods: {
       async getListings() {
@@ -81,7 +82,7 @@
      },
      dateInPast(listing){
       const eventDate = new Date(listing.event_date)
-      eventDate.setHours(eventDate.getHours() + 5) 
+      eventDate.setHours(eventDate.getHours() + 29) 
       return eventDate < new Date()
      }
   }

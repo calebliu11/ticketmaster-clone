@@ -56,6 +56,9 @@ export default {
             errors: []
         }
     },
+    mounted() {
+        document.title = 'Ticketswap | Login'
+    },
     computed: {
         buttonLabel() {
             return (this.showPassword) ? "Hide" : "Show";

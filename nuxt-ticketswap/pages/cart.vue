@@ -52,7 +52,7 @@ export default {
     },
     mounted() {
         this.cart = this.$store.state.cart
-        console.log(JSON.stringify(this.cart.items))
+        document.title = 'Ticketswap | Cart'
     },
     components: {
         CartItem

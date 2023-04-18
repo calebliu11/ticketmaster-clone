@@ -60,6 +60,9 @@ export default {
             errors: []
         }
     },
+    mounted() {
+        document.title = 'Ticketswap | Create New Event'
+    },
     methods: {
         enterForm(){
             this.errors = []

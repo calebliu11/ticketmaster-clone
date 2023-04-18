@@ -44,6 +44,7 @@ export default {
 
             this.doSearch()
         }
+        document.title = 'Ticketswap | Search: ' + this.query
     },
     methods: {
         async doSearch() {
