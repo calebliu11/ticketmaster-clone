@@ -46,15 +46,13 @@
 
             <p class="control">
               <span>
-                <button class="bd-tw-button button" @click="$router.push('/account')"><font-awesome-icon
-                        icon="fa-solid fa-user" /></button>
+                <button class="bd-tw-button button" @click="$router.push('/account')">Account</button>
               </span>
             </p>
 
             <p class="control">
   
-                  <button class="button is-primary " @click="$router.push('/cart')"><font-awesome-icon
-                      icon="fa-solid fa-cart-shopping" /></button>
+                  <button class="button is-primary " @click="$router.push('/cart')">Cart</button>
             </p>
 
           </template>
