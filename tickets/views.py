@@ -384,3 +384,15 @@ def signup(request):
     else:
         form = UserRegistrationForm()
 
+@api_view(['POST'])
+def delete_listing(request, listing_slug):
+    listing = Listing.objects.filter(slug=listing_slug).first()
+    if listing is not None:
+        listing.delete()
+        return JsonResponse({'success': 'Listing deleted.'}, status=status.HTTP_200_OK)
+    return JsonResponse({'errors': 'Listing does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+
+    
+
+
+    

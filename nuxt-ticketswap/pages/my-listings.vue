@@ -40,6 +40,9 @@
                     <span class="is-size-5 has-text-weight-bold">{{ listing.status }}</span>
                     <br>
                     <p class="has-text-weight-semibold is-italic has-text-primary">${{ listing.price }}</p>
+
+                    <button @click="$router.push('/edit/listing/' + listing.slug)" class="button is-primary">Edit Listing</button>
+                    <button @click="deleteListing(listing)" class="button is-danger ml-4">Delete Listing</button>
                 </div>    
             </div>
         </ul>
@@ -56,7 +59,7 @@
     },
     mounted() {
       this.getListings()
-      document.title = 'Ticketswap | Checkout'
+      document.title = 'Ticketswap | My Listings'
     },
     methods: {
       async getListings() {
@@ -84,6 +87,15 @@
       const eventDate = new Date(listing.event_date)
       eventDate.setHours(eventDate.getHours() + 29) 
       return eventDate < new Date()
+     },
+     deleteListing(listing) {
+      const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token};
+        $fetch(`api/v1/delete/listing/${listing.slug}`, { method: "POST", headers, body: { } })
+        .then((response) => {
+          console.log(response)
+          this.$router.push('/account')
+        })
+        .catch((error) => console.error(error))
      }
   }
 }
