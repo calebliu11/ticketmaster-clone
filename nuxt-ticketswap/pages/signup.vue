@@ -142,7 +142,7 @@ export default {
                 await $fetch("/api/v1/signup/", { method: "POST", headers, body: formData })
                     .then(() => {
                         toast({
-                            message: "Please go to your email inbox and click on the activation link to verify your account. Make sure to check your spam folder.!",
+                            message: "Please go to your email inbox and click on the activation link to verify your account. Make sure to check your spam folder!",
                             type: 'is-success',
                             dismissible: true,
                             pauseOnHover: true,

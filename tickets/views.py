@@ -392,7 +392,14 @@ def delete_listing(request, listing_slug):
         return JsonResponse({'success': 'Listing deleted.'}, status=status.HTTP_200_OK)
     return JsonResponse({'errors': 'Listing does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
-    
+@api_view(['POST'])
+def edit_listing(request, listing_slug):
+    listing = Listing.objects.filter(slug=listing_slug).first()
+    if listing is not None:
+        listing.price = request.data.get('price')
+        listing.save()
+        return JsonResponse({'success': 'Listing updated.'}, status=status.HTTP_200_OK)
+    return JsonResponse({'errors': 'Listing does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
 
     
