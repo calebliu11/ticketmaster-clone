@@ -50,53 +50,63 @@
 </template>
 
 <script>
-  export default {
-    data() {
-        return {
-            listings: [],
-            events: {}
-        }
+import { toast } from 'bulma-toast'
+
+export default {
+  data() {
+      return {
+          listings: [],
+          events: {}
+      }
+  },
+  mounted() {
+    this.getListings()
+    document.title = 'Ticketswap | My Listings'
+  },
+  methods: {
+    async getListings() {
+      const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token};
+      await $fetch("api/v1/listings/", { method: "GET", headers })
+      .then((response) => {
+        this.listings = response
+        console.log(JSON.stringify(this.listings))
+      })
+      .catch((error) => console.error(error))
     },
-    mounted() {
-      this.getListings()
-      document.title = 'Ticketswap | My Listings'
+    computeFormattedDate(listing) {
+      const date = new Date(listing.event_date);
+      const currentTimeZoneOffset = date.getTimezoneOffset();
+
+      const targetTimeZoneOffset = 800; 
+      const timeDifferenceInMinutes = targetTimeZoneOffset - currentTimeZoneOffset;
+      const newDate = new Date(date.getTime() + (timeDifferenceInMinutes * 60 * 1000));
+
+
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return newDate.toLocaleDateString('en-US', options);
     },
-    methods: {
-      async getListings() {
-        const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token};
-        await $fetch("api/v1/listings/", { method: "GET", headers })
-        .then((response) => {
-          this.listings = response
-          console.log(JSON.stringify(this.listings))
-        })
-        .catch((error) => console.error(error))
-      },
-      computeFormattedDate(listing) {
-        const date = new Date(listing.event_date);
-        const currentTimeZoneOffset = date.getTimezoneOffset();
-
-        const targetTimeZoneOffset = 800; 
-        const timeDifferenceInMinutes = targetTimeZoneOffset - currentTimeZoneOffset;
-        const newDate = new Date(date.getTime() + (timeDifferenceInMinutes * 60 * 1000));
-
-
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return newDate.toLocaleDateString('en-US', options);
-     },
-     dateInPast(listing){
+    dateInPast(listing){
       const eventDate = new Date(listing.event_date)
       eventDate.setHours(eventDate.getHours() + 29) 
       return eventDate < new Date()
-     },
-     deleteListing(listing) {
+      },
+      deleteListing(listing) {
       const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token};
         $fetch(`api/v1/delete/listing/${listing.slug}`, { method: "POST", headers, body: { } })
         .then((response) => {
           console.log(response)
+          toast({
+            message: "Listing successfully deleted!",
+            type: 'is-success',
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 1500,
+            position: 'bottom-left',
+          })
           this.$router.push('/account')
         })
         .catch((error) => console.error(error))
-     }
-  }
+      }
+    }
 }
 </script>
