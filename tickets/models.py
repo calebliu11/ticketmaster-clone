@@ -10,10 +10,22 @@ def get_next_integer_value_event():
     return highest_value + 1 if highest_value else 1
 
 class Event(models.Model):
+    ACTIVE = "ACTIVE"
+    CANCELED = "CANCELED"
+    PAST = "PAST"
+
+    STATUS_CHOICES = [
+        (ACTIVE, "Active"),
+        (CANCELED, "Canceled"),
+        (PAST, "Past")
+    ]
+
     id = models.IntegerField(primary_key=True, default=get_next_integer_value_event)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(max_length=300)
     date = models.DateField(blank=True)
+    status = models.TextField(choices=STATUS_CHOICES, default=ACTIVE)
     slug = models.SlugField(null=True) 
 
     def get_absolute_url(self):
@@ -40,7 +52,7 @@ class Listing(models.Model):
         (EXPIRED, "Expired")
     ]
 
-    id = models.AutoField(primary_key=True, unique=True)
+    id = models.AutoField(primary_key=True, unique=True)    
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     user_username = models.CharField(max_length=100)
     event = models.ForeignKey(Event, on_delete=models.CASCADE) 

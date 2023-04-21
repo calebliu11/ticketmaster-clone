@@ -11,9 +11,7 @@
       <p v-else style="display: inline;" class="has-text-weight-semibold is-italic has-text-primary">$0</p>
       </span>
 
-      
       <div class="buttons is-grouped mt-4" >
-
 
         <button v-if="this.account_pending" class="button is-link">Account being created...</button>
 
@@ -24,6 +22,9 @@
         <button v-if="!this.$store.state.isActive && !this.account_pending" @click="createSellerAccount()" class="button is-primary">Create Seller Account</button>
 
         <button @click="$router.push('/my-listings')" class="button">View My Listings</button>
+
+        <button @click="$router.push('/my-events')" class="button is-dark">View My Events</button>
+
       </div>
     </div>
 

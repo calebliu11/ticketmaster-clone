@@ -53,7 +53,7 @@ def create_event(request):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        serializer.save(name=data['name'], description=data['description'], date=data['date'])
+        serializer.save(user=request.user, name=data['name'], description=data['description'], date=data['date'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     except ValidationError:
@@ -157,6 +157,12 @@ class ListingsList(APIView):
     def get(self, request, format=None):
         listings = Listing.objects.filter(user=request.user)
         serializer = ListingSerializer(listings, many=True)
+        return Response(serializer.data)
+    
+class EventsList(APIView):
+    def get(self, request, format=None):
+        events = Event.objects.filter(user=request.user)
+        serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
     
 @api_view(['POST'])
@@ -401,5 +407,25 @@ def edit_listing(request, listing_slug):
         return JsonResponse({'success': 'Listing updated.'}, status=status.HTTP_200_OK)
     return JsonResponse({'errors': 'Listing does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
+@api_view(['POST'])
+def edit_event(request, listing_slug):
+    event = Event.objects.filter(slug=listing_slug).first()
+    if(event is not None):
+        if request.data.get('name') != '':
+            event.name = request.data.get('name')
+            existing_event = Event.objects.filter(name__iexact=request.data['name']).first()
+            if existing_event is not None:
+                return JsonResponse({'errors': 'Event already exists with this name!'}, status=status.HTTP_400_BAD_REQUEST)
+            event.slug = event.name
+        if request.data.get('description') != '':
+            event.description = request.data.get('description')
+        if request.data.get('date') != '':
+            event.date = request.data.get('date')
+        event.status = request.data.get('status')
+        event.save()
+        return JsonResponse({'success': 'Event updated.'}, status=status.HTTP_200_OK)
+    return JsonResponse({'errors': 'Event does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
-    
+
+
+        

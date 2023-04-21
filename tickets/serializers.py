@@ -57,9 +57,11 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = (
             "id",
+            "user",
             "name",
             "description",
             "date",
+            "status",
             "slug",
             "get_absolute_url",
         )
