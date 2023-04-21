@@ -1,6 +1,11 @@
 <template>
   <div class="page-listing">
-      <div v-if="tickets.length > 0">
+      <div v-if="event.status=='CANCELED'" >
+        <h3 class="is-size-4 has-text-weight-semibold">This event has been canceled!</h3>
+
+        <p>Check back here or contact the event organizer for updates.</p>
+      </div>
+      <div v-else-if="tickets.length > 0">
         <div class="box">  
           <div class="content">
               <p>

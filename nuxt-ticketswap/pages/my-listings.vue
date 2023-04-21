@@ -89,24 +89,24 @@ export default {
       const eventDate = new Date(listing.event_date)
       eventDate.setHours(eventDate.getHours() + 29) 
       return eventDate < new Date()
-      },
-      deleteListing(listing) {
-      const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token};
-        $fetch(`api/v1/delete/listing/${listing.slug}`, { method: "POST", headers, body: { } })
-        .then((response) => {
-          console.log(response)
-          toast({
-            message: "Listing successfully deleted!",
-            type: 'is-success',
-            dismissible: true,
-            pauseOnHover: true,
-            duration: 1500,
-            position: 'bottom-left',
-          })
-          this.$router.push('/account')
+    },
+    deleteListing(listing) {
+    const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token};
+      $fetch(`api/v1/delete/listing/${listing.slug}`, { method: "POST", headers, body: { } })
+      .then((response) => {
+        console.log(response)
+        toast({
+          message: "Listing successfully deleted!",
+          type: 'is-success',
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 1500,
+          position: 'bottom-left',
         })
-        .catch((error) => console.error(error))
-      }
+        this.$router.push('/account')
+      })
+      .catch((error) => console.error(error))
     }
+  }
 }
 </script>

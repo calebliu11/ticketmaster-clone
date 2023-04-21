@@ -1,6 +1,21 @@
 <template>
     <div class="column is-size-4 is-centered ">
-        <div class="box">  
+
+        <div v-if="event.status=='CANCELED'" class="box has-background-grey-lighter">  
+            <div class="content">
+                <p>
+                    <strong class="has-text-danger is-italic">{{ event.status }}</strong>
+                    <br>
+                    <strong class="is-size-4 has-text-weight-semibold">{{ event.name }}</strong>
+                    <br>
+                    <span class="is-size-5">{{ formattedDate }}</span>
+                    <br>
+                    <span class="is-size-5 has-text-info">{{ event.description }}</span>
+                </p>
+            </div>    
+        </div>
+
+        <div v-else class="box">  
             <div class="content">
                 <p>
                     <strong class="is-size-4 has-text-weight-semibold">{{ event.name }}</strong>
@@ -24,8 +39,6 @@
 
                 </div>
             </template>
-
-            
         </div>
     </div>
 </template>

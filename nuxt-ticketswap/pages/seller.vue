@@ -80,6 +80,7 @@ export default {
 
                 if (!this.errors.length) {
                     const formData = {
+                        user: 22,
                         name: this.event,
                         description: this.description,
                         date: this.date,
