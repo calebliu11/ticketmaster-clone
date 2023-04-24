@@ -37,6 +37,9 @@ export default {
             errors: []
         }
     },
+    mounted() {
+        document.title = 'Ticketswap | Edit Listing'
+    },
     methods: {
         enterForm() {
             this.errors = []

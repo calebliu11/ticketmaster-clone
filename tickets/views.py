@@ -12,7 +12,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework import status, authentication, permissions
 
 from .models import Listing, Order, Account, Report, Event
-from .serializers import ListingSerializer, OrderSerializer, ReportSerializer, AccountSerializer, EventSerializer
+from .serializers import ListingSerializer, OrderSerializer, ReportSerializer, AccountSerializer, EventSerializer, DisputeSerializer
 from django.core.exceptions import ValidationError
 
 from datetime import date
@@ -233,6 +233,11 @@ def report(request):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
+        existing_report = Report.objects.filter(listing=data['listing']).first()
+        if existing_report is not None:
+            return JsonResponse({'errors': 'You have already reported this listing.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
         serializer.save(user=request.user, reported_user=data['reported_user'], reason=data['reason'], description=data['description'], verified=data['verified'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
@@ -426,6 +431,28 @@ def edit_event(request, listing_slug):
         return JsonResponse({'success': 'Event updated.'}, status=status.HTTP_200_OK)
     return JsonResponse({'errors': 'Event does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
+class ReportsList(APIView):
+    def get(self, request, format=None):
+        reports = Report.objects.filter(reported_user=request.user)
+        serializer = ReportSerializer(reports, many=True)
+        return Response(serializer.data)
 
 
-        
+@api_view(['POST'])
+def dispute_report(request):
+    serializer = DisputeSerializer(data=request.data)
+    try:
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        report = Report.objects.filter(id=data['report'].id).first()
+        report.disputed = True
+        report.save()
+
+        serializer.save(user=request.user, report=data['report'], explanation=data['explanation'])
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    except ValidationError:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

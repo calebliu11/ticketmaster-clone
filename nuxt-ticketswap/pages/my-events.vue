@@ -16,7 +16,7 @@
                     </div>   
                 </div>
 
-                <div class="box mt-4">  
+                <div v-else class="box mt-4">  
                     <div class="content">
                         <p>
                             <strong class="is-size-4 has-text-weight-semibold">{{ event.name }}</strong>

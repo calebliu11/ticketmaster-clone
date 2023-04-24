@@ -1,5 +1,9 @@
 <template>
-    <div class="column is-10">
+    <div v-if="orders.length==0">
+        <h2 class="title">My Tickets</h2>
+        <strong class="has-text-weight-semibold is-italic">You have no tickets. Purchase some tickets to see them here!</strong>
+    </div>
+    <div v-else class="column is-10">
         <h2 class="title">My Tickets</h2>
             <ul v-for="order in orders">
                 <hr>
@@ -89,7 +93,9 @@ export default {
                 listing: item.listing,
                 reason: this.reason,
                 description: this.description,
-                verified: false
+                verified: false,
+                show_form: false,
+                disputed: false,
             }
 
             await $fetch('/api/v1/report/', { method: "POST", headers, body: formData })
@@ -104,10 +110,23 @@ export default {
                     position: 'bottom-left',
                 })
                 item.show_form = false
+                this.reason = ''
+                this.description = ''
             })
             .catch((error) => {
                 if (error.response) {
                     console.log(JSON.stringify(error.response._data))
+                    toast({
+                        message: error.response._data.errors,
+                        type: 'is-danger',
+                        dismissible: true,
+                        pauseOnHover: true,
+                        duration: 2500,
+                        position: 'bottom-left',
+                })
+                item.show_form = false
+                this.reason = ''
+                this.description = ''
                 }
                 else if (error.message) {
                     console.log(JSON.stringify(error.message))

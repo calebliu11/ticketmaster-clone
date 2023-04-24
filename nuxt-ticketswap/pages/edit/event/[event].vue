@@ -39,7 +39,7 @@
                 <div class="field mt-4">
                     <div class="control">
                         <button class="button is-dark">Submit</button>
-                        <button @click="$router.push('/my-listings')" class="button ml-4">Back</button>
+                        <button @click="$router.push('/account')" class="button ml-4">Back</button>
                     </div>
                 </div>            
             </form>
@@ -60,6 +60,9 @@ export default {
             status: 'ACTIVE',
             errors: []
         }
+    },
+    mounted() {
+        document.title = 'Ticketswap | Edit Event'
     },
     methods: {
         enterForm() {
