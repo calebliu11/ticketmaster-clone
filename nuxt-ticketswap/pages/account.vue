@@ -26,6 +26,11 @@
         <button @click="$router.push('/my-events')" class="button is-dark">View My Events</button>
 
       </div>
+
+      <div class="buttons is-grouped mt-4" >
+
+        <button v-if="reports.length>0" @click="$router.push('/dispute-reports')" class="button is-rounded is-warning">Dispute Reports</button>
+      </div>
     </div>
 
 
@@ -44,6 +49,7 @@ export default {
       return {
           funds: 0.0,
           account_pending: false,
+          reports: [],
           errors: [],
       }
   },
@@ -84,6 +90,22 @@ export default {
         this.account_pending = false
       }
       
+      $fetch("api/v1/reports/", {method: "GET", headers})
+      .then((response) => {
+        console.log(response)
+        this.reports = response
+      })
+      .catch(error => {
+        if (error.response) {
+            this.errors.push(JSON.stringify(error.response._data))
+            console.log(JSON.stringify(error.response._data))
+        }
+        else if (error.message) {
+            this.errors.push('Something went wrong. Please try again!')
+            console.log(JSON.stringify(error.message))
+        }
+      })
+
       $fetch("api/v1/account/", { method: "GET", headers })
       .then((response) => {
         console.log(response)

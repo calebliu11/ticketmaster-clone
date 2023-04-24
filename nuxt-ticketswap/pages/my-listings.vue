@@ -14,6 +14,9 @@
                 <span class="is-size-5 has-text-weight-bold">{{ listing.status }}</span>
                 <br>
                 <p class="has-text-weight-semibold is-italic has-text-primary">${{ listing.price }}</p>
+                <br>
+                <p class="has-text-weight-semibold is-italic">ID: {{ listing.id }}</p>
+
               </div>    
             </div>
             <div v-else-if="dateInPast(listing)" class="box mt-5 has-background-grey-lighter">
@@ -27,6 +30,9 @@
                 <span class="is-size-5 has-text-weight-bold">EXPIRED</span>
                 <br>
                 <p class="has-text-weight-semibold is-italic has-text-primary">${{ listing.price }}</p>
+                <br>
+                <p class="has-text-weight-semibold is-italic">ID: {{ listing.id }}</p>
+
               </div>    
             </div>
             <div v-else class="box mt-5">  
@@ -40,6 +46,8 @@
                     <span class="is-size-5 has-text-weight-bold">{{ listing.status }}</span>
                     <br>
                     <p class="has-text-weight-semibold is-italic has-text-primary">${{ listing.price }}</p>
+                    <br>
+                    <p class="has-text-weight-semibold is-italic">ID: {{ listing.id }}</p>
 
                     <button @click="$router.push('/edit/listing/' + listing.slug)" class="button is-primary">Edit Listing</button>
                     <button @click="deleteListing(listing)" class="button is-danger ml-4">Delete Listing</button>

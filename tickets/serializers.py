@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Listing, Order, OrderItem, Report, Account, Event
+from .models import Listing, Order, OrderItem, Report, Account, Event, Dispute
 
 
 class Base64ImageField(serializers.ImageField):
@@ -128,12 +128,15 @@ class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
         fields = (
+            "id",
             "user",
             "reported_user",
             "listing",
             "reason",
             "description",
             "verified",
+            "show_form",
+            "disputed",
         )
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -143,4 +146,13 @@ class AccountSerializer(serializers.ModelSerializer):
             "user",
             "funds",  
             "account_id",
+        )
+
+class DisputeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dispute
+        fields = (
+            "user",
+            "report",
+            "explanation",
         )

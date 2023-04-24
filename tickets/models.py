@@ -12,12 +12,10 @@ def get_next_integer_value_event():
 class Event(models.Model):
     ACTIVE = "ACTIVE"
     CANCELED = "CANCELED"
-    PAST = "PAST"
 
     STATUS_CHOICES = [
         (ACTIVE, "Active"),
         (CANCELED, "Canceled"),
-        (PAST, "Past")
     ]
 
     id = models.IntegerField(primary_key=True, default=get_next_integer_value_event)
@@ -114,6 +112,13 @@ class Report(models.Model):
     reason = models.CharField(max_length=100)
     description = models.TextField(max_length=300)
     verified = models.BooleanField(default=False)
+    disputed = models.BooleanField(default=False)
+    show_form = models.BooleanField(default=False)
+
+class Dispute(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    report = models.OneToOneField(Report, primary_key=True, on_delete=models.CASCADE)
+    explanation = models.CharField(max_length=300)
 
 class Account(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
