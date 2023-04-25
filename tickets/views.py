@@ -55,7 +55,7 @@ def create_event(request):
         data = serializer.validated_data
 
         username=request.user.username
-        serializer.save(user=request.user, user_username=username, name=data['name'], description=data['description'], date=data['date'])
+        serializer.save(user=request.user, user_username=username, name=data['name'], description=data['description'], date=data['date'], category=data['category'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     except ValidationError:
@@ -429,7 +429,10 @@ def edit_event(request, listing_slug):
             event.description = request.data.get('description')
         if request.data.get('date') != '':
             event.date = request.data.get('date')
-        event.status = request.data.get('status')
+        if request.data.get('status') != '':
+            event.status = request.data.get('status')
+        if request.data.get('category') != '':
+            event.category = request.data.get('category')
         event.save()
         return JsonResponse({'success': 'Event updated.'}, status=status.HTTP_200_OK)
     return JsonResponse({'errors': 'Event does not exist.'}, status=status.HTTP_404_NOT_FOUND)
