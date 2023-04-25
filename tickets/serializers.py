@@ -146,6 +146,7 @@ class AccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = (
             "user",
+            "user_username",
             "funds",  
             "account_id",
         )

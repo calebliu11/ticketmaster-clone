@@ -1,6 +1,5 @@
 <template>
   <div class="page-listing">
-    <router-link to="/" tag="button" class="button is-danger">Return to Home Page</router-link>
       <div v-if="event.status=='CANCELED'" >
         <h3 class="is-size-4 has-text-weight-semibold">This event has been canceled!</h3>
 
@@ -77,6 +76,8 @@
           </div>
         </div>
       </ul>
+
+      <router-link to="/" tag="button" class="button is-danger is-light is-rounded mt-4">Return Home</router-link>
   </div>
 
 </template>
