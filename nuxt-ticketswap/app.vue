@@ -12,23 +12,6 @@
       <router-link to="/seller" class="navbar-item">Create New Event</router-link>
 
       <router-link to="/about" class="navbar-item">About</router-link>
-      <div class="navbar-item">
-        <template v-if="$store.state.isAuthenticated">
-          <form method="get" action="/search">
-            <div class="field has-addons">
-              <div class="control">
-                <input type="text" class="input" placeholder='Search' name="query">
-              </div>
-
-              <div class="control">
-                <button class="button is-success">
-                  <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-                </button>
-              </div>
-            </div>
-          </form>
-        </template>
-      </div>
     </div>
 
     <div class="navbar-end">
@@ -52,20 +35,20 @@
 
             <p class="control">
   
-                  <button class="button is-primary " @click="$router.push('/cart')">Cart</button>
+                  <button class="button is-info " @click="$router.push('/cart')">Cart</button>
             </p>
 
           </template>
 
           <template v-else>
             <p class="control">
-                  <button class="button is-primary" @click="$router.push('/signup')">Signup</button>
+                  <button class="button is-info" @click="$router.push('/signup')">Signup</button>
                 
             </p>
 
             <p class="control">
                 <div>
-                  <button class="button is-primary" @click="$router.push('/login')">Login</button>
+                  <button class="button is-info" @click="$router.push('/login')">Login</button>
                 </div>
             </p>
           </template>
@@ -74,10 +57,14 @@
     </div>
   </div>
 </nav>
+    
 
     <section class="section">
       <router-view/>
     </section>
+
+
+    
 
   </div>
 </template>
@@ -97,7 +84,16 @@ export default {
   },
   mounted() {
     this.cart = this.$store.state.cart
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$parent.$el.querySelector("router-view").classList.add("has-padding");
+    next();
   }
 }
 </script>
 
+<style scoped>
+router-view:not(.no-padding) {
+  padding: 1rem; /* Adjust the padding value as needed */
+}
+</style>

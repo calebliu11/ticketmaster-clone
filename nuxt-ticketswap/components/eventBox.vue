@@ -1,5 +1,7 @@
 <template>
-    <div class="column is-size-4 is-centered ">
+    
+    <!-- <div class="column is-size-4 is-centered "> -->
+    <!-- <div class="event-grid">  -->
 
         <div v-if="event.status=='CANCELED'" class="box has-background-grey-lighter">  
             <div class="content">
@@ -40,8 +42,11 @@
                 </div>
             </template>
         </div>
-    </div>
+    <!-- </div> -->
 </template>
+
+
+
 
 <script>
 export default {
@@ -67,3 +72,13 @@ export default {
 }
 </script>
 
+
+<style scoped>
+
+
+.box {
+  flex: 0 0 calc(33.333% - 2rem); /* 33.333% for 3 columns, 2rem for spacing between event boxes */
+  margin: 1rem; /* Adjust as needed for spacing between event boxes */
+  /* Add other required styles for the event box */
+}
+</style>
