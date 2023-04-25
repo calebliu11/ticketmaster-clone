@@ -7,7 +7,7 @@
 
   </div>
 
-  <div id="navMenubd-example" class="navbar-menu">
+  <div id="navMenubd-example" class="navbar-menu is-active">
     <div class="navbar-start">
       <router-link to="/seller" class="navbar-item">Create New Event</router-link>
 
