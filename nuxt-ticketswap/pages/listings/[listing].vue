@@ -9,6 +9,7 @@
         <div class="box">  
           <div class="content">
               <p>
+                  
                   <strong class="is-size-2 has-text-info has-text-weight-semibold">{{ event.name }}</strong>
                   <br>
                   <span class="is-size-5">{{ formattedDate }}</span>
