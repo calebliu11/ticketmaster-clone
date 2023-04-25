@@ -20,6 +20,7 @@ class Event(models.Model):
 
     id = models.IntegerField(primary_key=True, default=get_next_integer_value_event)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_username = models.CharField(max_length=100)
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(max_length=300)
     date = models.DateField(blank=True)

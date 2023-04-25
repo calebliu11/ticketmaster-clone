@@ -89,7 +89,6 @@ export default {
       const timeDifferenceInMinutes = targetTimeZoneOffset - currentTimeZoneOffset;
       const newDate = new Date(date.getTime() + (timeDifferenceInMinutes * 60 * 1000));
 
-
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return newDate.toLocaleDateString('en-US', options);
     },

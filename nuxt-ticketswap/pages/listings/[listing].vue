@@ -15,6 +15,7 @@
                   <br>
                   <span class="is-size-5 has-text-weight-semibold is-italic">{{ event.description }}</span>
                   <br>
+                  <span class="is-size-6 has-text-weight-semibold is-italic">Event Organizer: {{ event.user_username }}</span>
               </p>
           </div>  
         </div>  
@@ -30,6 +31,7 @@
                   <br>
                   <span class="is-size-5 has-text-weight-semibold is-italic">{{ event.description }}</span>
                   <br>
+                  <span class="is-size-6 has-text-weight-semibold is-italic">Event Organizer: {{ event.user_username }}</span>
               </p>
           </div>  
         </div>  
@@ -85,6 +87,7 @@ data() {
 mounted() {
     this.getListings(),
     this.getEvent()
+    document.title = 'Ticketswap'
 },
 methods: {
   async getEvent() {
@@ -151,3 +154,4 @@ computed: {
 }
 
 </script>
+

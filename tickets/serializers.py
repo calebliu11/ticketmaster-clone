@@ -58,6 +58,7 @@ class EventSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "user",
+            "user_username",
             "name",
             "description",
             "date",
