@@ -18,6 +18,22 @@ class Event(models.Model):
         (CANCELED, "Canceled"),
     ]
 
+    SPORTS = "Sports"
+    CONCERT = "Concert"
+    PERFORMANCE = "Performance"
+    BAR = "Bar"
+    STUDENT_GROUP = "Student Group"
+    OTHER = "Other"
+
+    CATEGORIES = [
+        (SPORTS, "Sports"),
+        (CONCERT, "Concert"),
+        (PERFORMANCE, "Performance"),
+        (BAR, "Bar"),
+        (STUDENT_GROUP, "Student Group"),
+        (OTHER, "Other")
+    ]
+
     id = models.IntegerField(primary_key=True, default=get_next_integer_value_event)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     user_username = models.CharField(max_length=100)
@@ -25,6 +41,7 @@ class Event(models.Model):
     description = models.TextField(max_length=300)
     date = models.DateField(blank=True)
     status = models.TextField(choices=STATUS_CHOICES, default=ACTIVE)
+    category = models.TextField(choices=CATEGORIES, default=SPORTS)
     slug = models.SlugField(null=True) 
 
     def get_absolute_url(self):

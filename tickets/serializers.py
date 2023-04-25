@@ -63,6 +63,7 @@ class EventSerializer(serializers.ModelSerializer):
             "description",
             "date",
             "status",
+            "category",
             "slug",
             "get_absolute_url",
         )

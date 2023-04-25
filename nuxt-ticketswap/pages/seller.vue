@@ -27,6 +27,19 @@
                         </div>
                     </div>
 
+                    <strong class="has-text-semibold">Category</strong>
+                    <br>
+                    <div class="select mb-4 mt-3">
+                        <select id="select-category" v-model="category">
+                            <option>Sports</option>
+                            <option>Concert</option>
+                            <option>Performance</option>
+                            <option>Bar</option>
+                            <option>Student Group</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
                     <div class="error-notification" v-if="errors.length">
                         <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
                     </div>
@@ -57,6 +70,7 @@ export default {
             name: '',
             description: '',
             date: '',
+            category: '',
             errors: []
         }
     },
@@ -69,6 +83,10 @@ export default {
 
                 if (this.event === '') {
                     this.errors.push('The event field is required.')
+                }
+
+                if (this.category === '') {
+                    this.errors.push('You must select a category.')
                 }
                 
                 const eventDate = new Date(this.date)
@@ -84,6 +102,7 @@ export default {
                         user_username: 'admin',
                         name: this.event,
                         description: this.description,
+                        category: this.category,
                         date: this.date,
                     }
                     

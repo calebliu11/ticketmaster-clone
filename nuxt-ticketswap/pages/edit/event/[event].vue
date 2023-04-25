@@ -18,17 +18,34 @@
                     </div>
                 </div>
 
-                <div class="field">
+                <div class="field mb-4">
                     <label>Update Date</label>
                     <div class="control">
                         <input type="date" class="input" v-model="date">
                     </div>
                 </div>
 
-                <div class="select">
+                <span class="has-text-semibold">Update Status</span>
+                <br>
+
+                <div class="select mb-4 mt-2">
                     <select v-model="status">
                         <option>ACTIVE</option>
                         <option>CANCELED</option>
+                    </select>
+                </div>
+
+                <br>
+                <span class="has-text-semibold">Update Category</span>
+                <br>
+                <div class="select mb-4 mt-2">
+                    <select id="select-category" v-model="category">
+                        <option>Sports</option>
+                        <option>Concert</option>
+                        <option>Performance</option>
+                        <option>Bar</option>
+                        <option>Student Group</option>
+                        <option>Other</option>
                     </select>
                 </div>
 
@@ -57,7 +74,8 @@ export default {
             name: '',
             description: '',
             date: '',
-            status: 'ACTIVE',
+            status: '',
+            category: '',
             errors: []
         }
     },
@@ -82,6 +100,7 @@ export default {
                     description: this.description,
                     date: this.date,
                     status: this.status,
+                    category: this.category,
                 }
 
                 const csrftoken = Cookies.get('csrftoken');
