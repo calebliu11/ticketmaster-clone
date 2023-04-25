@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import { toast } from 'bulma-toast'
+
 export default {
     name: "DisputeReports",
     data() {
@@ -85,7 +87,7 @@ export default {
                 report: report.id, 
                 explanation: this.explanation
             }
-
+            
             const headers = { 'Content-Type': 'application/json', 'Authorization': "Token " + this.$store.state.token};
             $fetch('api/v1/disputes/', { method: "POST", headers, body: formData })
             .then((response) => {
@@ -95,11 +97,12 @@ export default {
                     type: 'is-success',
                     dismissible: true,
                     pauseOnHover: true,
-                    duration: 1000,
+                    duration: 1500,
                     position: 'bottom-left',
                 })
                 report.show_form = false
-                window.location.reload()
+                this.explanation = ''
+                window.location.reload(true)
             })
             .catch(error => {
                 if (error.response) {
@@ -109,6 +112,7 @@ export default {
                     console.log(JSON.stringify(error))
                 }
             })
+            
         }
     }
 }
