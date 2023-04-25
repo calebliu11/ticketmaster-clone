@@ -172,11 +172,11 @@ export default {
                   type: 'is-success',
                   dismissible: true,
                   pauseOnHover: true,
-                  duration: 1000,
+                  duration: 3000,
                   position: 'bottom-left',
               })
               console.log(response)
-              this.$router.push('/')
+              window.location.reload(true)
           })
           .catch(error => {
               if (error.response) {

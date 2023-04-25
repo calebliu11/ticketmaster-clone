@@ -43,8 +43,9 @@ def create_event(request):
     serializer = EventSerializer(data=request.data)
     try:
         reports = Report.objects.filter(reported_user=request.user)
-        if reports.count() >= 3:
-            return Response('User has been reported too many times and is banned from posting listings or creating events.', status=status.HTTP_403_FORBIDDEN)
+        for report in reports:
+            if report.verified == True:
+                return JsonResponse({'errors': 'User has been banned from posting listings or creating events.'}, status=status.HTTP_403_FORBIDDEN)
 
         existing_event = Event.objects.filter(name__iexact=request.data['name']).first()
         if existing_event is not None:
@@ -66,8 +67,9 @@ def post_listing(request):
 
     try:
         reports = Report.objects.filter(reported_user=request.user)
-        if reports.count() >= 3:
-            return Response('User has been reported too many times and is banned from posting listings or creating events.', status=status.HTTP_403_FORBIDDEN)
+        for report in reports:
+            if report.verified == True:
+                return JsonResponse({'errors': 'User has been banned from posting listings or creating events.'}, status=status.HTTP_403_FORBIDDEN)
 
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
@@ -97,9 +99,9 @@ class LoginView(APIView):
                 else: 
                     return JsonResponse({'errors': 'Invalid username or password.'}, status=status.HTTP_404_NOT_FOUND)
             else:
-                return JsonResponse({'errors': 'Account not verified, please check your email'}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse({'errors': 'Account not verified, please check your email.'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return JsonResponse({'errors': 'Invalid username or password, user not found'}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({'errors': 'Invalid username or password, user not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 class RecentEventsList(APIView):
      def get(self, request, format=None):
