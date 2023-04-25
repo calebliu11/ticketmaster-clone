@@ -1,10 +1,11 @@
 
 <template>
   <div class="account">
-    <h1 class="title">Account</h1>
+    <h1 class="title" v-if="this.user_username==''">Account</h1>
+    <h1 v-else class="title">Welcome, {{ this.user_username }}</h1>
 
     <div class="box">
-      <strong class="is-size-4">Dashboard</strong>
+      <strong class="is-size-4">Seller Dashboard</strong>
       <br>
       <span class="is-size-5">Account Balance: <p v-if="funds" style="display: inline;" class="has-text-weight-semibold is-italic has-text-primary">${{ funds }}</p>
       
@@ -21,18 +22,29 @@
 
         <button v-if="!this.$store.state.isActive && !this.account_pending" @click="createSellerAccount()" class="button is-primary">Create Seller Account</button>
 
-        <button @click="$router.push('/my-listings')" class="button">View My Listings</button>
-
-        <button @click="$router.push('/my-events')" class="button is-dark">View My Events</button>
 
       </div>
+
+
+
+
+    </div>
+
+    <div class="box">
+      <strong class="is-size-4 mb-4">Events Dashboard</strong>
+      <br>
+
+
+      <button @click="$router.push('/my-listings')" class="button mt-4">View My Listings</button>
+
+      <button @click="$router.push('/my-events')" class="button is-dark ml-4 mt-4">View My Events</button>
 
       <div class="buttons is-grouped mt-4" >
 
         <button v-if="reports.length>0" @click="$router.push('/dispute-reports')" class="button is-rounded is-warning">Dispute Reports</button>
       </div>
-    </div>
 
+    </div>
 
     <div class="column is-10">
       <button @click="logout()" class="button is-danger">Log out</button>
@@ -49,6 +61,7 @@ export default {
       return {
           funds: 0.0,
           account_pending: false,
+          user_username: '',
           reports: [],
           errors: [],
       }
@@ -110,6 +123,7 @@ export default {
       .then((response) => {
         console.log(response)
         this.funds = response["funds"] 
+        this.user_username = response['user_username']
         this.$store.commit("setAccountId", response['account_id'])
       })
       .catch(error => {

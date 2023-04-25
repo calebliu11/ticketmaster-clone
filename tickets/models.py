@@ -140,5 +140,11 @@ class Dispute(models.Model):
 
 class Account(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+    user_username = models.CharField(max_length=100)
     funds = models.DecimalField(default=0.0, decimal_places=2, max_digits=8)
     account_id = models.CharField(max_length=100)
+
+    def save(self, *args, **kwargs):  
+        self.user_username = self.user.username
+
+        return super().save(*args, **kwargs)
