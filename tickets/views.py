@@ -382,6 +382,10 @@ def signup(request):
         if existing_user is not None:
             return JsonResponse({'errors': 'User already exists with this username!'}, status=status.HTTP_400_BAD_REQUEST)
 
+        existing_email = User.objects.filter(email=request.POST.get('email')).first()
+        if existing_email is not None:
+            return JsonResponse({'errors': 'User already exists with this email!'}, status=status.HTTP_400_BAD_REQUEST)
+
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
