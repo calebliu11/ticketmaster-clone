@@ -1,5 +1,6 @@
 <template>
   <div class="page-listing">
+    <router-link to="/" tag="button" class="button is-danger">Return to Home Page</router-link>
       <div v-if="event.status=='CANCELED'" >
         <h3 class="is-size-4 has-text-weight-semibold">This event has been canceled!</h3>
 
@@ -16,11 +17,16 @@
                   <span class="is-size-5 has-text-weight-semibold is-italic">{{ event.description }}</span>
                   <br>
                   <span class="is-size-6 has-text-weight-semibold is-italic">Event Organizer: {{ event.user_username }}</span>
+
+                  
               </p>
+
+             
           </div>  
         </div>  
         
       </div>
+      
       <div v-else>
         <div class="box">  
           <div class="content">
