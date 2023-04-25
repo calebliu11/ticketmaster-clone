@@ -53,7 +53,8 @@ def create_event(request):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        serializer.save(user=request.user, name=data['name'], description=data['description'], date=data['date'])
+        username=request.user.username
+        serializer.save(user=request.user, user_username=username, name=data['name'], description=data['description'], date=data['date'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     except ValidationError:
@@ -433,7 +434,7 @@ def edit_event(request, listing_slug):
 
 class ReportsList(APIView):
     def get(self, request, format=None):
-        reports = Report.objects.filter(reported_user=request.user)
+        reports = Report.objects.filter(reported_user=request.user, disputed__in=[False])
         serializer = ReportSerializer(reports, many=True)
         return Response(serializer.data)
 

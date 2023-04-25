@@ -63,8 +63,14 @@ export default {
         },
         computeFormattedDate(unformatted_date) {
             const date = new Date(unformatted_date);
+            const currentTimeZoneOffset = date.getTimezoneOffset();
+
+            const targetTimeZoneOffset = 800; 
+            const timeDifferenceInMinutes = targetTimeZoneOffset - currentTimeZoneOffset;
+            const newDate = new Date(date.getTime() + (timeDifferenceInMinutes * 60 * 1000));
+
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            return date.toLocaleDateString('en-US', options);
+            return newDate.toLocaleDateString('en-US', options);
         },
         dateInPast(event){
             const eventDate = new Date(event.date)
