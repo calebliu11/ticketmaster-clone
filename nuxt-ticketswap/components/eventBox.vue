@@ -20,6 +20,12 @@
         <div v-else class="box">  
             <div class="content">
                 <p>
+                    <strong class="is-size-8 has-text-weight-semibold">
+                        <p :class="categoryClass(event.category)">
+                            {{ event.category }}
+                        </p>
+                    </strong>
+                    
                     <strong class="is-size-4 has-text-weight-semibold">{{ event.name }}</strong>
                     <br>
                     <span class="is-size-5">{{ formattedDate }}</span>
@@ -67,13 +73,51 @@ export default {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return newDate.toLocaleDateString('en-US', options);
     }
-  }
+  }, 
+  methods: {
+    categoryClass(category) {
+      switch (category) {
+        case "Concert":
+          return "text-Concert";
+        case "Performance":
+          return "text-Performance";
+        case "Bar":
+          return "text-Bar";
+        case "Sports":
+          return "text-Sports";
+        case "Student Group":
+          return "text-Student";
+        case "Other":
+          return "text-default";
+        default:
+          return "text-default";
+      }
+    },
+  },
     
 }
 </script>
 
 
 <style scoped>
+.text-Concert {
+  color: rgb(45, 162, 13); /* Change to desired color for category1 */
+}
+.text-Performance {
+  color: rgb(166, 27, 236); /* Change to desired color for category2 */
+}
+.text-Sports {
+  color: rgb(237, 0, 8); /* Change to desired color for category2 */
+}
+.text-Bar {
+  color: rgb(248, 187, 5); /* Change to desired color for category2 */
+}
+.text-Student {
+  color: rgb(234, 255, 7); /* Change to desired color for category2 */
+}
+.text-default {
+  color: #000; /* Change to desired default color */
+}
 
 
 .box {
